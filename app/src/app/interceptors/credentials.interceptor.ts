@@ -17,7 +17,7 @@ export class CredentialsInterceptor implements HttpInterceptor {
     const isApiRequest = req.url.includes('/api') ||
       req.url.includes('localhost:5500') ||
       //req.url.includes('hiyrnow.in/backend');
-      req.url.includes('hiyrnow-v1-721026586154.europe-west1.run.app')
+      req.url.includes('hiyrnow-backend-786443796056.europe-west1.run.app')
     if (isApiRequest) {
       // Clone the request and add withCredentials
       const credentialReq = req.clone({
