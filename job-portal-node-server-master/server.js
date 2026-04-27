@@ -100,6 +100,17 @@ app.get('/', (req, res) => {
   res.send('Hello, this is your server!');
 });
 
+// Health checks (outside init so they always respond)
+app.get('/healthz', (req, res) => res.status(200).send('OK'));
+app.get('/readyz', (req, res) => {
+  const isDbConnected = mongoose.connection.readyState === 1;
+  if (isDbConnected) {
+    res.status(200).json({ status: 'ready' });
+  } else {
+    res.status(503).json({ status: 'not_ready', dbState: mongoose.connection.readyState });
+  }
+});
+
 // Sitemap generator (restored from original)
 app.get('/sitemap.xml', async (req, res) => {
   try {
@@ -267,16 +278,7 @@ async function init() {
 
   app.options('*', (req, res) => res.sendStatus(200));
 
-  // Health checks
-  app.get('/healthz', (req, res) => res.status(200).send('OK'));
-  app.get('/readyz', (req, res) => {
-    const isDbConnected = mongoose.connection.readyState === 1;
-    if (isDbConnected) {
-      res.status(200).json({ status: 'ready' });
-    } else {
-      res.status(503).json({ status: 'not_ready', dbState: mongoose.connection.readyState });
-    }
-  });
+  // Health checks are registered above (before init) so they always respond
 
   // Global Error Handler
   app.use(errorHandler);
