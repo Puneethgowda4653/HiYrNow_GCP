@@ -10,15 +10,22 @@ const { getConfig } = require('../config');
 const config = getConfig();
 
 // Create IORedis client for BullMQ and general caching
+let redisErrorLogged = false;
 const ioRedisOptions = {
   host: config.redisHost,
   port: config.redisPort,
   password: config.redisPassword,
+  lazyConnect: true,
   retryStrategy: (times) => {
-    const delay = Math.min(times * 50, 2000);
+    if (times > 5) {
+      console.warn('Redis: max retries reached, giving up.');
+      return null; // stop retrying
+    }
+    const delay = Math.min(times * 500, 3000);
     return delay;
   },
   maxRetriesPerRequest: 3,
+  connectTimeout: 10000,
 };
 
 if (config.redisHost && config.redisHost.includes('upstash')) {
@@ -29,17 +36,30 @@ const redis = new IORedis(ioRedisOptions);
 
 redis.on('connect', () => {
   console.log('Redis cache connected');
+  redisErrorLogged = false;
 });
 
 redis.on('error', (err) => {
-  console.error('Redis cache error:', err);
+  if (!redisErrorLogged) {
+    console.error('Redis cache error:', err.message || err);
+    redisErrorLogged = true;
+  }
 });
 
 // Create redis client for connect-redis (v9 requires redis package client)
+let sessionRedisErrorLogged = false;
 const redisClientOptions = {
   socket: {
     host: config.redisHost,
     port: config.redisPort,
+    connectTimeout: 10000,
+    reconnectStrategy: (retries) => {
+      if (retries > 5) {
+        console.warn('Redis session client: max retries reached, giving up.');
+        return false; // stop retrying
+      }
+      return Math.min(retries * 500, 3000);
+    },
   },
   password: config.redisPassword,
 };
@@ -51,15 +71,21 @@ if (config.redisHost && config.redisHost.includes('upstash')) {
 const redisClient = createClient(redisClientOptions);
 
 redisClient.on('error', (err) => {
-  console.error('Redis client error:', err);
+  if (!sessionRedisErrorLogged) {
+    console.error('Redis session client error:', err.message || err);
+    sessionRedisErrorLogged = true;
+  }
 });
 
 redisClient.on('connect', () => {
   console.log('Redis client for sessions connected');
+  sessionRedisErrorLogged = false;
 });
 
-// Connect the redis client
-redisClient.connect().catch(console.error);
+// Connect the redis client (non-blocking)
+redisClient.connect().catch((err) => {
+  console.warn('Redis session client initial connect failed:', err.message);
+});
 
 // Default TTL values (in seconds)
 const TTL = {
