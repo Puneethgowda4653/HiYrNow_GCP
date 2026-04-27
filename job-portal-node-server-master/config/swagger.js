@@ -28,7 +28,7 @@ const options = {
     },
     servers: [
       {
-        url: config.hostname || 'https://hiyrnow-v1-721026586154.europe-west1.run.app',
+        url: config.hostname || 'https://hiyrnow-backend-786443796056.europe-west1.run.app',
         description: 'Development server',
       },
       {

@@ -105,7 +105,7 @@ module.exports = function (app) {
             try {
                 // Attempt to deduct credits
                 const deductionResult = await fetch(
-                    "https://hiyrnow-v1-721026586154.europe-west1.run.app/api/credits/deduct",
+                    "https://hiyrnow-backend-786443796056.europe-west1.run.app/api/credits/deduct",
                     {
                         method: "POST",
                         headers: {
