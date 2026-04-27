@@ -1,0 +1,238 @@
+// Modern form styles
+.form-container {
+  @apply relative;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.9);
+  
+  &.dark {
+    background-color: rgba(31, 41, 55, 0.9);
+  }
+}
+
+// Enhanced animations
+.animate-step-transition {
+  animation: stepTransition 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.animate-error {
+  animation: errorShake 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes stepTransition {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes errorShake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+// Modern form field styles
+.group {
+  @apply relative;
+  
+  input, select {
+    @apply transition-all duration-200;
+    
+    &:focus {
+      @apply ring-2 ring-violet-500 ring-opacity-50;
+    }
+    
+    &:hover:not(:focus) {
+      @apply border-gray-300 dark:border-gray-600;
+    }
+  }
+  
+  label {
+    @apply transition-all duration-200;
+    transform-origin: left center;
+  }
+  
+  &:focus-within {
+    label {
+      @apply text-violet-600 dark:text-violet-400;
+      transform: translateY(-1.5rem) scale(0.85);
+    }
+  }
+}
+
+// Password strength indicator
+.password-strength {
+  @apply flex gap-1 mt-2;
+  
+  .strength-bar {
+    @apply h-1.5 flex-1 rounded-full transition-all duration-300;
+    
+    &.weak {
+      @apply bg-red-400 dark:bg-red-500;
+    }
+    
+    &.fair {
+      @apply bg-orange-400 dark:bg-orange-500;
+    }
+    
+    &.good {
+      @apply bg-yellow-400 dark:bg-yellow-500;
+    }
+    
+    &.strong {
+      @apply bg-green-400 dark:bg-green-500;
+    }
+  }
+}
+
+// Progress steps
+.progress-steps {
+  @apply flex justify-between items-center mb-8;
+  
+  .step {
+    @apply flex flex-col items-center;
+    
+    .step-number {
+      @apply w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300;
+      
+      &.active {
+        @apply bg-gradient-to-br from-violet-500 to-violet-600 text-white shadow-lg shadow-violet-200 dark:shadow-violet-900;
+      }
+      
+      &.inactive {
+        @apply bg-white dark:bg-gray-800 text-gray-400 border-2 border-gray-200 dark:border-gray-700;
+      }
+    }
+    
+    .step-title {
+      @apply mt-2 text-sm font-medium transition-all duration-300;
+      
+      &.active {
+        @apply text-violet-600 dark:text-violet-400;
+      }
+      
+      &.inactive {
+        @apply text-gray-400 dark:text-gray-500;
+      }
+    }
+  }
+}
+
+// OTP verification
+.otp-verification {
+  @apply space-y-6;
+  
+  .otp-input {
+    @apply w-full px-4 py-3 text-base border-2 border-gray-200 dark:border-gray-700 rounded-xl transition-all duration-200;
+    
+    &:focus {
+      @apply outline-none ring-2 ring-violet-500 ring-opacity-50 border-transparent;
+    }
+    
+    &:hover:not(:focus) {
+      @apply border-gray-300 dark:border-gray-600;
+    }
+  }
+  
+  .timer {
+    @apply text-sm text-gray-500 dark:text-gray-400;
+  }
+  
+  .error {
+    @apply text-red-500 dark:text-red-400;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 640px) {
+  .form-container {
+    @apply p-4;
+  }
+  
+  .progress-steps {
+    .step {
+      .step-number {
+        @apply w-8 h-8;
+      }
+      
+      .step-title {
+        @apply text-xs;
+      }
+    }
+  }
+  
+  .group {
+    input, select {
+      @apply text-sm;
+    }
+    
+    label {
+      @apply text-xs;
+    }
+  }
+}
+
+// Dark mode transitions
+.dark {
+  .form-container {
+    background-color: rgba(31, 41, 55, 0.9);
+  }
+  
+  input, select {
+    @apply bg-gray-800 text-white border-gray-700;
+    
+    &:focus {
+      @apply ring-violet-400;
+    }
+    
+    &:hover:not(:focus) {
+      @apply border-gray-600;
+    }
+  }
+  
+  label {
+    @apply bg-gray-800;
+  }
+}
+
+// Loading states
+.loading {
+  @apply opacity-50 cursor-not-allowed;
+  
+  &::after {
+    content: '';
+    @apply absolute inset-0 bg-gray-100 dark:bg-gray-800 opacity-50;
+  }
+}
+
+// Toast notifications
+.toast-container {
+  @apply fixed top-4 right-4 z-50;
+  
+  .toast {
+    @apply bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-xl shadow-lg p-4 mb-4 transition-all duration-300;
+    
+    &.success {
+      @apply bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-400;
+    }
+    
+    &.error {
+      @apply bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-400;
+    }
+    
+    &.info {
+      @apply bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-400;
+    }
+  }
+} 

@@ -1,0 +1,48 @@
+# ============================================
+# HiYrNow - Root .gitignore
+# ============================================
+
+# Dependencies
+**/node_modules/
+
+# Environment files (contain secrets!)
+.env
+.env1
+.env.local
+.env.production
+.env*.local
+
+# Build output
+app/dist/
+app/.angular/
+
+# Large generated files
+project_export.txt
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+**/desktop.ini
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.sublime-workspace
+
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# Test output
+coverage/
+.nyc_output/
+
+# Misc
+*.tmp
+*.swp

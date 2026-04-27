@@ -1,0 +1,658 @@
+/* Base styles & animations */
+:host {
+  display: block;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Dark mode support */
+/* :host-context(.dark) .bg-white\/80 {
+  @apply bg-gray-900/90 text-white border-gray-700;
+}
+
+:host-context(.dark) input,
+:host-context(.dark) button:not([type="submit"]) {
+  @apply bg-gray-800/50 text-white border-gray-700;
+}
+
+:host-context(.dark) label {
+  @apply bg-gray-900 text-gray-300;
+}
+
+:host-context(.dark) .bg-white {
+  @apply bg-gray-900;
+}
+
+:host-context(.dark) .text-gray-500 {
+  @apply text-gray-400;
+}
+
+:host-context(.dark) .text-gray-700 {
+  @apply text-gray-300;
+}
+
+:host-context(.dark) .bg-white\/50 {
+  @apply bg-gray-800/50;
+}
+
+:host-context(.dark) .bg-white\/80 {
+  @apply bg-gray-900/90;
+}
+
+:host-context(.dark) .border-gray-200 {
+  @apply border-gray-700;
+}
+
+:host-context(.dark) .hover\:bg-white\/80:hover {
+  @apply hover:bg-gray-800/80;
+}
+
+:host-context(.dark) .hover\:bg-gray-100:hover {
+  @apply hover:bg-gray-800;
+} */
+
+/* Background gradient animation */
+.bg-gradient-to-br {
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Floating animations for background blobs */
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float 12s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+/* Shake animation for validation errors */
+.animate-shake {
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translateX(-1px);
+  }
+  20%, 80% {
+    transform: translateX(2px);
+  }
+  30%, 50%, 70% {
+    transform: translateX(-4px);
+  }
+  40%, 60% {
+    transform: translateX(4px);
+  }
+}
+
+/* Fancy focus states for inputs */
+input:focus {
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+}
+
+/* Button pulse effect */
+button[type="submit"]:not(:disabled):hover::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%) scale(0);
+  animation: pulse 1s ease-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Form field animation */
+input:focus + label {
+  transform: translateY(-2px);
+}
+
+/* Better input placeholder animation */
+input::placeholder {
+  color: transparent;
+  transition: color 0.3s ease;
+}
+
+input:focus::placeholder {
+  color: #9ca3af;
+}
+
+/* Improved input focus states */
+.peer:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Transition for password strength indicator */
+.flex-1 {
+  transition: background-color 0.5s ease;
+}
+
+/* OTP Verification Styles */
+.otp-verification-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.otp-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.otp-box h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.otp-instructions {
+  color: #666;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.otp-input-container {
+  margin-bottom: 1.5rem;
+}
+
+.otp-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+.otp-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.timer-container {
+  margin-bottom: 1rem;
+}
+
+.timer {
+  color: #666;
+  font-size: 14px;
+}
+
+.error-message {
+  color: #dc3545;
+  margin-bottom: 1rem;
+  font-size: 14px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.verify-button {
+  flex: 2;
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.verify-button:hover:not([disabled]) {
+  background-color: #0056b3;
+}
+
+.verify-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.resend-button {
+  flex: 1;
+  background-color: #6c757d;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.resend-button:hover:not([disabled]) {
+  background-color: #5a6268;
+}
+
+.resend-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+.form-input {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  color: #111827;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.form-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  outline: none;
+}
+
+.form-select {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  color: #111827;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.form-select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  outline: none;
+}
+
+/* Input states */
+.form-input:disabled,
+.form-select:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Error states */
+.form-input.error,
+.form-select.error {
+  border-color: #f87171;
+}
+
+.form-input.error:focus,
+.form-select.error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.2s;
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.btn-primary {
+  background-color: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-secondary {
+  background-color: white;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.btn-secondary:hover {
+  background-color: #f9fafb;
+}
+
+.btn-danger {
+  background-color: #dc2626;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #b91c1c;
+}
+
+/* Modal styles */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  z-index: 50;
+}
+
+.modal-container {
+  position: relative;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 28rem;
+  padding: 2rem;
+  transition: all 0.2s;
+  transform: scale(1);
+}
+
+/* OTP input styles */
+.otp-input {
+  height: 3.5rem;
+  width: 100%;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+}
+
+.otp-input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+  outline: none;
+}
+
+/* Password strength indicator */
+.password-strength {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.strength-bar {
+  height: 0.375rem;
+  flex: 1;
+  border-radius: 9999px;
+  transition: all 0.3s;
+}
+
+/* Tab styles */
+.tab-button {
+  padding: 0.75rem 0.25rem;
+  position: relative;
+}
+
+.tab-button.active {
+  color: #2563eb;
+}
+
+.tab-button.inactive {
+  color: #6b7280;
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0.125rem;
+  background-color: #2563eb;
+  border-radius: 0.125rem 0.125rem 0 0;
+}
+
+/* Animation classes */
+.fade-in {
+  transition: opacity 0.3s ease-out;
+}
+
+.slide-in {
+  transition: transform 0.3s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .modal-container {
+    padding: 1rem;
+  }
+  
+  .otp-input {
+    height: 3rem;
+    font-size: 1.125rem;
+  }
+}
+
+/* Loading spinner */
+.spinner {
+  animation: spin 1s linear infinite;
+  height: 1.25rem;
+  width: 1.25rem;
+  color: white;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error message styles */
+.error-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 0.375rem;
+}
+
+.error-icon {
+  height: 1.25rem;
+  width: 1.25rem;
+  color: #f87171;
+}
+
+/* Success message styles */
+.success-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f0fdf4;
+  border: 1px solid #dcfce7;
+  border-radius: 0.375rem;
+}
+
+.success-icon {
+  height: 1.25rem;
+  width: 1.25rem;
+  color: #34d399;
+}
+
+/* Benefits section styles */
+.benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.benefit-icon {
+  height: 1.5rem;
+  width: 1.5rem;
+  color: #3b82f6;
+}
+
+.benefit-content {
+  flex: 1;
+}
+
+.benefit-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.benefit-description {
+  margin-top: 0.25rem;
+  color: #4b5563;
+}
+
+/* Footer styles */
+.footer {
+  background-color: white;
+  border-top: 1px solid #e5e7eb;
+  padding: 1.5rem 0;
+}
+
+.footer-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer-link {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.footer-link:hover {
+  color: #374151;
+}
+
+/* Utility classes */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Form validation styles */
+.ng-invalid.ng-touched {
+  border-color: #f87171;
+}
+
+.ng-invalid.ng-touched:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.ng-valid.ng-touched {
+  border-color: #34d399;
+}
+
+.ng-valid.ng-touched:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f3f4f6;
+  border-radius: 0.25rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 0.25rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}

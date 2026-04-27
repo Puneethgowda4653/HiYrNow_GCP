@@ -1,0 +1,8 @@
+<div>
+    <h2>Resume Content</h2>
+    <p>Filename: {{ data.filename }}</p>
+    <p>User: {{ data.user }}</p>
+    <p>Content:</p>
+    <div [innerHTML]="data.resumeContent"></div>
+    <button (click)="closeDialog()">Close</button>
+  </div>

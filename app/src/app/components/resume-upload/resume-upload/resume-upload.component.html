@@ -1,0 +1,349 @@
+<!-- Loader Overlay for Parsing -->
+<div
+  *ngIf="isParsing"
+  class="fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm z-50"
+  [@fadeInOut]
+>
+  <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm mx-4">
+  <div class="flex flex-col items-center">
+      <div class="relative">
+    <svg
+          class="animate-spin h-16 w-16 text-indigo-600"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        class="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        stroke-width="4"
+      ></circle>
+      <path
+        class="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8v8z"
+      ></path>
+    </svg>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-8 w-8 text-indigo-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+        </div>
+      </div>
+      <h3 class="mt-6 text-xl font-bold text-gray-900">Processing Resume</h3>
+      <p class="mt-2 text-gray-600 text-center">Please wait while we extract and parse your information...</p>
+      <div class="mt-4 w-full h-1 bg-gray-200 rounded-full overflow-hidden">
+        <div class="h-full bg-indigo-600 rounded-full animate-progress"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Resume Section -->
+<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+  <!-- Header -->
+  
+
+  <!-- Content Area -->
+  <div class="p-4">
+    <!-- Empty State -->
+    <div *ngIf="files.length === 0" class="text-center py-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 rounded-full mb-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-8 w-8 text-indigo-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+          />
+        </svg>
+      </div>
+      <h3 class="text-sm font-semibold text-gray-900 mb-1">No Resume Yet</h3>
+      <p class="text-xs text-gray-600 mb-4">
+        Upload your resume to enhance your profile
+      </p>
+      <button
+        (click)="openModal()"
+        class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 text-sm"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+          />
+        </svg>
+        Upload Resume
+      </button>
+    </div>
+
+    <!-- Resume Display -->
+    <div *ngFor="let file of files">
+      <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 rounded-xl overflow-hidden">
+        <div class="p-4">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="bg-white/20 backdrop-blur-sm rounded-lg p-2.5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-8 w-8 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="text-white font-semibold text-sm truncate">{{ file.originalname || file.filename }}</h3>
+              <p class="text-indigo-200 text-xs mt-0.5">Last updated: {{ file.uploadDate | date: 'MMM d, y' }}</p>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="space-y-2">
+            <button
+              (click)="downloadPdf(file.filename, file.contentType)"
+              class="w-full inline-flex items-center justify-center gap-2 bg-white hover:bg-indigo-50 text-indigo-700 font-medium px-4 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+              View Resume
+            </button>
+            <div class="grid grid-cols-2 gap-2">
+              <button
+                (click)="downloadPdf(file.filename, file.contentType)"
+                class="inline-flex items-center justify-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-medium px-3 py-2 rounded-lg transition-all duration-200 text-sm"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
+                </svg>
+                Download
+              </button>
+              <button
+                (click)="openModal()"
+                class="inline-flex items-center justify-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white font-medium px-3 py-2 rounded-lg transition-all duration-200 text-sm"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  />
+                </svg>
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Upload Modal (HiYrNow styled, responsive, accessible) -->
+<div
+  *ngIf="isModalOpen"
+  class="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50 p-4"
+  [@fadeInOut]
+  (click)="closeModal()"
+  aria-hidden="false"
+>
+  <div
+    class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-2xl sm:max-w-xl md:max-w-2xl relative overflow-hidden max-h-[90vh]"
+    [@slideUpDown]
+    (click)="$event.stopPropagation()"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="uploadResumeTitle"
+  >
+    <!-- Modal Header -->
+    <div class="bg-gradient-to-r from-indigo-600 to-indigo-700 p-4 sm:p-6">
+      <div class="flex justify-between items-start gap-4">
+        <div class="min-w-0">
+          <h3 id="uploadResumeTitle" class="text-lg sm:text-2xl font-bold text-white truncate">Upload Resume</h3>
+          <p class="text-indigo-100 text-xs sm:text-sm truncate">Share your latest resume to enhance your profile</p>
+        </div>
+
+        <button
+          (click)="closeModal()"
+          aria-label="Close upload modal"
+          class="p-2 -mr-1 text-white/90 hover:text-white hover:bg-white/10 rounded-full transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+        >
+          <!-- larger clickable area for easier tap -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Body (scrollable if content grows) -->
+    <div class="p-4 sm:p-6 md:p-8 overflow-y-auto max-h-[calc(90vh-96px)] space-y-6">
+      <!-- Drag & Drop Zone -->
+      <!-- <ngx-file-drop
+        (onFileDrop)="dropped($event)"
+        [multiple]="false"
+        accept=".pdf,.doc,.docx"
+        class="block"
+      >
+        <ng-template ngx-file-drop-content-tmp>
+          <div
+            class="flex flex-col items-center justify-center p-6 sm:p-8 md:p-10 border-2 border-dashed border-indigo-300 rounded-2xl bg-gradient-to-br from-indigo-50 to-blue-50 transition-all duration-300 hover:border-indigo-400 hover:bg-indigo-100/50 cursor-pointer group w-full"
+            role="button"
+            tabindex="0"
+            aria-label="Drag and drop resume or click to browse"
+          >
+            <div class="relative mb-4 sm:mb-6 flex items-center justify-center">
+              <div class="absolute inset-0 bg-indigo-600 rounded-full blur-xl opacity-20 group-hover:opacity-30 transition-opacity pointer-events-none"></div>
+              <div class="relative bg-white rounded-2xl p-3 sm:p-4 shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+              </div>
+            </div>
+
+            <p class="text-indigo-600 font-semibold text-base sm:text-lg mb-1 sm:mb-2 text-center">Drag & drop your resume here</p>
+            <p class="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 text-center">or click to browse from your device</p>
+
+            <div class="flex items-center gap-2 text-xs text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              <span class="text-center">Supported formats: PDF, DOC, DOCX (Max 10MB)</span>
+            </div>
+          </div>
+        </ng-template>
+      </ngx-file-drop> -->
+
+      <!-- Divider -->
+      <div class="relative">
+        <div class="absolute inset-0 flex items-center">
+          <div class="w-full border-t border-gray-200 dark:border-slate-700"></div>
+        </div>
+        <div class="relative flex justify-center text-sm">
+          <span class="px-4 bg-white dark:bg-slate-900 text-gray-500 font-medium"></span>
+        </div>
+      </div>
+
+      <!-- Alternative Upload Button -->
+      <div>
+        <label class="w-full block">
+          <input
+            type="file"
+            (change)="onFileSelected($event)"
+            accept=".pdf,.doc,.docx"
+            class="hidden"
+            aria-hidden="true"
+          />
+          <span
+            class="flex items-center justify-center gap-2 sm:gap-3 px-4 py-3 sm:px-6 sm:py-4 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white text-sm sm:text-base font-semibold rounded-xl hover:from-indigo-700 hover:to-indigo-800 shadow-lg shadow-indigo-600/30 hover:shadow-indigo-600/50 transition-all duration-200 cursor-pointer transform hover:scale-[1.02] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            role="button"
+            tabindex="0"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+            </svg>
+            <span class="truncate">Browse Files </span>
+          </span>
+        </label>
+      </div>
+
+      <!-- Info Section -->
+      <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+        <div class="flex items-start gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <div>
+            <h4 class="text-blue-900 font-semibold text-sm mb-1">Upload Tips</h4>
+            <ul class="text-blue-800 text-xs space-y-1">
+              <li>• Keep your resume updated with your latest experience</li>
+              <li>• File will be automatically parsed to extract your profile</li>
+              <li>• Your resume will be visible to employers and recruiters</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upload Progress -->
+      <div *ngIf="isUploading" class="mt-2 sm:mt-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs sm:text-sm font-medium text-gray-700">Uploading...</span>
+          <span class="text-xs sm:text-sm font-semibold text-indigo-600">Processing</span>
+        </div>
+        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div class="h-full bg-gradient-to-r from-indigo-600 to-blue-600 rounded-full animate-progress" [style.width.%]="uploadProgress || 40"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

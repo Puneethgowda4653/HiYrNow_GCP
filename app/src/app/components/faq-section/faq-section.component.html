@@ -1,0 +1,95 @@
+<section class="py-16 bg-slate-50" id="faqs">
+  <div class="container mx-auto px-6 lg:px-20">
+    <!-- Heading -->
+    <div class="text-center mb-12">
+      <h2 class="text-3xl lg:text-4xl font-bold text-slate-800">
+        Frequently Asked Questions
+      </h2>
+      <p class="text-lg text-slate-600 mt-3">
+        Answers for both Employers and Job Seekers to get the most out of
+        HiYrNow.
+      </p>
+    </div>
+
+    <!-- Grid for Employers & Job Seekers -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Employers FAQ -->
+      <div>
+        <h3 class="text-2xl font-semibold text-slate-800 mb-6">
+          For Employers
+        </h3>
+        <div class="space-y-4">
+          <div
+            *ngFor="let faq of employerFaqs; let i = index"
+            class="border border-slate-200 rounded-xl overflow-hidden"
+          >
+            <button
+              class="w-full flex justify-between items-center px-6 py-4 text-left focus:outline-none"
+              (click)="toggleEmployerFaq(i)"
+            >
+              <span class="font-semibold text-slate-800">{{
+                faq.question
+              }}</span>
+              <svg
+                [ngClass]="{ 'rotate-180': faq.open }"
+                class="w-5 h-5 text-slate-500 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <div class="px-6 pb-4" *ngIf="faq.open">
+              <p class="text-slate-600">{{ faq.answer }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Job Seekers FAQ -->
+      <div>
+        <h3 class="text-2xl font-semibold text-slate-800 mb-6">
+          For Job Seekers
+        </h3>
+        <div class="space-y-4">
+          <div
+            *ngFor="let faq of jobSeekerFaqs; let i = index"
+            class="border border-slate-200 rounded-xl overflow-hidden"
+          >
+            <button
+              class="w-full flex justify-between items-center px-6 py-4 text-left focus:outline-none"
+              (click)="toggleJobSeekerFaq(i)"
+            >
+              <span class="font-semibold text-slate-800">{{
+                faq.question
+              }}</span>
+              <svg
+                [ngClass]="{ 'rotate-180': faq.open }"
+                class="w-5 h-5 text-slate-500 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <div class="px-6 pb-4" *ngIf="faq.open">
+              <p class="text-slate-600">{{ faq.answer }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

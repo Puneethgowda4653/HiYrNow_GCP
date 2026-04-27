@@ -1,0 +1,342 @@
+<app-ui-card>
+<div class="ai-job-generator p-2 sm:p-4">
+  <div class="mb-6">
+    <h3 class="text-2xl font-bold text-gray-800 mb-2">
+      <i class="fas fa-magic text-purple-600 mr-2"></i>
+      AI Job Description Generator
+    </h3>
+    <p class="text-gray-600">
+      Generate professional job descriptions in seconds using AI. Just fill in
+      the basic details and let AI create a comprehensive job posting.
+    </p>
+  </div>
+
+  <!-- AI Generation Form -->
+  <form [formGroup]="aiForm" class="space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Job Title -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Job Title <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          formControlName="jobTitle"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          placeholder="e.g., Senior Software Engineer"
+        />
+      </div>
+
+      <!-- Location -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Location <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          formControlName="location"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          placeholder="e.g., New York, NY"
+        />
+      </div>
+
+      <!-- Job Type -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Job Type <span class="text-red-500">*</span>
+        </label>
+        <select
+          formControlName="jobType"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+        >
+          <option value="">Select Job Type</option>
+          <option value="Full Time">Full-time</option>
+          <option value="Part Time">Part- time</option>
+          <option value="Contract">Contract</option>
+          <option value="Internship">Internship</option>
+          <option value="Freelance">Freelance</option>
+        </select>
+      </div>
+
+      <!-- Industry -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Industry
+        </label>
+        <select
+          formControlName="industry"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+        >
+          <option value="Technology">Technology</option>
+          <option value="Healthcare">Healthcare</option>
+          <option value="Finance">Finance</option>
+          <option value="Education">Education</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Sales">Sales</option>
+          <option value="Manufacturing">Manufacturing</option>
+          <option value="Retail">Retail</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <!-- Experience Range -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Minimum Experience (Years) <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="number"
+          formControlName="minExp"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          min="0"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Maximum Experience (Years) <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="number"
+          formControlName="maxExp"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          min="0"
+        />
+      </div>
+
+      <!-- Qualification -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Minimum Qualification <span class="text-red-500">*</span>
+        </label>
+        <select
+          formControlName="minQualification"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+        >
+          <option value="">Select Qualification</option>
+          <option value="High School">High School</option>
+          <option value="Associate's Degree">Associate's Degree</option>
+          <option value="Bachelor's Degree">Bachelor's Degree</option>
+          <option value="Master's Degree">Master's Degree</option>
+          <option value="PhD">PhD</option>
+          <option value="Certification">Certification</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Advanced Options Toggle -->
+    <div class="border-t pt-4">
+      <button
+        type="button"
+        (click)="toggleAdvancedOptions()"
+        class="flex items-center text-purple-600 hover:text-purple-700 font-medium"
+      >
+        <i class="fas fa-cog mr-2"></i>
+        {{ showAdvancedOptions ? "Hide" : "Show" }} Advanced Options
+        <i
+          class="fas fa-chevron-down ml-2 transform transition-transform"
+          [class.rotate-180]="showAdvancedOptions"
+        ></i>
+      </button>
+    </div>
+
+    <!-- Advanced Options -->
+    <div
+      *ngIf="showAdvancedOptions"
+      class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t"
+    >
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Minimum Salary (Optional)
+        </label>
+        <input
+          type="number"
+          formControlName="minSalary"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          placeholder="e.g., 50000"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Maximum Salary (Optional)
+        </label>
+        <input
+          type="number"
+          formControlName="maxSalary"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          placeholder="e.g., 80000"
+        />
+      </div>
+
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-700 mb-2">
+          Additional Context (Optional)
+        </label>
+        <textarea
+          formControlName="additionalContext"
+          rows="3"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          placeholder="Any additional details about the role, company culture, or specific requirements..."
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Generate Button -->
+    <div class="flex justify-center pt-6">
+      <app-ui-button type="button" variant="primary" (click)="generateJobDescription()" [disabled]="aiForm.invalid || isGenerating">
+        <i class="fas fa-magic mr-2" *ngIf="!isGenerating"></i>
+        <i class="fas fa-spinner fa-spin mr-2" *ngIf="isGenerating"></i>
+        {{ isGenerating ? "Generating..." : "Generate Job Description" }}
+      </app-ui-button>
+    </div>
+  </form>
+
+  <!-- Generated Job Description -->
+  <div
+    *ngIf="generatedJob"
+    class="mt-8 p-6 bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg border border-purple-200"
+  >
+    <div class="flex justify-between items-center mb-4">
+      <h4 class="text-xl font-bold text-gray-800">
+        <i class="fas fa-check-circle text-green-600 mr-2"></i>
+        Generated Job Description
+      </h4>
+      <button
+        type="button"
+        (click)="resetForm()"
+        class="text-gray-500 hover:text-gray-700"
+      >
+        <i class="fas fa-refresh"></i>
+      </button>
+    </div>
+
+    <!-- Job Summary -->
+    <div class="mb-6 p-4 bg-white rounded-lg">
+      <h5 class="font-semibold text-gray-800 mb-2">Summary</h5>
+      <p class="text-gray-700">{{ generatedJob.summary }}</p>
+    </div>
+
+    <!-- Job Description -->
+    <div class="mb-6 p-4 bg-white rounded-lg">
+      <h5 class="font-semibold text-gray-800 mb-2">Description</h5>
+      <div class="text-gray-700 whitespace-pre-line">
+        {{ generatedJob.description }}
+      </div>
+    </div>
+
+    <!-- Responsibilities -->
+    <div class="mb-6 p-4 bg-white rounded-lg">
+      <h5 class="font-semibold text-gray-800 mb-2">Key Responsibilities</h5>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li *ngFor="let responsibility of generatedJob.responsibilities">
+          {{ responsibility }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- Requirements -->
+    <div class="mb-6 p-4 bg-white rounded-lg">
+      <h5 class="font-semibold text-gray-800 mb-2">Requirements</h5>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li *ngFor="let requirement of generatedJob.requirements">
+          {{ requirement }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- Skills -->
+    <div class="mb-6 p-4 bg-white rounded-lg">
+      <h5 class="font-semibold text-gray-800 mb-2">Skills</h5>
+      <div class="flex flex-wrap gap-2">
+        <span
+          *ngFor="let skill of generatedJob.skills"
+          class="px-3 py-1 rounded-full text-sm font-medium"
+          [ngClass]="{
+            'bg-red-100 text-red-800': skill.mustHave,
+            'bg-blue-100 text-blue-800': skill.niceToHave
+          }"
+        >
+          {{ skill.name }}
+          <span class="ml-1 text-xs">
+            {{ skill.mustHave ? "(Must Have)" : "(Nice to Have)" }}
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Benefits -->
+    <div class="mb-6 p-4 bg-white rounded-lg">
+      <h5 class="font-semibold text-gray-800 mb-2">Benefits</h5>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li *ngFor="let benefit of generatedJob.benefits">
+          {{ benefit }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- Custom Questions -->
+    <div class="mb-6 p-4 bg-white rounded-lg">
+      <h5 class="font-semibold text-gray-800 mb-2">Custom Questions</h5>
+      <div class="space-y-4">
+        <div
+          *ngFor="let question of generatedJob.customQuestions; let i = index"
+          class="p-3 border border-gray-200 rounded-lg"
+        >
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-sm font-medium text-gray-600"
+              >Question {{ i + 1 }}</span
+            >
+            <span
+              class="px-2 py-1 text-xs rounded-full"
+              [ngClass]="{
+                'bg-green-100 text-green-800': question.required,
+                'bg-gray-100 text-gray-800': !question.required
+              }"
+            >
+              {{ question.required ? "Required" : "Optional" }}
+            </span>
+          </div>
+          <p class="text-gray-800 mb-2">{{ question.question }}</p>
+          <div class="flex items-center space-x-4 text-sm text-gray-600">
+            <span>Type: {{ question.answerType }}</span>
+            <span *ngIf="question.options && question.options.length > 0">
+              Options: {{ question.options.length }}
+            </span>
+          </div>
+          <div
+            *ngIf="question.options && question.options.length > 0"
+            class="mt-2"
+          >
+            <div class="text-xs text-gray-500 mb-1">Options:</div>
+            <div class="space-y-1">
+              <div
+                *ngFor="let option of question.options"
+                class="px-2 py-1 bg-gray-50 rounded text-sm"
+              >
+                {{ option }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex justify-center space-x-4">
+      <app-ui-button type="button" variant="success" (click)="useGeneratedJob()">
+        <i class="fas fa-check mr-2"></i>
+        Use This Description
+      </app-ui-button>
+      <app-ui-button type="button" variant="primary" (click)="generateSkills()">
+        <i class="fas fa-cogs mr-2"></i>
+        Generate Skills
+      </app-ui-button>
+      <app-ui-button type="button" variant="primary" (click)="generateCustomQuestions()">
+        <i class="fas fa-question-circle mr-2"></i>
+        Generate Questions
+      </app-ui-button>
+    </div>
+  </div>
+</div>
+</app-ui-card>

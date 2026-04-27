@@ -1,0 +1,962 @@
+<div
+  class="min-h-screen bg-gray-50 mt-20 mb-20"
+  [ngClass]="{
+    'md:mt-0 md:mb-0': user
+  }"
+>
+  <!-- Professional Header -->
+  <header
+    *ngIf="user"
+    class="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm"
+  >
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div
+        class="flex flex-col sm:flex-row justify-between items-center py-3 sm:py-4 gap-3 sm:gap-4"
+      >
+        <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 bg-clip-text truncate w-full sm:w-auto text-center sm:text-left">
+          Next Career Move
+        </h1>
+        <!-- Tab Navigation -->
+        <div class="flex bg-gray-100 rounded-lg p-1 w-full sm:w-auto">
+          <button
+            [ngClass]="{
+              'bg-white text-gray-900 shadow-sm': activeTab === 'all-jobs',
+              'text-gray-600 hover:text-gray-900': activeTab !== 'all-jobs'
+            }"
+            (click)="setActiveTab('all-jobs')"
+            class="flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-md font-medium text-xs sm:text-sm transition-all duration-200 min-h-[44px] flex items-center justify-center"
+          >
+            All Jobs
+          </button>
+          <button
+            [ngClass]="{
+              'bg-white text-gray-900 shadow-sm': activeTab === 'recommended',
+              'text-gray-600 hover:text-gray-900': activeTab !== 'recommended'
+            }"
+            (click)="setActiveTab('recommended')"
+            class="flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-md font-medium text-xs sm:text-sm transition-all duration-200 min-h-[44px] flex items-center justify-center"
+          >
+            Recommended
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+    <div class="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8">
+      <!-- Advanced Filters Sidebar -->
+      <aside class="lg:w-80 flex-shrink-0">
+        <div
+          class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto filter-sidebar hidden sm:block"
+        >
+          <div class="space-y-6">
+            <!-- Saved Filters Section -->
+            <div class="border-b border-gray-200 pt-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  Saved Filters
+                </h3>
+                <button
+                  (click)="saveCurrentFilter()"
+                  class="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                  [disabled]="state.savedFilters.length >= 3"
+                >
+                  Save Current
+                </button>
+              </div>
+
+              <!-- Saved Filters List -->
+              <div class="space-y-3" *ngIf="state.savedFilters.length > 0">
+                <div
+                  *ngFor="let filter of state.savedFilters"
+                  class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <div class="flex-1 min-w-0">
+                    <h4 class="text-sm font-medium text-gray-900 truncate">
+                      {{ filter.name }}
+                    </h4>
+                    <p class="text-xs text-gray-500 mt-1">
+                      {{ filter.createdAt | date : "MMM d, y" }}
+                    </p>
+                  </div>
+                  <div class="flex items-center space-x-2 ml-3">
+                    <button
+                      (click)="loadSavedFilter(filter)"
+                      class="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                      title="Load filter"
+                    >
+                      Load
+                    </button>
+                    <button
+                      (click)="deleteSavedFilter(filter.id)"
+                      class="text-red-600 hover:text-red-700 text-sm font-medium"
+                      title="Delete filter"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Empty State -->
+              <div
+                *ngIf="state.savedFilters.length === 0"
+                class="text-center py-4"
+              >
+                <p class="text-sm text-gray-500">No saved filters yet</p>
+                <p class="text-xs text-gray-400 mt-1">
+                  Save your current filters for quick access
+                </p>
+              </div>
+
+              <!-- Filter Limit Info -->
+              <div class="mt-3 text-xs text-gray-500 text-center">
+                {{ state.savedFilters.length }}/3 filters saved
+              </div>
+            </div>
+            <!-- Search Section -->
+            <div>
+              <h3
+                class="text-lg font-semibold text-gray-900 mb-4 flex items-center"
+              >
+                <svg
+                  class="w-5 h-5 mr-2 text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  ></path>
+                </svg>
+                Search Jobs
+              </h3>
+
+              <!-- Keyword Search -->
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Keywords</label
+                  >
+                  <div class="relative">
+                    <input
+                      type="text"
+                      [(ngModel)]="searchParams.keyword"
+                      (ngModelChange)="onSearch()"
+                      class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      placeholder="Job title, skills, or company"
+                    />
+                    <svg
+                      class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Location Search -->
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Location</label
+                  >
+                  <div class="relative">
+                    <input
+                      type="text"
+                      [(ngModel)]="searchParams.location"
+                      (ngModelChange)="onSearch()"
+                      class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      placeholder="City, state, or remote"
+                    />
+                    <svg
+                      class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Filter Sections -->
+            <ng-container
+              *ngFor="
+                let group of [
+                  'jobTypes',
+                  'experienceLevels',
+                  'remoteOptions',
+                  'salaryRanges'
+                ]
+              "
+            >
+              <div class="border-t border-gray-200 pt-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                  {{
+                    group === "jobTypes"
+                      ? "Job Type"
+                      : group === "experienceLevels"
+                      ? "Experience Level"
+                      : group === "remoteOptions"
+                      ? "Work Style"
+                      : "Salary Range"
+                  }}
+                </h3>
+                <div class="space-y-3">
+                  <div
+                    *ngFor="let option of filterOptions[group]"
+                    class="flex items-center"
+                  >
+                    <input
+                      type="checkbox"
+                      [id]="group + '-' + option"
+                      [checked]="selectedFilters[group].includes(option)"
+                      (change)="handleFilterSelection(group, option)"
+                      class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    />
+                    <label
+                      [for]="group + '-' + option"
+                      class="ml-3 text-sm text-gray-700 cursor-pointer"
+                    >
+                      {{ option }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Reset Filters -->
+            <div class="border-t border-gray-200 pt-6">
+              <button
+                (click)="resetFilters()"
+                class="w-full bg-gray-50 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors font-medium text-sm"
+              >
+                Clear All Filters
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Job Listings Main Content -->
+      <div
+        class="flex-1"
+        [ngClass]="{
+          'md:mt-16': !user
+        }"
+      >
+        <!-- Mobile Filter Toggle -->
+        <div class="block sm:hidden">
+          <button
+            (click)="toggleMobileSidebar()"
+            class="mb-4 sm:mb-6 w-full bg-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl shadow-sm border border-gray-200 text-gray-700 flex items-center justify-between hover:shadow-md active:scale-[0.98] transition-all min-h-[52px]"
+          >
+            <span class="font-medium text-sm sm:text-base">Filters & Search</span>
+            <svg
+              class="w-5 h-5 flex-shrink-0"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <!-- Results Header -->
+        <div
+          class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6"
+        >
+          <div
+            class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4"
+          >
+            <div class="w-full sm:w-auto">
+              <h2 class="text-lg sm:text-xl font-semibold text-gray-900">
+                {{ state.totalJobs }} jobs found
+              </h2>
+              <p class="text-xs sm:text-sm text-gray-600 mt-1">
+                Showing {{ (state.currentPage - 1) * state.jobsPerPage + 1 }}-{{
+                  Math.min(
+                    state.currentPage * state.jobsPerPage,
+                    state.totalJobs
+                  )
+                }}
+                of {{ state.totalJobs }} results
+              </p>
+            </div>
+
+            <!-- Sort Options -->
+            <div class="flex items-center space-x-2 sm:space-x-3 w-full sm:w-auto">
+              <label class="text-xs sm:text-sm font-medium text-gray-700 flex-shrink-0">Sort by:</label>
+              <select
+                [(ngModel)]="searchParams.sortBy"
+                (ngModelChange)="filterJobs()"
+                class="flex-1 sm:flex-none rounded-lg border-gray-300 text-xs sm:text-sm focus:border-blue-500 focus:ring-blue-500 bg-white min-h-[44px] px-3"
+              >
+                <option value="newest">Newest First</option>
+                <option value="relevant">Most Relevant</option>
+                <option value="salary-high">Highest Salary</option>
+                <option value="salary-low">Lowest Salary</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="state.isLoading" class="flex justify-center py-16">
+          <div class="flex flex-col items-center space-y-4">
+            <div
+              class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"
+            ></div>
+            <p class="text-gray-600">Loading jobs...</p>
+          </div>
+        </div>
+
+        <!-- Error State -->
+        <div
+          *ngIf="state.error"
+          class="bg-red-50 border border-red-200 rounded-xl p-6 mb-6"
+        >
+          <div class="flex items-center">
+            <svg
+              class="w-5 h-5 text-red-400 mr-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            <p class="text-red-700 font-medium">{{ state.error }}</p>
+          </div>
+        </div>
+
+        <!-- Job Cards -->
+        <div class="space-y-3 sm:space-y-4" *ngIf="!state.isLoading && !state.error">
+          <div
+            *ngFor="let job of state.filteredJobs"
+            class="group cursor-pointer transform hover:-translate-y-1 active:scale-[0.98] transition-all"
+            (click)="viewJobDetails(job)"
+          >
+            <app-ui-card>
+              <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-6">
+              <!-- Company Logo -->
+              <div class="flex-shrink-0 self-center sm:self-start">
+                <div
+                  *ngIf="job.company_logo; else companyInitial"
+                  class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16"
+                >
+                  <img
+                    [src]="job.company_logo"
+                    [alt]="job.company + ' logo'"
+                    class="w-full h-full rounded-lg object-cover border border-gray-200 bg-gray-50"
+                    (error)="onImageError($event)"
+                  />
+                </div>
+                <ng-template #companyInitial>
+                  <div
+                    class="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-lg border border-gray-200 primary-gradient-background flex items-center justify-center"
+                  >
+                    <span class="text-white font-bold text-base sm:text-lg lg:text-xl">
+                      {{ getCompanyInitial(job.company) }}
+                    </span>
+                  </div>
+                </ng-template>
+              </div>
+
+              <!-- Job Details -->
+              <div class="flex-1 min-w-0">
+                <div
+                  class="flex flex-col gap-3 sm:gap-4"
+                >
+                  <div class="flex-1 min-w-0">
+                    <!-- Job Title and Company -->
+                    <h3
+                      class="text-base sm:text-lg lg:text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2"
+                    >
+                      {{ job.title }}
+                    </h3>
+                    <p class="text-sm sm:text-base lg:text-lg text-gray-700 mt-1 truncate">{{ job.company }}</p>
+
+                    <!-- Job Meta Information -->
+                    <div
+                      class="flex flex-wrap items-center gap-2 sm:gap-3 lg:gap-4 mt-2 sm:mt-3 lg:mt-4 text-xs sm:text-sm text-gray-600"
+                    >
+                      <span class="flex items-center">
+                        <svg
+                          class="w-4 h-4 mr-1.5 text-gray-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                          ></path>
+                        </svg>
+                        {{ job.location }}
+                      </span>
+                      <span class="flex items-center">
+                        <svg
+                          class="w-4 h-4 mr-1.5 text-gray-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                          ></path>
+                        </svg>
+                        {{ job.type }}
+                      </span>
+                      <span class="flex items-center">
+                        <svg
+                          class="w-4 h-4 mr-1.5 text-gray-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                          ></path>
+                        </svg>
+                        {{ job.minExp }}+ years
+                      </span>
+                      <span
+                        *ngIf="job.minSalary && job.maxSalary"
+                        class="flex items-center"
+                      >
+                        <svg
+                          class="w-4 h-4 mr-1.5 text-gray-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                          ></path>
+                        </svg>
+                        ${{ job.minSalary.toLocaleString() }} - ${{
+                          job.maxSalary.toLocaleString()
+                        }}
+                      </span>
+                    </div>
+
+                    <!-- Skills Tags -->
+                    <div
+                      class="mt-2 sm:mt-3 lg:mt-4"
+                      *ngIf="job.coreSkills && job.coreSkills.length > 0"
+                    >
+                      <div class="flex flex-wrap gap-1.5 sm:gap-2">
+                        <app-ui-badge *ngFor="let skill of job.coreSkills.slice(0, 3)" [text]="skill.name || skill" variant="brand"></app-ui-badge>
+                        <app-ui-badge *ngIf="job.coreSkills.length > 3" [text]="'+' + (job.coreSkills.length - 3) + ' more'" variant="neutral"></app-ui-badge>
+                      </div>
+                    </div>
+
+                    <!-- Job Description Preview -->
+                    <p
+                      class="mt-2 sm:mt-3 lg:mt-4 text-xs sm:text-sm text-gray-600 line-clamp-2 sm:line-clamp-3"
+                      [innerHTML]="job.description"
+                      *ngIf="job.description"
+                    ></p>
+                  </div>
+
+                  <!-- Posted Date and Quick Actions -->
+                  <div class="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 sm:gap-3 mt-3 sm:mt-0">
+                    <div class="text-xs sm:text-sm text-gray-500">
+                      {{ job.datePosted | date : "MMM d" }}
+                    </div>
+
+                    <!-- Quick Apply Button -->
+                    <app-ui-button size="sm" variant="primary" (click)="viewJobDetails(job); $event.stopPropagation()">View Details</app-ui-button>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </app-ui-card>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div
+          *ngIf="
+            !state.isLoading && !state.error && state.filteredJobs.length === 0
+          "
+          class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-10 lg:p-12 text-center"
+        >
+          <div class="max-w-md mx-auto">
+            <svg
+              class="mx-auto h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            <h3 class="mt-3 sm:mt-4 text-base sm:text-lg font-semibold text-gray-900">
+              No jobs found
+            </h3>
+            <p class="mt-2 text-sm sm:text-base text-gray-500 px-4">
+              Try adjusting your search filters or keywords to find more
+              opportunities.
+            </p>
+            <div class="mt-6 sm:mt-8">
+              <button
+                (click)="resetFilters()"
+                class="inline-flex items-center px-5 sm:px-6 py-3 rounded-lg shadow-sm text-sm sm:text-base font-medium text-white bg-blue-600 hover:bg-blue-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all min-h-[48px]"
+              >
+                Clear all filters
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Professional Pagination -->
+        <div *ngIf="state.totalJobs > state.jobsPerPage" class="mt-8">
+          <nav class="flex justify-center" aria-label="Pagination">
+            <div class="flex items-center space-x-2">
+              <!-- Previous Button -->
+              <button
+                [disabled]="state.currentPage === 1"
+                (click)="onPageChange(state.currentPage - 1)"
+                class="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Prev
+              </button>
+
+              <!-- Page Numbers -->
+              <div
+                class="flex items-center space-x-1 overflow-x-auto no-scrollbar max-w-[180px] sm:max-w-none"
+              >
+                <ng-container *ngFor="let page of getPageNumbers()">
+                  <span
+                    *ngIf="page === '...'"
+                    class="px-2 sm:px-3 py-1 text-xs sm:text-sm text-gray-500"
+                  >
+                    ...
+                  </span>
+
+                  <button
+                    *ngIf="page !== '...'"
+                    (click)="onPageChange(page)"
+                    [class.bg-blue-600]="state.currentPage === page"
+                    [class.text-white]="state.currentPage === page"
+                    [class.border-blue-600]="state.currentPage === page"
+                    [class.text-gray-700]="state.currentPage !== page"
+                    [class.bg-white]="state.currentPage !== page"
+                    [class.border-gray-300]="state.currentPage !== page"
+                    class="px-2 sm:px-3 py-1 sm:py-2 text-xs sm:text-sm font-medium border rounded-lg hover:bg-gray-50 transition-colors min-w-[32px] sm:min-w-[40px]"
+                  >
+                    {{ page }}
+                  </button>
+                </ng-container>
+              </div>
+
+              <!-- Next Button -->
+              <button
+                [disabled]="
+                  state.currentPage >=
+                  Math.ceil(state.totalJobs / state.jobsPerPage)
+                "
+                (click)="onPageChange(state.currentPage + 1)"
+                class="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                Next
+              </button>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Mobile Sidebar Overlay -->
+  <div
+    *ngIf="state.isMobileSidebarOpen"
+    class="fixed inset-0 bg-black bg-opacity-50 mobile-sidebar-overlay z-40"
+    (click)="toggleMobileSidebar()"
+  ></div>
+
+  <!-- Mobile Sidebar -->
+  <aside
+    class="fixed inset-y-0 left-0 mobile-sidebar-panel w-[85vw] max-w-sm bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50"
+    [class.translate-x-0]="state.isMobileSidebarOpen"
+    [class.-translate-x-full]="!state.isMobileSidebarOpen"
+  >
+    <div class="flex items-center justify-between p-4 border-b border-gray-200">
+      <h3 class="text-base sm:text-lg font-semibold text-gray-900 truncate">Filters & Search</h3>
+      <button
+        (click)="toggleMobileSidebar()"
+        class="p-2 text-gray-400 hover:text-gray-600 active:scale-90 transition-all min-h-[44px] min-w-[44px] flex items-center justify-center flex-shrink-0"
+        aria-label="Close filters"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="p-6 overflow-y-auto h-[calc(100vh-4rem)] mobile-sidebar">
+      <div class="space-y-6">
+        <!-- Search Section -->
+        <div>
+          <h3
+            class="text-lg font-semibold text-gray-900 mb-4 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              ></path>
+            </svg>
+            Search Jobs
+          </h3>
+
+          <!-- Keyword Search -->
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Keywords</label
+              >
+              <div class="relative">
+                <input
+                  type="text"
+                  [(ngModel)]="searchParams.keyword"
+                  (ngModelChange)="onSearch()"
+                  class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  placeholder="Job title, skills, or company"
+                />
+                <svg
+                  class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Location Search -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Location</label
+              >
+              <div class="relative">
+                <input
+                  type="text"
+                  [(ngModel)]="searchParams.location"
+                  (ngModelChange)="onSearch()"
+                  class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  placeholder="City, state, or remote"
+                />
+                <svg
+                  class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Sections -->
+        <ng-container
+          *ngFor="
+            let group of [
+              'jobTypes',
+              'experienceLevels',
+              'remoteOptions',
+              'salaryRanges'
+            ]
+          "
+        >
+          <div class="border-t border-gray-200 pt-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">
+              {{
+                group === "jobTypes"
+                  ? "Job Type"
+                  : group === "experienceLevels"
+                  ? "Experience Level"
+                  : group === "remoteOptions"
+                  ? "Work Style"
+                  : "Salary Range"
+              }}
+            </h3>
+            <div class="space-y-3">
+              <div
+                *ngFor="let option of filterOptions[group]"
+                class="flex items-center"
+              >
+                <input
+                  type="checkbox"
+                  [id]="'mobile-' + group + '-' + option"
+                  [checked]="selectedFilters[group].includes(option)"
+                  (change)="handleFilterSelection(group, option)"
+                  class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                <label
+                  [for]="'mobile-' + group + '-' + option"
+                  class="ml-3 text-sm text-gray-700 cursor-pointer"
+                >
+                  {{ option }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- Reset Filters -->
+        <div class="border-t border-gray-200 pt-6">
+          <button
+            (click)="resetFilters()"
+            class="w-full bg-gray-50 text-gray-700 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors font-medium text-sm"
+          >
+            Clear All Filters
+          </button>
+        </div>
+
+        <!-- Saved Filters Section -->
+        <div class="border-t border-gray-200 pt-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-900">Saved Filters</h3>
+            <button
+              (click)="saveCurrentFilter()"
+              class="text-blue-600 hover:text-blue-700 text-sm font-medium"
+              [disabled]="state.savedFilters.length >= 3"
+            >
+              Save Current
+            </button>
+          </div>
+
+          <!-- Saved Filters List -->
+          <div class="space-y-3" *ngIf="state.savedFilters.length > 0">
+            <div
+              *ngFor="let filter of state.savedFilters"
+              class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <div class="flex-1 min-w-0">
+                <h4 class="text-sm font-medium text-gray-900 truncate">
+                  {{ filter.name }}
+                </h4>
+                <p class="text-xs text-gray-500 mt-1">
+                  {{ filter.createdAt | date : "MMM d, y" }}
+                </p>
+              </div>
+              <div class="flex items-center space-x-2 ml-3">
+                <button
+                  (click)="loadSavedFilter(filter)"
+                  class="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                  title="Load filter"
+                >
+                  Load
+                </button>
+                <button
+                  (click)="deleteSavedFilter(filter.id)"
+                  class="text-red-600 hover:text-red-700 text-sm font-medium"
+                  title="Delete filter"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="state.savedFilters.length === 0" class="text-center py-4">
+            <p class="text-sm text-gray-500">No saved filters yet</p>
+            <p class="text-xs text-gray-400 mt-1">
+              Save your current filters for quick access
+            </p>
+          </div>
+
+          <!-- Filter Limit Info -->
+          <div class="mt-3 text-xs text-gray-500 text-center">
+            {{ state.savedFilters.length }}/3 filters saved
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<!-- Save Filter Modal -->
+<div
+  *ngIf="state.showSaveFilterModal"
+  class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+  (click)="cancelSaveFilter()"
+>
+  <div
+    class="bg-white rounded-t-2xl sm:rounded-xl shadow-xl max-w-md w-full p-5 sm:p-6 animate-slide-up max-h-[90vh] overflow-y-auto"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="flex items-center justify-between mb-4 gap-3">
+      <h3 class="text-base sm:text-lg font-semibold text-gray-900 truncate">Save Filter</h3>
+      <button
+        (click)="cancelSaveFilter()"
+        class="text-gray-400 hover:text-gray-600 active:scale-90 transition-all p-2 min-h-[44px] min-w-[44px] flex items-center justify-center flex-shrink-0"
+        aria-label="Close modal"
+      >
+        <svg
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="space-y-4">
+      <div>
+        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+          Filter Name
+        </label>
+        <input
+          type="text"
+          [(ngModel)]="state.currentFilterName"
+          class="w-full px-3 sm:px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base min-h-[48px]"
+          placeholder="Enter a name for this filter"
+          (keyup.enter)="confirmSaveFilter()"
+        />
+      </div>
+
+      <div class="bg-gray-50 rounded-lg p-3 sm:p-4">
+        <h4 class="text-xs sm:text-sm font-medium text-gray-900 mb-2">
+          Current Filter Settings:
+        </h4>
+        <div class="text-[10px] sm:text-xs text-gray-600 space-y-1">
+          <div *ngIf="searchParams.keyword">
+            <strong>Keywords:</strong> {{ searchParams.keyword }}
+          </div>
+          <div *ngIf="searchParams.location">
+            <strong>Location:</strong> {{ searchParams.location }}
+          </div>
+          <div *ngIf="selectedFilters.jobTypes.length > 0">
+            <strong>Job Types:</strong>
+            {{ selectedFilters.jobTypes.join(", ") }}
+          </div>
+          <div *ngIf="selectedFilters.experienceLevels.length > 0">
+            <strong>Experience:</strong>
+            {{ selectedFilters.experienceLevels.join(", ") }}
+          </div>
+          <div *ngIf="selectedFilters.salaryRanges.length > 0">
+            <strong>Salary:</strong>
+            {{ selectedFilters.salaryRanges.join(", ") }}
+          </div>
+          <div *ngIf="selectedFilters.remoteOptions.length > 0">
+            <strong>Work Style:</strong>
+            {{ selectedFilters.remoteOptions.join(", ") }}
+          </div>
+          <div
+            *ngIf="
+              !searchParams.keyword &&
+              !searchParams.location &&
+              selectedFilters.jobTypes.length === 0 &&
+              selectedFilters.experienceLevels.length === 0 &&
+              selectedFilters.salaryRanges.length === 0 &&
+              selectedFilters.remoteOptions.length === 0
+            "
+          >
+            <em>No filters applied</em>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 mt-6">
+      <button
+        (click)="cancelSaveFilter()"
+        class="px-4 py-3 text-xs sm:text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 active:scale-95 transition-all min-h-[48px]"
+      >
+        Cancel
+      </button>
+      <button
+        (click)="confirmSaveFilter()"
+        class="px-4 py-3 text-xs sm:text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
+        [disabled]="!state.currentFilterName.trim()"
+      >
+        Save Filter
+      </button>
+    </div>
+  </div>
+</div>

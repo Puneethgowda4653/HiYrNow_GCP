@@ -1,0 +1,19 @@
+<!-- edit-bio-modal.component.html -->
+
+<div class="modal">
+    <div class="modal-content">
+      <form class="edit-form">
+        <div class="mb-4">
+          <input type="text" class="form-input mb-2" [(ngModel)]="firstName" placeholder="First Name">
+          <input type="text" class="form-input mb-2" [(ngModel)]="lastName" placeholder="Last Name">
+          <textarea class="form-textarea mb-2" rows="5" cols="30" [(ngModel)]="tagline" placeholder="Add Bio"></textarea>
+        </div>
+        <!-- Save and Cancel Buttons -->
+        <div class="flex justify-center">
+          <button class="btn bg-green-500 hover:bg-green-600 text-white py-1 px-2 rounded-md mr-2" (click)="onSave()">Save</button>
+          <button class="btn bg-gray-500 hover:bg-gray-600 text-white py-1 px-2 rounded-md" (click)="onCancel()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

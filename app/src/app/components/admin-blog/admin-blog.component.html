@@ -1,0 +1,73 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold mb-8">Blog Management</h1>
+
+  <!-- Blog Form -->
+  <form [formGroup]="blogForm" (ngSubmit)="onSubmit()" class="mb-8">
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Title</label>
+        <input type="text" formControlName="title" 
+          class="form-control">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Excerpt</label>
+        <textarea formControlName="excerpt" rows="2"
+          class="form-control"></textarea>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Content</label>
+        <quill-editor formControlName="content" class="w-full bg-white"
+          [styles]="{height: '200px', width: '100% !important'}"
+          [modules]="quillConfig">
+        </quill-editor>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Image URL</label>
+        <input type="text" formControlName="image"
+          class="form-control">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Tags (comma-separated)</label>
+        <input type="text" formControlName="tags"
+          class="form-control">
+      </div>
+
+      <div class="flex gap-4">
+        <button type="submit" 
+          class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+          {{ isEditing ? 'Update' : 'Create' }} Blog
+        </button>
+        <button type="button" (click)="resetForm()"
+          class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Blog List -->
+  <div class="space-y-4">
+    <div *ngFor="let blog of blogs" class="bg-white p-4 rounded-lg shadow">
+      <div class="flex justify-between items-start">
+        <div>
+          <h3 class="text-lg font-semibold">{{ blog.title }}</h3>
+          <p class="text-gray-600">{{ blog.date | date:'mediumDate' }}</p>
+        </div>
+        <div class="flex gap-2">
+          <button (click)="editBlog(blog)"
+            class="text-blue-600 hover:text-blue-800">
+            Edit
+          </button>
+          <button (click)="deleteBlog(blog._id)"
+            class="text-red-600 hover:text-red-800">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

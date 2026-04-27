@@ -1,0 +1,124 @@
+<div class="min-h-screen bg-gradient-to-br from-surface-muted via-surface-subtlePurple to-white relative overflow-hidden">
+  <!-- Background decorative elements -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="relative z-10 flex items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8">
+    <div class="w-full max-w-md">
+      <!-- Back Button -->
+      <button
+        (click)="goBack()"
+        class="mb-6 flex items-center space-x-2 text-slate-600 hover:text-slate-800 transition-colors"
+        aria-label="Go back"
+      >
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        <span class="text-sm font-medium">Back</span>
+      </button>
+
+      <!-- Card -->
+      <app-ui-card>
+        <div class="p-6 sm:p-8">
+          <!-- Header -->
+          <div class="text-center mb-8">
+            <h1 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-2">
+              Get Started as {{ role === 'jobseeker' ? 'Jobseeker' : 'Recruiter' }}
+            </h1>
+            <p class="text-slate-600">
+              Choose how you'd like to sign up
+            </p>
+          </div>
+
+          <!-- Social Login Buttons -->
+          <div class="space-y-3 mb-6">
+            <app-social-button
+              provider="google"
+              [loading]="isLoading"
+              (clicked)="onSocialLogin($event)"
+            ></app-social-button>
+
+            <app-social-button
+              provider="linkedin"
+              [loading]="isLoading"
+              (clicked)="onSocialLogin($event)"
+            ></app-social-button>
+          </div>
+
+          <!-- Divider -->
+          <div class="flex items-center my-6">
+            <div class="flex-1 h-px bg-slate-200"></div>
+            <span class="px-4 text-sm text-slate-500 font-medium">or</span>
+            <div class="flex-1 h-px bg-slate-200"></div>
+          </div>
+
+          <!-- Email Signup -->
+          <app-social-button
+            provider="email"
+            label="Continue with Email"
+            [loading]="isLoading"
+            (clicked)="onSocialLogin($event)"
+          ></app-social-button>
+
+          <!-- Privacy Notice -->
+          <div class="mt-6 p-4 bg-slate-50 rounded-xl border border-slate-200">
+            <p class="text-xs text-slate-600 leading-relaxed">
+              <strong class="text-slate-800">Privacy Notice:</strong>
+              We only read your profile & email. We don't store your social credentials.
+              <a routerLink="/privacy" class="text-primary hover:underline ml-1">Learn more</a>
+            </p>
+          </div>
+
+          <!-- Trust Signals -->
+          <div class="mt-6 space-y-3">
+            <div class="flex items-center space-x-2 text-sm text-slate-600">
+              <svg class="w-5 h-5 text-primary flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+              </svg>
+              <span>Secure & encrypted</span>
+            </div>
+            <div class="flex items-center space-x-2 text-sm text-slate-600">
+              <svg class="w-5 h-5 text-primary flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+              </svg>
+              <span>Free to get started</span>
+            </div>
+            <div class="flex items-center space-x-2 text-sm text-slate-600">
+              <svg class="w-5 h-5 text-primary flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
+              </svg>
+              <span>No credit card required</span>
+            </div>
+          </div>
+
+          <!-- Sign In Link -->
+          <div class="mt-8 pt-6 border-t border-slate-200 text-center">
+            <p class="text-sm text-slate-600">
+              Already have an account?
+              <button
+                (click)="goToLogin()"
+                class="font-semibold text-primary hover:text-primary-hover transition-colors ml-1"
+              >
+                Sign in
+              </button>
+            </p>
+          </div>
+        </div>
+      </app-ui-card>
+
+      <!-- Footer -->
+      <div class="text-center mt-6 text-xs text-slate-500">
+        <p>
+          By continuing, you agree to our
+          <a routerLink="/terms" class="text-primary hover:underline">Terms</a>
+          and
+          <a routerLink="/privacy" class="text-primary hover:underline">Privacy Policy</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+

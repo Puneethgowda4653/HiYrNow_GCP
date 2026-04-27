@@ -1,0 +1,16 @@
+# GCloud Ignore - files not uploaded during gcloud builds submit
+.git
+.gitignore
+node_modules/
+*.md
+.env
+.env1
+.env.local
+.DS_Store
+app/node_modules/
+app/.angular/
+app/e2e/
+job-portal-node-server-master/node_modules/
+job-portal-node-server-master/tests/
+job-portal-node-server-master/docs/
+project_export.txt

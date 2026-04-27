@@ -1,0 +1,65 @@
+/* user-banner.component.css */
+:host {
+  display: block;
+  margin-bottom: 2rem;
+}
+
+.profile-header {
+  position: relative;
+  background-color: #fff;
+}
+
+/* Smooth hover transitions */
+.hover-trigger .hover-target {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Profile picture overlay animation */
+.profile-picture-overlay {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.profile-picture-container:hover .profile-picture-overlay {
+  opacity: 1;
+}
+
+/* Custom scrollbar for overflow content */
+.overflow-container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.overflow-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overflow-container::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 3px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profile-header {
+    padding: 1rem;
+  }
+  
+  .stats-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* Animation for status toggle */
+.toggle-switch {
+  transition: background-color 0.3s ease;
+}
+
+.toggle-switch::after {
+  transition: transform 0.3s ease;
+}

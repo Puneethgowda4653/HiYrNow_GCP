@@ -1,0 +1,424 @@
+<!-- Pricing Page -->
+<div class="min-h-screen ">
+  
+  <!-- Hero Section -->
+  <section class="relative pt-20 pb-16 overflow-hidden" @fadeIn>
+    <!-- Decorative Elements -->
+    <div class="absolute top-0 left-0 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+    <div class="absolute top-0 right-0 w-72 h-72 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+    
+    <div class="container mx-auto px-4 relative z-10">
+      <!-- Current Plan Status (For Logged-in Users) -->
+      <div *ngIf="isLoggedIn && userPlanStatus" class="max-w-5xl mx-auto mb-12" @fadeIn>
+        <app-ui-card class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white border-0 shadow-2xl">
+          <div class="p-6">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-2">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <h3 class="text-xl font-bold">Your Current Plan: {{ userPlanStatus.currentPlan | titlecase }}</h3>
+                </div>
+                <p class="text-purple-100 text-sm">Manage your subscription and view usage statistics below</p>
+              </div>
+              <div class="flex gap-3">
+                <app-ui-button 
+                  *ngIf="userPlanStatus.canUpgrade" 
+                  variant="secondary"
+                  class="bg-white text-purple-600 hover:bg-purple-50"
+                  (click)="upgradePlan()">
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                  </svg>
+                  Upgrade Plan
+                </app-ui-button>
+                <app-ui-button 
+                  variant="outline"
+                  class="border-white text-white hover:bg-white hover:text-purple-600"
+                  [routerLink]="['/dashboard/billing']">
+                  Manage Subscription
+                </app-ui-button>
+              </div>
+            </div>
+
+            <!-- Usage Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+              <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div class="flex justify-between items-start mb-2">
+                  <span class="text-sm font-medium text-purple-100">Job Postings</span>
+                  <span class="text-xs font-bold text-white">
+                    {{ userPlanStatus.usageStats.jobPostings.used }} / 
+                    {{ userPlanStatus.usageStats.jobPostings.limit === -1 ? '∞' : userPlanStatus.usageStats.jobPostings.limit }}
+                  </span>
+                </div>
+                <div class="w-full bg-white/20 rounded-full h-2 overflow-hidden">
+                  <div 
+                    class="h-full rounded-full transition-all duration-500"
+                    [style.width.%]="getUsagePercentage(userPlanStatus.usageStats.jobPostings.used, userPlanStatus.usageStats.jobPostings.limit)"
+                    [style.background-color]="getUsageColor(getUsagePercentage(userPlanStatus.usageStats.jobPostings.used, userPlanStatus.usageStats.jobPostings.limit))">
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div class="flex justify-between items-start mb-2">
+                  <span class="text-sm font-medium text-purple-100">AI Tools Usage</span>
+                  <span class="text-xs font-bold text-white">
+                    {{ userPlanStatus.usageStats.aiToolsUsage.used }} / 
+                    {{ userPlanStatus.usageStats.aiToolsUsage.limit === -1 ? '∞' : userPlanStatus.usageStats.aiToolsUsage.limit }}
+                  </span>
+                </div>
+                <div class="w-full bg-white/20 rounded-full h-2 overflow-hidden">
+                  <div 
+                    class="h-full rounded-full transition-all duration-500"
+                    [style.width.%]="getUsagePercentage(userPlanStatus.usageStats.aiToolsUsage.used, userPlanStatus.usageStats.aiToolsUsage.limit)"
+                    [style.background-color]="getUsageColor(getUsagePercentage(userPlanStatus.usageStats.aiToolsUsage.used, userPlanStatus.usageStats.aiToolsUsage.limit))">
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div class="flex justify-between items-start mb-2">
+                  <span class="text-sm font-medium text-purple-100">Resume Views</span>
+                  <span class="text-xs font-bold text-white">
+                    {{ userPlanStatus.usageStats.resumeViews.used }} / 
+                    {{ userPlanStatus.usageStats.resumeViews.limit === -1 ? '∞' : userPlanStatus.usageStats.resumeViews.limit }}
+                  </span>
+                </div>
+                <div class="w-full bg-white/20 rounded-full h-2 overflow-hidden">
+                  <div 
+                    class="h-full rounded-full transition-all duration-500"
+                    [style.width.%]="getUsagePercentage(userPlanStatus.usageStats.resumeViews.used, userPlanStatus.usageStats.resumeViews.limit)"
+                    [style.background-color]="getUsageColor(getUsagePercentage(userPlanStatus.usageStats.resumeViews.used, userPlanStatus.usageStats.resumeViews.limit))">
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <div class="flex justify-between items-start mb-2">
+                  <span class="text-sm font-medium text-purple-100">Resume Parsing</span>
+                  <span class="text-xs font-bold text-white">
+                    {{ userPlanStatus.usageStats.resumeParsing.used }} / 
+                    {{ userPlanStatus.usageStats.resumeParsing.limit === -1 ? '∞' : userPlanStatus.usageStats.resumeParsing.limit }}
+                  </span>
+                </div>
+                <div class="w-full bg-white/20 rounded-full h-2 overflow-hidden">
+                  <div 
+                    class="h-full rounded-full transition-all duration-500"
+                    [style.width.%]="getUsagePercentage(userPlanStatus.usageStats.resumeParsing.used, userPlanStatus.usageStats.resumeParsing.limit)"
+                    [style.background-color]="getUsageColor(getUsagePercentage(userPlanStatus.usageStats.resumeParsing.used, userPlanStatus.usageStats.resumeParsing.limit))">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </app-ui-card>
+      </div>
+
+      <!-- Headline -->
+      <div class="text-center max-w-4xl mx-auto">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4">
+          <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600">
+            Choose the Right Plan
+          </span>
+          <br />
+          <span class="text-gray-800">to Hire Smarter</span>
+        </h1>
+        <p class="text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">
+          Flexible plans designed to help recruiters scale hiring efficiently. 
+          From startups to enterprises, we have the perfect solution for your needs.
+        </p>
+
+        <!-- Billing Toggle -->
+        <div class="flex items-center justify-center gap-4 mt-8">
+          <span class="text-sm font-medium" [class.text-gray-900]="billingCycle === 'monthly'" [class.text-gray-500]="billingCycle === 'yearly'">
+            Monthly
+          </span>
+          <button 
+            (click)="toggleBillingCycle()"
+            class="relative inline-flex h-7 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+            [class.bg-gradient-to-r]="billingCycle === 'yearly'"
+            [class.from-purple-600]="billingCycle === 'yearly'"
+            [class.to-indigo-600]="billingCycle === 'yearly'"
+            [class.bg-gray-300]="billingCycle === 'monthly'">
+            <span class="inline-block h-5 w-5 transform rounded-full bg-white shadow-lg transition-transform"
+                  [class.translate-x-8]="billingCycle === 'yearly'"
+                  [class.translate-x-1]="billingCycle === 'monthly'">
+            </span>
+          </button>
+          <span class="text-sm font-medium" [class.text-gray-900]="billingCycle === 'yearly'" [class.text-gray-500]="billingCycle === 'monthly'">
+            Yearly
+            <span class="ml-1 text-xs font-bold text-green-600" *ngIf="billingCycle === 'yearly'">Save up to 20%</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Cards -->
+  <section class="pb-16 px-4">
+    <div class="container mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto" [@staggerCards]="plans.length">
+        <div *ngFor="let plan of plans; let i = index" 
+             class="relative group"
+             [class.lg:scale-105]="plan.isPopular"
+             [class.lg:z-10]="plan.isPopular">
+          
+          <!-- Popular Badge -->
+          <div *ngIf="plan.isPopular" 
+               class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
+            <div class="bg-gradient-to-r from-amber-400 to-orange-500 text-white px-4 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
+              <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+              </svg>
+              MOST POPULAR
+            </div>
+          </div>
+
+          <!-- Active Plan Badge -->
+          <div *ngIf="isPlanActive(plan)" 
+               class="absolute -top-4 left-1/2 transform -translate-x-1/2 z-20">
+            <div class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-1 rounded-full text-xs font-bold shadow-lg flex items-center gap-1">
+              <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+              </svg>
+              CURRENT PLAN
+            </div>
+          </div>
+
+          <app-ui-card 
+            class="h-full transition-all duration-300 hover:shadow-2xl"
+            [class.border-2]="plan.isPopular"
+            [class.border-purple-500]="plan.isPopular"
+            [class.shadow-xl]="plan.isPopular"
+            [class.border-green-500]="isPlanActive(plan)"
+            [class.bg-gradient-to-br]="plan.isPopular"
+            [class.from-white]="plan.isPopular"
+            [class.to-purple-50]="plan.isPopular">
+            
+            <div class="flex flex-col h-full">
+              <!-- Plan Header -->
+              <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ plan.name }}</h3>
+                
+                <!-- Pricing -->
+                <div *ngIf="plan.code !== 'enterprise'" class="mb-3">
+                  <div class="flex items-baseline justify-center">
+                    <span class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600">
+                      {{ formatPrice(getPrice(plan)) }}
+                    </span>
+                    <span class="text-gray-500 ml-2 text-lg">/{{ billingCycle === 'monthly' ? 'month' : 'year' }}</span>
+                  </div>
+                  <div *ngIf="billingCycle === 'yearly' && getSavingsPercentage(plan) > 0" 
+                       class="text-sm font-medium text-green-600 mt-1">
+                    Save {{ getSavingsPercentage(plan) }}% with yearly billing
+                  </div>
+                  <div *ngIf="plan.code === 'starter'" 
+                       class="text-lg font-semibold text-purple-600 mt-2">
+                    Free Forever
+                  </div>
+                </div>
+
+                <div *ngIf="plan.code === 'enterprise'" class="py-3">
+                  <p class="text-xl font-semibold text-gray-700">Custom Pricing</p>
+                  <p class="text-sm text-gray-500 mt-1">Tailored to your needs</p>
+                </div>
+              </div>
+
+              <!-- Features List -->
+             <ul class="space-y-3 mb-8 flex-1 overflow-auto scrollbar-thin scrollbar-thumb-purple-300 scrollbar-track-gray-100 pr-2">
+  <ng-container *ngFor="let feature of (plan.features | keyvalue)">
+    <li *ngIf="feature.value?.toLowerCase() !== 'no'"
+        class="flex items-start gap-3 text-sm group/item">
+      <div class="mt-0.5 flex-shrink-0">
+        <div class="w-5 h-5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 flex items-center justify-center">
+          <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="flex-1">
+        <div class="font-semibold text-gray-900">{{ feature.key }}</div>
+        <div class="text-gray-600 mt-0.5">{{ feature.value }}</div>
+      </div>
+    </li>
+  </ng-container>
+</ul>
+
+
+              <!-- CTA Button -->
+              <app-ui-button 
+                block 
+                [variant]="plan.isPopular ? 'primary' : 'outline'"
+                size="lg"
+                [disabled]="isPlanActive(plan)"
+                (click)="subscribe(plan)"
+                class="mt-auto group/btn"
+                [class.opacity-50]="isPlanActive(plan)"
+                [class.cursor-not-allowed]="isPlanActive(plan)">
+                <span class="flex items-center justify-center gap-2">
+                  {{ getCtaText(plan) }}
+                  <svg *ngIf="!isPlanActive(plan)" class="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                  </svg>
+                </span>
+              </app-ui-button>
+            </div>
+          </app-ui-card>
+        </div>
+      </div>
+
+      <!-- Trust Signals -->
+      <div class="max-w-4xl mx-auto mt-12 text-center">
+        <div class="flex flex-wrap items-center justify-center gap-8 text-gray-500 text-sm">
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span>Secure Payment</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+            </svg>
+            <span>24/7 Support</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+            </svg>
+            <span>Cancel Anytime</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-5 h-5 text-orange-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+            </svg>
+            <span>14-Day Money Back</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison Toggle -->
+      <!-- <div class="text-center mt-12">
+        <button 
+          (click)="scrollToComparison()"
+          class="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 font-semibold text-base group transition-all">
+          <span>Compare All Features</span>
+          <svg class="w-5 h-5 transition-transform group-hover:translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </button>
+        <p class="text-gray-500 text-sm mt-2">
+          Need a custom solution? 
+          <a (click)="openCustomPlanModal()" class="text-purple-600 hover:text-purple-700 font-medium cursor-pointer underline">
+            Contact our sales team
+          </a>
+        </p>
+      </div> -->
+    </div>
+  </section>
+
+  <!-- Full Comparison Table -->
+  <section *ngIf="showFullComparison" id="comparison-table" class="pb-16 px-4" @expandCollapse>
+    <div class="container mx-auto max-w-7xl">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">Detailed Feature Comparison</h2>
+        <p class="text-gray-600">Compare all features across our plans</p>
+      </div>
+
+      <app-ui-card class="overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-gradient-to-r from-purple-50 to-indigo-50">
+              <tr>
+                <th class="text-left p-4 font-semibold text-gray-900 sticky left-0 bg-gradient-to-r from-purple-50 to-indigo-50 z-10">
+                  Feature
+                </th>
+                <th *ngFor="let plan of plans" class="p-4 font-semibold text-gray-900 min-w-[150px]">
+                  {{ plan.name }}
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr *ngFor="let feature of comparisonFeatures; let i = index" 
+                  [class.bg-gray-50]="i % 2 === 0"
+                  class="hover:bg-purple-50 transition-colors">
+                <td class="p-4 font-medium text-gray-700 sticky left-0 bg-white z-10" [class.bg-gray-50]="i % 2 === 0">
+                  {{ feature.key }}
+                </td>
+                <td *ngFor="let plan of plans" class="p-4 text-center text-gray-600">
+                  <span [innerHTML]="getFeatureValue(plan, feature.prop)"></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </app-ui-card>
+
+      <div class="text-center mt-6">
+        <button 
+          (click)="showFullComparison = false"
+          class="text-gray-600 hover:text-gray-800 font-medium text-sm">
+          Hide Comparison
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="pb-20 px-4">
+    <div class="container mx-auto max-w-4xl">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">Frequently Asked Questions</h2>
+        <p class="text-gray-600">Everything you need to know about our pricing</p>
+      </div>
+
+      <div class="space-y-4">
+        <app-ui-card class="hover:shadow-lg transition-shadow cursor-pointer">
+          <div class="p-6">
+            <h3 class="font-semibold text-gray-900 mb-2">Can I change my plan later?</h3>
+            <p class="text-gray-600 text-sm">Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate the charges accordingly.</p>
+          </div>
+        </app-ui-card>
+
+        <app-ui-card class="hover:shadow-lg transition-shadow cursor-pointer">
+          <div class="p-6">
+            <h3 class="font-semibold text-gray-900 mb-2">What payment methods do you accept?</h3>
+            <p class="text-gray-600 text-sm">We accept all major credit cards, debit cards, UPI, and net banking. All transactions are secured with industry-standard encryption.</p>
+          </div>
+        </app-ui-card>
+
+        <app-ui-card class="hover:shadow-lg transition-shadow cursor-pointer">
+          <div class="p-6">
+            <h3 class="font-semibold text-gray-900 mb-2">Is there a free trial?</h3>
+            <p class="text-gray-600 text-sm">Our Starter plan is free forever with basic features. For paid plans, we offer a 14-day money-back guarantee so you can try risk-free.</p>
+          </div>
+        </app-ui-card>
+
+        <app-ui-card class="hover:shadow-lg transition-shadow cursor-pointer">
+          <div class="p-6">
+            <h3 class="font-semibold text-gray-900 mb-2">What happens when I reach my limit?</h3>
+            <p class="text-gray-600 text-sm">We'll notify you when you're approaching your limits. You can upgrade anytime to continue using the platform without interruption.</p>
+          </div>
+        </app-ui-card>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Sticky Mobile CTA (shown only on mobile when user scrolls) -->
+<div class="fixed bottom-0 left-0 right-0 lg:hidden bg-white border-t border-gray-200 shadow-2xl z-50 p-4 transform transition-transform"
+     [class.translate-y-full]="!isLoggedIn">
+  <div class="flex gap-3">
+    <app-ui-button variant="outline" size="sm" class="flex-1" (click)="scrollToComparison()">
+      Compare Plans
+    </app-ui-button>
+    <app-ui-button variant="primary" size="sm" class="flex-1" (click)="subscribe(plans[1])">
+      Get Started
+    </app-ui-button>
+  </div>
+</div>
+
+<app-footer></app-footer>

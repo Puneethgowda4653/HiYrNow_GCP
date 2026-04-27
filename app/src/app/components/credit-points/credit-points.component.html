@@ -1,0 +1,142 @@
+<div class="container mx-auto p-6">
+  <div class="w-full">
+
+    <button 
+    (click)="showPointsInfo()"
+    class="flex items-center px-6 py-3 bg-indigo-600 text-white rounded-lg 
+           font-semibold hover:bg-indigo-700 transition-all duration-200 shadow-lg
+           hover:shadow-xl"
+  >
+    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    How do points work?
+  </button>
+
+    <!-- Points Balance Card -->
+    <div class="col-span-1 bg-white rounded-xl shadow-lg p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-gray-800">Points Balance</h2>
+        <button 
+          mat-raised-button 
+          color="primary"
+          (click)="openPurchaseDialog()">
+          Buy Points
+        </button>
+      </div>
+      <div class="text-3xl font-bold text-blue-600">
+        {{balance | number}} Points
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <!-- <div class="col-span-2 bg-white rounded-xl shadow-lg p-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Feature Costs</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div *ngFor="let feature of features | keyvalue" 
+             class="text-center p-4 rounded-lg bg-gray-50">
+          <div class="text-sm text-gray-600">{{feature.key}}</div>
+          <div class="text-lg font-bold text-gray-800">
+            {{feature.value | number}} points
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+
+  <!-- Transaction History -->
+  <div class="mt-6 bg-white rounded-xl shadow-lg p-6">
+    <h2 class="text-xl font-bold text-gray-800 mb-4">Transaction History</h2>
+    
+    <mat-table [dataSource]="transactions | slice:0:5" class="w-full">
+        <!-- Type Column -->
+        <ng-container matColumnDef="type">
+          <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+          <mat-cell *matCellDef="let transaction">
+            <span [class]="transaction.type === 'CREDIT' ? 'text-green-600' : 'text-red-600'">
+              {{transaction.type}}
+            </span>
+          </mat-cell>
+        </ng-container>
+      
+        <!-- Points Column -->
+        <ng-container matColumnDef="points">
+          <mat-header-cell *matHeaderCellDef>Points</mat-header-cell>
+          <mat-cell *matCellDef="let transaction">
+            {{transaction.points | number}}
+          </mat-cell>
+        </ng-container>
+      
+        <!-- Description Column -->
+        <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+          <mat-cell *matCellDef="let transaction">
+            {{transaction.description}}
+          </mat-cell>
+        </ng-container>
+      
+        <!-- Timestamp Column -->
+        <ng-container matColumnDef="timestamp">
+          <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+          <mat-cell *matCellDef="let transaction">
+            {{transaction.timestamp | date:'medium'}}
+          </mat-cell>
+        </ng-container>
+      
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      
+      <div *ngIf="transactions.length === 0" class="text-center py-8 text-gray-500">
+        No transactions yet
+      </div>
+      
+  </div>
+</div>
+
+<!-- Points Info Modal -->
+<div *ngIf="showPointsModal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="text-2xl font-bold gradient-text">Understanding Your Points 💡</h2>
+      <button (click)="closePointsInfo()" class="text-gray-500 hover:text-gray-700">✕</button>
+    </div>
+    
+    <div class="points-info-content space-y-6">
+      <p class="text-gray-600 mb-6">
+        Our point-based system gives you maximum flexibility. Points can be used across different 
+        features based on your needs. Here's how they work:
+      </p>
+
+      <div *ngFor="let info of pointsInfoList" 
+           class="info-card p-6 rounded-lg bg-white border border-gray-200 shadow-sm">
+        <div class="flex items-start">
+          <span class="text-2xl mr-4" [innerHTML]="info.icon"></span>
+          <div>
+            <h3 class="text-lg font-semibold text-indigo-600 mb-2">{{info.type}}</h3>
+            <p class="text-gray-700 mb-3">{{info.details}}</p>
+            <div class="flex items-center gap-4 text-sm">
+              <span class="bg-purple-100 text-purple-600 px-3 py-1 rounded-full">
+                {{info.points}} point{{info.points > 1 ? 's' : ''}}
+              </span>
+              <span class="text-gray-600">
+                {{info.capacity}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-yellow-50 p-6 rounded-lg">
+        <h3 class="text-lg font-semibold text-yellow-700 mb-2">Pro Tips 💡</h3>
+        <ul class="space-y-2 text-gray-700">
+          <li>• Points never expire - use them at your own pace</li>
+          <li>• Upgrade anytime to get more points</li>
+          <li>• Unused points roll over to the next month</li>
+          <li>• Share points across your team members</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

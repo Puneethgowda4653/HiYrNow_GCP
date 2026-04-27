@@ -1,0 +1,400 @@
+<!-- Experience Section -->
+<div class="experience-container">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div>
+     
+      <p class="text-sm text-text-secondary mt-1">
+        {{ experiences.length }} experience{{ experiences.length !== 1 ? 's' : '' }} added
+      </p>
+    </div>
+    <button
+      *ngIf="!addMode && !editMode"
+      (click)="addMode = true"
+      class="px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      [attr.aria-label]="'Add experience'"
+    >
+      <i class="fas fa-plus" aria-hidden="true"></i>
+      <span class="hidden sm:inline">Add Experience</span>
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading && experiences.length === 0" class="text-center py-12">
+    <div class="inline-block w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+    <p class="text-text-secondary mt-4">Loading work experience...</p>
+  </div>
+
+  <!-- Add/Edit Form -->
+  <div *ngIf="addMode || editMode" class="bg-gradient-to-br from-primary/5 to-transparent rounded-2xl p-6 border-2 border-primary/20 mb-6 animate-slide-up">
+    <div class="flex items-center justify-between mb-6">
+      <h4 class="text-lg font-bold text-text-primary flex items-center gap-2">
+        <i class="fas fa-{{ editMode ? 'edit' : 'plus-circle' }} text-primary" aria-hidden="true"></i>
+        {{ editMode ? 'Edit' : 'Add New' }} Experience
+      </h4>
+      <button
+        (click)="resetForm()"
+        class="text-text-secondary hover:text-text-primary transition-colors"
+        [attr.aria-label]="'Cancel'"
+      >
+        <i class="fas fa-times text-xl" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <form [formGroup]="experienceForm" (ngSubmit)="onSubmit()" class="space-y-4">
+      <!-- Job Title -->
+      <div>
+        <label for="title" class="block text-sm font-semibold text-text-primary mb-2">
+          Job Title <span class="text-error">*</span>
+        </label>
+        <input
+          id="title"
+          type="text"
+          formControlName="title"
+          placeholder="e.g., Senior Software Engineer"
+          class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          [ngClass]="experienceForm.get('title')?.invalid && experienceForm.get('title')?.touched ? 'border-error' : 'border-gray-300'"
+        />
+        <p *ngIf="experienceForm.get('title')?.invalid && experienceForm.get('title')?.touched" 
+           class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          <span *ngIf="experienceForm.get('title')?.errors?.['required']">Job title is required</span>
+          <span *ngIf="experienceForm.get('title')?.errors?.['minlength']">Title must be at least 2 characters</span>
+        </p>
+      </div>
+
+      <!-- Company -->
+      <div>
+        <label for="company" class="block text-sm font-semibold text-text-primary mb-2">
+          Company <span class="text-error">*</span>
+        </label>
+        <input
+          id="company"
+          type="text"
+          formControlName="company"
+          placeholder="e.g., Google Inc."
+          class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          [ngClass]="experienceForm.get('company')?.invalid && experienceForm.get('company')?.touched ? 'border-error' : 'border-gray-300'"
+        />
+        <p *ngIf="experienceForm.get('company')?.invalid && experienceForm.get('company')?.touched" 
+           class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          Company name is required
+        </p>
+      </div>
+
+      <!-- Location -->
+      <div>
+        <label for="location" class="block text-sm font-semibold text-text-primary mb-2">
+          Location <span class="text-error">*</span>
+        </label>
+        <input
+          id="location"
+          type="text"
+          formControlName="location"
+          placeholder="e.g., San Francisco, CA"
+          class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          [ngClass]="experienceForm.get('location')?.invalid && experienceForm.get('location')?.touched ? 'border-error' : 'border-gray-300'"
+        />
+        <p *ngIf="experienceForm.get('location')?.invalid && experienceForm.get('location')?.touched" 
+           class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          Location is required
+        </p>
+      </div>
+
+      <!-- Date Range -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-semibold text-text-primary mb-2">
+            Start Date <span class="text-error">*</span>
+          </label>
+          <div formGroupName="startDate" class="grid grid-cols-2 gap-2">
+            <select
+              formControlName="month"
+              class="px-3 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none bg-white text-sm"
+              [ngClass]="experienceForm.get('startDate.month')?.invalid && experienceForm.get('startDate.month')?.touched ? 'border-error' : 'border-gray-300'"
+            >
+              <option value="">Month</option>
+              <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+            </select>
+            <select
+              formControlName="year"
+              class="px-3 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none bg-white text-sm"
+              [ngClass]="experienceForm.get('startDate.year')?.invalid && experienceForm.get('startDate.year')?.touched ? 'border-error' : 'border-gray-300'"
+            >
+              <option value="">Year</option>
+              <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-text-primary mb-2">
+            End Date
+            <span *ngIf="!experienceForm.get('ongoingStatus')?.value" class="text-error">*</span>
+          </label>
+          <div formGroupName="endDate" class="grid grid-cols-2 gap-2">
+            <select
+              formControlName="month"
+              [disabled]="experienceForm.get('ongoingStatus')?.value"
+              class="px-3 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none bg-white text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+              [ngClass]="experienceForm.get('endDate.month')?.invalid && experienceForm.get('endDate.month')?.touched ? 'border-error' : 'border-gray-300'"
+            >
+              <option value="">Month</option>
+              <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+            </select>
+            <select
+              formControlName="year"
+              [disabled]="experienceForm.get('ongoingStatus')?.value"
+              class="px-3 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none bg-white text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+              [ngClass]="experienceForm.get('endDate.year')?.invalid && experienceForm.get('endDate.year')?.touched ? 'border-error' : 'border-gray-300'"
+            >
+              <option value="">Year</option>
+              <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Currently Working -->
+      <div class="flex items-center gap-3 p-4 bg-primary/5 rounded-xl">
+        <input
+          id="ongoingStatus"
+          type="checkbox"
+          formControlName="ongoingStatus"
+          class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
+        />
+        <label for="ongoingStatus" class="text-sm font-medium text-text-primary cursor-pointer select-none">
+          I currently work here
+        </label>
+      </div>
+
+      <!-- Technology Stack -->
+      <div>
+        <label for="stackInput" class="block text-sm font-semibold text-text-primary mb-2">
+          Technology Stack
+        </label>
+        <div class="flex gap-2 mb-2">
+          <input
+            id="stackInput"
+            type="text"
+            [(ngModel)]="currentSkill"
+            [ngModelOptions]="{standalone: true}"
+            (keyup.enter)="addSkill()"
+            placeholder="e.g., React, Node.js, TypeScript"
+            class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          />
+          <button
+            type="button"
+            (click)="addSkill()"
+            class="px-4 py-3 bg-primary text-white rounded-xl hover:bg-primary-hover transition-colors"
+            [attr.aria-label]="'Add technology'"
+          >
+            <i class="fas fa-plus" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div *ngIf="experienceForm.get('stacks')?.value?.length > 0" class="flex flex-wrap gap-2">
+          <span
+            *ngFor="let stack of experienceForm.get('stacks')?.value; let i = index"
+            class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
+          >
+            {{ stack }}
+            <button
+              type="button"
+              (click)="removeSkill(i)"
+              class="hover:text-error transition-colors"
+              [attr.aria-label]="'Remove ' + stack"
+            >
+              <i class="fas fa-times text-xs" aria-hidden="true"></i>
+            </button>
+          </span>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label for="description" class="block text-sm font-semibold text-text-primary mb-2">
+          Description <span class="text-error">*</span>
+        </label>
+        <textarea
+          id="description"
+          formControlName="description"
+          rows="5"
+          placeholder="Describe your responsibilities, achievements, and key contributions..."
+          class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none"
+          [ngClass]="experienceForm.get('description')?.invalid && experienceForm.get('description')?.touched ? 'border-error' : 'border-gray-300'"
+        ></textarea>
+        <p *ngIf="experienceForm.get('description')?.invalid && experienceForm.get('description')?.touched" 
+           class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          Description must be at least 20 characters
+        </p>
+      </div>
+
+      <!-- Project Details (Optional) -->
+      <div>
+        <label for="project" class="block text-sm font-semibold text-text-primary mb-2">
+          Key Projects (Optional)
+        </label>
+        <textarea
+          id="project"
+          formControlName="project"
+          rows="3"
+          placeholder="Describe key projects you worked on in this role..."
+          class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none"
+        ></textarea>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="flex gap-3 pt-4">
+        <button
+          type="button"
+          (click)="resetForm()"
+          class="flex-1 px-6 py-3 border-2 border-gray-300 text-text-primary rounded-xl font-semibold hover:bg-gray-50 transition-all focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          [disabled]="!isFormValid() || isLoading"
+          class="flex-1 px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        >
+          <i class="fas fa-{{ editMode ? 'save' : 'plus' }} mr-2" aria-hidden="true"></i>
+          {{ editMode ? 'Update' : 'Add' }} Experience
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && experiences.length === 0 && !addMode && !editMode" class="text-center py-12">
+    <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+      <i class="fas fa-briefcase text-primary text-4xl" aria-hidden="true"></i>
+    </div>
+    <h4 class="text-lg font-semibold text-text-primary mb-2">No work experience added yet</h4>
+    <p class="text-text-secondary mb-6">Add your professional experience to showcase your career journey</p>
+    <button
+      (click)="addMode = true"
+      class="px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 inline-flex items-center gap-2"
+    >
+      <i class="fas fa-plus" aria-hidden="true"></i>
+      Add Your First Experience
+    </button>
+  </div>
+
+  <!-- Experience Timeline -->
+  <div *ngIf="experiences.length > 0 && !addMode && !editMode" class="space-y-4">
+    <div
+      *ngFor="let experience of experiences"
+      class="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-all duration-300 group relative overflow-hidden"
+    >
+      <!-- Experience Header -->
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex items-start gap-4 flex-1">
+          <!-- Company Initial Icon -->
+          <div class="w-14 h-14 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+            <span class="text-white text-2xl font-bold">{{ experience.company.charAt(0) }}</span>
+          </div>
+          
+          <!-- Content -->
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-1">
+              <h4 class="text-xl font-bold text-text-primary flex items-center gap-2">
+                {{ experience.title }}
+                <span *ngIf="isExperienceOngoing(experience)" 
+                      class="px-3 py-1 bg-success text-white text-xs font-bold rounded-full shadow-md flex items-center gap-1">
+                  <i class="fas fa-circle-notch fa-spin" aria-hidden="true"></i>
+                  Current
+                </span>
+              </h4>
+            </div>
+            
+            <p class="text-base font-semibold text-primary mb-1">{{ experience.company }}</p>
+            <p class="text-sm text-text-secondary">{{ experience.location }}</p>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-2">
+          <button
+            (click)="editExperience(experience)"
+            class="w-9 h-9 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            [attr.aria-label]="'Edit experience'"
+            title="Edit experience"
+          >
+            <i class="fas fa-edit" aria-hidden="true"></i>
+          </button>
+          <button
+            (click)="deleteExperience(experience._id!)"
+            [disabled]="isLoading"
+            class="w-9 h-9 bg-error/10 text-error rounded-lg hover:bg-error hover:text-white transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2 disabled:opacity-50"
+            [attr.aria-label]="'Delete experience'"
+            title="Delete experience"
+          >
+            <i class="fas fa-trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Experience Details -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <!-- Duration -->
+        <div class="flex items-center gap-3 p-3 bg-blue-50 rounded-xl">
+          <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-calendar-alt text-blue-600" aria-hidden="true"></i>
+          </div>
+          <div class="min-w-0">
+            <p class="text-xs font-medium text-blue-600 uppercase">Duration</p>
+            <p class="text-sm font-semibold text-text-primary truncate">
+            {{ experience.startDate?.month || '' }} {{ experience.startDate?.year || '' }}
+            <span *ngIf="experience.startDate?.month || experience.startDate?.year"> - </span>
+            {{ isExperienceOngoing(experience) ? 'Present' : ((experience.endDate?.month || '') + ' ' + (experience.endDate?.year || '')) }}
+          </p>
+          </div>
+        </div>
+
+        <!-- Location Detail -->
+        <div class="flex items-center gap-3 p-3 bg-purple-50 rounded-xl">
+          <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-map-marker-alt text-purple-600" aria-hidden="true"></i>
+          </div>
+          <div class="min-w-0">
+            <p class="text-xs font-medium text-purple-600 uppercase">Location</p>
+            <p class="text-sm font-semibold text-text-primary truncate">{{ experience.location }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technology Stack -->
+      <div *ngIf="experience.stacks && experience.stacks.length > 0" class="mb-4">
+        <p class="text-xs font-medium text-text-secondary uppercase mb-2">Technology Stack</p>
+        <div class="flex flex-wrap gap-2">
+          <span
+            *ngFor="let stack of experience.stacks"
+            class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
+          >
+            {{ stack }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-4">
+        <p class="text-xs font-medium text-text-secondary uppercase mb-2">Description</p>
+        <div class="prose max-w-none text-sm text-text-secondary" [innerHTML]="sanitizeHtml(experience.description)"></div>
+      </div>
+
+      <!-- Key Projects -->
+      <div *ngIf="experience.project" class="mb-4">
+        <p class="text-xs font-medium text-text-secondary uppercase mb-2">Key Projects</p>
+        <div class="prose max-w-none text-sm text-text-secondary" [innerHTML]="sanitizeHtml(experience.project)"></div>
+      </div>
+
+      
+
+      <!-- Decorative Element -->
+      <div class="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-primary/5 to-transparent rounded-tl-full"></div>
+    </div>
+  </div>
+</div>

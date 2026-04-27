@@ -1,0 +1,255 @@
+<div class="max-w-5xl shadow-lg rounded-2xl mx-auto bg-white">
+  <!-- Profile Header Section -->
+  <div class="px-4 pt-4 pb-3">
+    <div class="flex flex-col sm:flex-row items-center sm:items-start">
+      <!-- Profile Picture Section -->
+      <div class="flex-shrink-0 sm:mr-6 mb-2 sm:mb-0">
+        <div class="relative group">
+          <!-- Story Ring Effect -->
+          <div *ngIf="isJobSeeking" class="absolute -inset-1 rounded-full bg-gradient-to-tr from-blue-400 via-indigo-500 to-purple-500"></div>
+          <div class="relative w-16 h-16 sm:w-28 sm:h-28 rounded-full border-2 border-white ring-2 ring-gray-100">
+            <img [src]="profilePicUrl || imageUrl" 
+                 [alt]="user?.firstName" 
+                 class="w-full h-full rounded-full object-cover">
+            <button *ngIf="isCurrentUser" 
+                    (click)="openProfilePicModal()" 
+                    class="absolute inset-0 bg-black/50 rounded-full text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <i class="fas fa-camera"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Info Section -->
+      <div class="flex-grow w-full">
+        <!-- Username and Actions Row -->
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="text-lg font-semibold truncate">{{user?.firstName}} {{user?.lastName}}</h2>
+          <div class="flex items-center space-x-2">
+            <button (click)="shareProfile()" class="px-2 py-1 bg-gray-800 rounded text-white text-sm hover:bg-gray-200">Share</button>
+            <button *ngIf="isCurrentUser" (click)="openEditBioModal()" class="px-2 py-1 bg-gray-800  text-white rounded text-sm hover:bg-gray-200">Edit</button>
+            <!-- <button class="p-2 bg-gray-100 rounded hover:bg-gray-200">
+              <i class="fas fa-ellipsis-h"></i>
+            </button> -->
+          </div>
+        </div>
+        <p class="text-sm text-gray-500 truncate">&#64;{{user?.username}}</p>
+
+        <!-- Stats Row -->
+        <!-- <div class="flex flex-wrap justify-center sm:justify-start space-x-4 mb-2 text-sm">
+          <div class="flex items-center space-x-1">
+            <span class="font-semibold">{{connections || 0}}</span>
+            <span>connections</span>
+          </div>
+          <div class="flex items-center">
+            <i class="fas fa-map-marker-alt mr-1 text-gray-600"></i>
+            <span>{{location || 'Location'}}</span>
+          </div>
+          <div class="flex items-center">
+            <i class="fas fa-building mr-1 text-gray-600"></i>
+            <span>{{industry || 'Industry'}}</span>
+          </div>
+          <div class="flex items-center">
+            <i class="fas fa-briefcase mr-1 text-gray-600"></i>
+            <span>{{experience || 'Experience'}}</span>
+          </div>
+        </div> -->
+
+        <!-- Bio Section -->
+        <p class="mb-2 text-sm text-left sm:text-left">{{user?.tagline}}</p>
+
+         <!-- Job Seeking Toggle -->
+         <div class="flex justify-center mb-2">
+          <div
+            class="inline-flex  bg-gray-50 rounded-xl px-2 py-4 shadow-inner"
+          >
+            <span class="text-sm font-medium text-gray-700"
+              >Job Search Status</span
+            >
+            <button
+              (click)="toggleStatus()"
+              class="relative w-20 h-10 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              [class.bg-gradient-to-r]="isJobSeeking"
+              [class.from-indigo-600]="isJobSeeking"
+              [class.to-purple-600]="isJobSeeking"
+              [class.bg-gray-300]="!isJobSeeking"
+            >
+              <span class="sr-only">Toggle job seeking status</span>
+              <div
+                class="absolute inset-1 flex items-center justify-between text-xs font-medium"
+              >
+                <span
+                  class="text-white transition-opacity duration-200"
+                  [class.opacity-0]="!isJobSeeking"
+                  >ON</span
+                >
+                <span
+                  class="text-gray-600 transition-opacity duration-200"
+                  [class.opacity-0]="isJobSeeking"
+                  >OFF</span
+                >
+              </div>
+              <div
+                class="absolute left-1 top-1 w-10 h-8 bg-white rounded-full shadow-md transform transition-all duration-300 ease-in-out"
+                [class.translate-x-10]="isJobSeeking"
+              >
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <i
+                    [class]="
+                      isJobSeeking
+                        ? 'fas fa-search text-indigo-600'
+                        : 'fas fa-moon text-gray-400'
+                    "
+                  ></i>
+                </div>
+              </div>
+            </button>
+            <span
+              class="text-sm font-medium pl-2 transition-colors duration-200"
+              [class.text-indigo-600]="isJobSeeking"
+              [class.text-gray-500]="!isJobSeeking"
+            >
+              {{ isJobSeeking ? "✨ Available" : "Not Looking" }}
+            </span>
+          </div>
+        </div>
+
+          </div>
+          </div>
+
+
+  <!-- Social Links Bar -->
+  <div class="border-t flex justify-center flex-wrap space-x-3 py-2">
+    <ng-container *ngIf="user?.socialContact?.length > 0; else noSocial">
+      <a *ngFor="let social of user.socialContact"
+         [href]="social.url"
+         target="_blank"
+         class="text-gray-600 hover:text-gray-900 transition-colors text-xl">
+        <i [class]="'fab fa-' + social.socialtype"></i>
+      </a>
+    </ng-container>
+    <ng-template #noSocial>
+      <span class="text-xs text-gray-500">No social links</span>
+    </ng-template>
+  </div>
+</div>
+
+
+  <!-- Enhanced Edit Bio Modal -->
+  <div
+  *ngIf="isEditBioModalOpen"
+  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fadeIn"
+>
+  <div
+    class="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl transform transition-all"
+  >
+    <h2 class="text-2xl font-bold mb-4 text-gray-800">Edit Bio</h2>
+    <textarea
+      class="w-full h-32 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+      [ngModel]="tagline"
+      (ngModelChange)="onTaglineChange($event)"
+      placeholder="Add your bio here..."
+    ></textarea>
+    <div class="text-sm text-gray-500 mt-2 text-right">
+      {{ tagline.length || 0 }}/200
+    </div>
+    <div class="flex justify-end mt-6 space-x-4">
+      <button
+        (click)="closeEditBioModal()"
+        class="px-4 py-2 text-gray-600 hover:text-gray-800 transition duration-300 focus:outline-none"
+      >
+        Cancel
+      </button>
+      <button
+        (click)="saveBio()"
+        [disabled]="tagline.length > 200"
+
+        class="px-6 py-2 rounded-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        [ngClass]="{
+          'bg-indigo-600 text-white hover:bg-indigo-700': tagline.length <= 200,
+          'bg-gray-300 text-gray-500 cursor-not-allowed': tagline.length > 200
+        }"
+      >
+        Save Changes
+      </button>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Enhanced Profile Picture Modal -->
+  <div
+    *ngIf="isProfilePicModalOpen"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fadeIn"
+  >
+    <div
+      class="bg-white rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl transform transition-all"
+    >
+      <h2 class="text-2xl font-bold mb-6 text-gray-800">
+        {{ profilePicExist ? "Update" : "Upload" }} Profile Picture
+      </h2>
+
+      <div class="space-y-4">
+        <div class="flex justify-center">
+          <label
+            for="file-upload"
+            class="cursor-pointer bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 inline-flex items-center"
+          >
+            <i class="fas fa-upload mr-2"></i>
+            Choose File
+          </label>
+          <input
+            id="file-upload"
+            type="file"
+            (change)="onProfilePicSelected($event)"
+            class="hidden"
+          />
+        </div>
+
+        <button
+          
+          class="w-full bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 flex items-center justify-center"
+        >
+          <i class="fab fa-google-drive mr-2"></i>
+          Select from Google Drive
+        </button>
+
+        <ngx-file-drop
+          (onFileDrop)="droppedProfilePic($event)"
+          (onFileOver)="fileOverProfilePic($event)"
+          (onFileLeave)="fileLeaveProfilePic($event)"
+          class="mt-4"
+        >
+          <ng-template ngx-file-drop-content-tmp>
+            <div
+              class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center transition-colors duration-300 hover:border-indigo-500"
+            >
+              <i
+                class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"
+              ></i>
+              <p class="text-gray-600 mb-2">Drag & Drop your image here</p>
+              <p class="text-sm text-gray-400">or click to select files</p>
+            </div>
+          </ng-template>
+        </ngx-file-drop>
+
+        <div class="flex justify-end mt-6 space-x-4">
+          <button
+            (click)="closeProfilePicModal()"
+            class="px-4 py-2 text-gray-600 hover:text-gray-800 transition duration-300 focus:outline-none"
+          >
+            Cancel
+          </button>
+          <button
+            (click)="uploadProfilePic()"
+            class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Upload
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Add this where you want the share modal to appear -->
+<app-share-modal [userProfileLink]="userProfileLink"></app-share-modal>

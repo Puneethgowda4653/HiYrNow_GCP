@@ -1,0 +1,2080 @@
+<!-- HiyrNow - Mobile-Optimized Angular Template -->
+<main
+  class="font-sans pb-20 md:pb-32 bg-gray-50 "
+ 
+>
+  <!-- HERO SECTION: Mobile-First Design -->
+  <section
+    class="min-h-screen bg-gradient-to-br from-slate-900 pt-6 sm:pt-16 via-blue-900 to-indigo-900 text-white relative overflow-hidden"
+  >
+    <!-- Mobile-optimized background pattern -->
+    <div class="absolute inset-0 opacity-5 sm:opacity-10">
+      <div class="absolute top-0 left-0 w-full h-full">
+        <div
+          class="grid grid-cols-6 sm:grid-cols-12 gap-2 sm:gap-4 h-full opacity-20"
+        >
+          <div
+            *ngFor="let i of [1, 2, 3, 4, 5, 6]; let idx = index"
+            class="border-l border-blue-300 animate-pulse"
+            [style.animation-delay]="idx * 0.1 + 's'"
+          ></div>
+          <!-- Show additional columns only on larger screens -->
+          <div
+            *ngFor="let i of [7, 8, 9, 10, 11, 12]; let idx = index"
+            class="hidden sm:block border-l border-blue-300 animate-pulse"
+            [style.animation-delay]="(idx + 6) * 0.1 + 's'"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile-optimized floating AI elements -->
+    <div class="absolute inset-0 pointer-events-none hidden sm:block">
+      <div
+        class="absolute top-20 sm:top-32 left-4 sm:left-20 w-2 sm:w-3 h-2 sm:h-3 bg-blue-400 rounded-full animate-ping"
+      ></div>
+      <div
+        class="absolute top-32 sm:top-48 right-8 sm:right-32 w-1.5 sm:w-2 h-1.5 sm:h-2 bg-cyan-400 rounded-full animate-pulse"
+        style="animation-delay: 1s"
+      ></div>
+      <div
+        class="absolute bottom-40 sm:bottom-64 left-8 sm:left-32 w-2.5 sm:w-4 h-2.5 sm:h-4 bg-indigo-400 rounded-full animate-bounce"
+        style="animation-delay: 2s"
+      ></div>
+    </div>
+
+    <div
+      class="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-24 pb-8 sm:pb-16 relative z-10"
+    >
+      <div class="max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          <!-- Left Content - Mobile optimized -->
+          <div class="space-y-6 sm:space-y-8 text-center lg:text-left ">
+            <!-- Badge - Smaller on mobile -->
+            <!-- <div
+              class="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 bg-blue-500/20 border border-blue-400/30 rounded-full text-blue-200 text-xs sm:text-sm font-medium backdrop-blur-sm"
+            >
+              <svg
+                class="w-3 sm:w-4 h-3 sm:h-4 mr-1.5 sm:mr-2"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+              AI-Powered Hiring
+            </div> -->
+
+            <!-- Main Headline - Mobile responsive -->
+            <div class="space-y-4 text-left sm:space-y-6 ">
+              <h1
+                class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight tracking-tight"
+              >
+                India's
+                <span
+                  class="bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent block"
+                >
+                  Smartest AI Hiring Platform
+                </span>
+              </h1>
+
+              <p
+                class="text-base sm:text-lg lg:text-xl xl:text-2xl text-slate-300 leading-relaxed max-w-2xl mx-auto lg:mx-0"
+              >
+                HiyrNow is India's smartest B2B recruitment platform, helping
+                companies find
+                <span class="text-cyan-400 font-semibold"
+                  >top talent 10x faster</span
+                >
+                using real-time AI matching. Simplify your hiring process,
+                reduce costs, and hire job-ready candidates with zero hassle.
+              </p>
+            </div>
+
+            <!-- CTA Buttons - Mobile stack vertically -->
+            <div
+              class="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 items-center lg:items-start"
+            >
+              <a href="https://calendly.com/hiyrnow-info/30min" target="_blank">
+                <app-ui-button variant="primary" size="md" class="inline-flex items-center">
+                  <svg
+                    class="w-4 sm:w-5 h-4 sm:h-5 mr-2 sm:mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    ></path>
+                  </svg>
+                  Schedule Demo
+                  <svg
+                    class="w-4 sm:w-5 h-4 sm:h-5 ml-2 sm:ml-3 group-hover:translate-x-1 transition-transform duration-200"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    ></path>
+                  </svg>
+                </app-ui-button>
+              </a>
+
+              <a routerLink="/job-list" target="_blank" rel="noopener">
+                <app-ui-button variant="secondary" size="md" class="inline-flex items-center">
+                  <svg
+                    class="w-4 sm:w-5 h-4 sm:h-5 mr-2 sm:mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  Find a Job
+                </app-ui-button>
+              </a>
+            </div>
+
+            <!-- Key Metrics - Mobile responsive grid -->
+            <div
+              class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-6 sm:pt-8 border-t border-slate-700"
+            >
+              <div class="text-center py-2">
+                <div class="text-2xl sm:text-3xl font-bold text-cyan-400">
+                  90%
+                </div>
+                <div class="text-sm text-slate-400">Faster Hiring</div>
+              </div>
+              <div class="text-center py-2">
+                <div class="text-2xl sm:text-3xl font-bold text-blue-400">
+                  1.2M+
+                </div>
+                <div class="text-sm text-slate-400">Verified Candidates</div>
+              </div>
+              <div class="text-center py-2">
+                <div class="text-2xl sm:text-3xl font-bold text-indigo-400">
+                  40+
+                </div>
+                <div class="text-sm text-slate-400">Cities in India</div>
+              </div>
+            </div>
+
+            <!-- Trust Indicators - Mobile responsive -->
+            <div class="pt-6 sm:pt-8">
+              <p class="text-sm text-slate-400 mb-4 sm:mb-6">
+                Trusted by leading companies across India
+              </p>
+              <div
+                class="flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-8 items-center opacity-60"
+              >
+                <div class="text-slate-300 font-semibold text-base sm:text-lg">
+                  Flipkart
+                </div>
+                <div class="text-slate-300 font-semibold text-base sm:text-lg">
+                  Rapido
+                </div>
+                <div class="text-slate-300 font-semibold text-base sm:text-lg">
+                  Dunzo
+                </div>
+                <div class="text-slate-300 font-semibold text-base sm:text-lg">
+                  BigBasket
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Content - Dashboard (Hidden on small mobile) -->
+          <div class="relative mt-8 lg:mt-0 hidden sm:block">
+            <!-- Glow Effect -->
+            <div
+              class="absolute -inset-3 sm:-inset-6 bg-gradient-to-r from-cyan-600/30 via-blue-600/30 to-indigo-600/30 rounded-2xl sm:rounded-3xl blur-2xl sm:blur-3xl animate-pulse"
+            ></div>
+
+            <!-- Dashboard Container -->
+            <div
+              class="relative bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-200/20 overflow-hidden"
+            >
+              <!-- Dashboard Header -->
+              <div
+                class="px-6 py-4 bg-gradient-to-r from-slate-50 to-blue-50 border-b border-slate-200"
+              >
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 bg-red-400 rounded-full"></div>
+                    <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
+                    <div class="w-3 h-3 bg-green-400 rounded-full"></div>
+                  </div>
+                  <div
+                    class="flex items-center text-slate-700 font-semibold text-sm"
+                  >
+                    <div
+                      class="w-6 h-6 bg-gradient-to-r from-blue-500 to-indigo-500 rounded mr-2 flex items-center justify-center"
+                    >
+                      <span class="text-white text-xs">AI</span>
+                    </div>
+                    HiyrNow Dashboard
+                  </div>
+                </div>
+              </div>
+
+              <!-- Dashboard Content -->
+              <div class="p-6 space-y-6 bg-slate-900 text-white">
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div
+                    class="bg-gradient-to-br from-blue-600 to-blue-700 p-4 rounded-xl"
+                  >
+                    <div class="text-2xl font-bold">1.2M+</div>
+                    <div class="text-xs text-blue-100">Verified Candidates</div>
+                  </div>
+                  <div
+                    class="bg-gradient-to-br from-indigo-600 to-indigo-700 p-4 rounded-xl"
+                  >
+                    <div class="text-2xl font-bold">800+</div>
+                    <div class="text-xs text-indigo-100">Active Recruiters</div>
+                  </div>
+                </div>
+
+                <!-- AI Insights -->
+                <div class="space-y-3">
+                  <div
+                    class="flex items-center justify-between p-4 bg-gradient-to-r from-emerald-600/20 to-green-600/20 border border-emerald-500/30 rounded-xl"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center"
+                      >
+                        <svg
+                          class="w-5 h-5 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5 13l4 4L19 7"
+                          ></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <div class="font-semibold text-sm">
+                          Perfect AI Match Found
+                        </div>
+                        <div class="text-xs text-slate-400">
+                          Marketing Manager - 97% Compatibility
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-emerald-400 font-bold">97%</div>
+                  </div>
+
+                  <div
+                    class="flex items-center justify-between p-4 bg-gradient-to-r from-blue-600/20 to-cyan-600/20 border border-blue-500/30 rounded-xl"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center animate-spin"
+                        style="animation-duration: 2s"
+                      >
+                        <svg
+                          class="w-5 h-5 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                          ></path>
+                        </svg>
+                      </div>
+                      <div>
+                        <div class="font-semibold text-sm">
+                          AI Processing Applications
+                        </div>
+                        <div class="text-xs text-slate-400">
+                          Analyzing 8,200 profiles in real-time
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-blue-400 font-bold">85%</div>
+                  </div>
+
+                  <div
+                    class="flex items-center justify-between p-4 bg-gradient-to-r from-purple-600/20 to-indigo-600/20 border border-purple-500/30 rounded-xl"
+                  >
+                    <div class="flex items-center gap-3">
+                      <div
+                        class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center"
+                      >
+                        <span class="text-white text-lg">🇮🇳</span>
+                      </div>
+                      <div>
+                        <div class="font-semibold text-sm">
+                          India-Wide Coverage
+                        </div>
+                        <div class="text-xs text-slate-400">
+                          40+ Cities • Delhi • Mumbai • Bengaluru • Pune
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-purple-400 font-bold">24/7</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating AI Badge -->
+            <div class="absolute -bottom-4 -left-4">
+              <app-ui-badge text="AI" variant="brand" size="md"></app-ui-badge>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION - Mobile Optimized -->
+  <section class="py-12 sm:py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2
+          class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-slate-900 mb-4 sm:mb-6"
+        >
+          Built for Indian Businesses of All Sizes
+        </h2>
+        <p class="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto px-4">
+          Empower your hiring process with cutting-edge AI technology designed
+          specifically for the Indian market
+        </p>
+      </div>
+
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+      >
+        <!-- Feature Cards - Mobile optimized -->
+        <div
+          class="group bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 hover:border-blue-300 hover:shadow-xl transition-all duration-300"
+        >
+          <div
+            class="w-10 sm:w-12 h-10 sm:h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4 sm:mb-6 group-hover:bg-blue-200 transition-colors"
+          >
+            <svg
+              class="w-5 sm:w-6 h-5 sm:h-6 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+              ></path>
+            </svg>
+          </div>
+          <h3
+            class="text-lg sm:text-xl font-semibold text-slate-900 mb-3 sm:mb-4"
+          >
+            AI-Powered Matching
+          </h3>
+          <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+            Instantly match with the right talent based on skills, location, and
+            experience. No manual filtering required.
+          </p>
+        </div>
+
+        <div
+          class="group bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 hover:border-indigo-300 hover:shadow-xl transition-all duration-300"
+        >
+          <div
+            class="w-10 sm:w-12 h-10 sm:h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4 sm:mb-6 group-hover:bg-indigo-200 transition-colors"
+          >
+            <svg
+              class="w-5 sm:w-6 h-5 sm:h-6 text-indigo-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+              ></path>
+            </svg>
+          </div>
+          <h3
+            class="text-lg sm:text-xl font-semibold text-slate-900 mb-3 sm:mb-4"
+          >
+            Automated Screening
+          </h3>
+          <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+            Save 80% of your screening time with our smart ranking and resume
+            analysis engine powered by AI.
+          </p>
+        </div>
+
+        <div
+          class="group bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 hover:border-emerald-300 hover:shadow-xl transition-all duration-300"
+        >
+          <div
+            class="w-10 sm:w-12 h-10 sm:h-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-4 sm:mb-6 group-hover:bg-emerald-200 transition-colors"
+          >
+            <svg
+              class="w-5 sm:w-6 h-5 sm:h-6 text-emerald-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+              ></path>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+              ></path>
+            </svg>
+          </div>
+          <h3
+            class="text-lg sm:text-xl font-semibold text-slate-900 mb-3 sm:mb-4"
+          >
+            Pan-India Hiring
+          </h3>
+          <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+            Target candidates from Bangalore, Mumbai, Delhi, Chennai, and Tier
+            2/3 cities with geo-smart filters.
+          </p>
+        </div>
+
+        <div
+          class="group bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 hover:border-purple-300 hover:shadow-xl transition-all duration-300"
+        >
+          <div
+            class="w-10 sm:w-12 h-10 sm:h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4 sm:mb-6 group-hover:bg-purple-200 transition-colors"
+          >
+            <svg
+              class="w-5 sm:w-6 h-5 sm:h-6 text-purple-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              ></path>
+            </svg>
+          </div>
+          <h3
+            class="text-lg sm:text-xl font-semibold text-slate-900 mb-3 sm:mb-4"
+          >
+            Modern Employer Dashboard
+          </h3>
+          <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+            Track applicants, schedule interviews, and manage hiring pipelines
+            from one clean, intuitive interface.
+          </p>
+        </div>
+
+        <div
+          class="group bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 hover:border-cyan-300 hover:shadow-xl transition-all duration-300"
+        >
+          <div
+            class="w-10 sm:w-12 h-10 sm:h-12 bg-cyan-100 rounded-xl flex items-center justify-center mb-4 sm:mb-6 group-hover:bg-cyan-200 transition-colors"
+          >
+            <svg
+              class="w-5 sm:w-6 h-5 sm:h-6 text-cyan-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+              ></path>
+            </svg>
+          </div>
+          <h3
+            class="text-lg sm:text-xl font-semibold text-slate-900 mb-3 sm:mb-4"
+          >
+            Custom Employer Branding
+          </h3>
+          <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+            Showcase your culture and values with branded company pages to
+            attract top-tier Indian talent.
+          </p>
+        </div>
+
+        <div
+          class="group bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 hover:border-orange-300 hover:shadow-xl transition-all duration-300"
+        >
+          <div
+            class="w-10 sm:w-12 h-10 sm:h-12 bg-orange-100 rounded-xl flex items-center justify-center mb-4 sm:mb-6 group-hover:bg-orange-200 transition-colors"
+          >
+            <svg
+              class="w-5 sm:w-6 h-5 sm:h-6 text-orange-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              ></path>
+            </svg>
+          </div>
+          <h3
+            class="text-lg sm:text-xl font-semibold text-slate-900 mb-3 sm:mb-4"
+          >
+            GST-Ready Invoicing
+          </h3>
+          <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+            Built for Indian businesses — with transparent pricing and
+            GST-compliant billing systems.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI-Powered Recruitment Solutions Section - Mobile Optimized -->
+  <section class="py-12 sm:py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2
+          class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-slate-900 mb-4 sm:mb-6"
+        >
+          AI-Powered Recruitment Engine Built for Scale
+        </h2>
+        <p
+          class="text-lg sm:text-xl lg:text-2xl text-slate-600 max-w-4xl mx-auto px-4"
+        >
+          Automate sourcing, screening, and hiring — in real time with advanced
+          machine learning
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+        <!-- Content -->
+        <div class="space-y-6 sm:space-y-8 order-2 lg:order-1">
+          <p class="text-base sm:text-lg text-slate-700 leading-relaxed">
+            HiyrNow uses advanced AI, NLP, and behavioral modeling to help
+            Indian employers instantly identify the best-fit candidates. Say
+            goodbye to resume overload and hello to
+            <strong class="text-blue-600">precision hiring</strong> across tech,
+            finance, operations, and more.
+          </p>
+
+          <div class="space-y-4 sm:space-y-6">
+            <div class="flex items-start gap-3 sm:gap-4">
+              <div
+                class="w-10 sm:w-12 h-10 sm:h-12 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-1"
+              >
+                <svg
+                  class="w-5 sm:w-6 h-5 sm:h-6 text-emerald-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 3h6l5 5v11a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2z"
+                  ></path>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 3v6h6"
+                  ></path>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 13h8M8 17h8"
+                  ></path>
+                </svg>
+              </div>
+              <div>
+                <h4
+                  class="text-lg sm:text-xl font-semibold text-slate-900 mb-2"
+                >
+                  Create Job Descriptions in 60 Seconds
+                </h4>
+                <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+                  Quickly generate precise job descriptions with HiYrNow AI.
+                  Customize required skills, set tailored interview questions,
+                  and publish in under a minute — saving time while attracting
+                  the right talent.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 sm:gap-4">
+              <div
+                class="w-10 sm:w-12 h-10 sm:h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-1"
+              >
+                <svg
+                  class="w-5 sm:w-6 h-5 sm:h-6 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+              </div>
+              <div>
+                <h4
+                  class="text-lg sm:text-xl font-semibold text-slate-900 mb-2"
+                >
+                  Smart Resume Screening
+                </h4>
+                <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+                  AI filters thousands of profiles using skill-matching,
+                  experience ranking, and language fit — tailored specifically
+                  to Indian job roles and market requirements.
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 sm:gap-4">
+              <div
+                class="w-10 sm:w-12 h-10 sm:h-12 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0 mt-1"
+              >
+                <svg
+                  class="w-5 sm:w-6 h-5 sm:h-6 text-indigo-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  ></path>
+                </svg>
+              </div>
+              <div>
+                <h4
+                  class="text-lg sm:text-xl font-semibold text-slate-900 mb-2"
+                >
+                  Predictive Hiring Insights
+                </h4>
+                <p class="text-slate-600 leading-relaxed text-sm sm:text-base">
+                  Track hiring success metrics, churn risk, and candidate fit
+                  score — all displayed in comprehensive real-time dashboards
+                  with actionable insights.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="relative order-1 lg:order-2 hidden sm:block">
+          <!-- Main dashboard container - Mobile optimized -->
+          <div
+            class="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl rounded-2xl sm:rounded-3xl border border-white/20 shadow-2xl overflow-hidden"
+          >
+            <!-- Modern browser header -->
+            <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-white/10">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 sm:gap-3">
+                  <div class="flex gap-1.5 sm:gap-2">
+                    <div
+                      class="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-red-400 rounded-full shadow-lg"
+                    ></div>
+                    <div
+                      class="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-yellow-400 rounded-full shadow-lg"
+                    ></div>
+                    <div
+                      class="w-2.5 sm:w-3 h-2.5 sm:h-3 bg-green-400 rounded-full shadow-lg"
+                    ></div>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center gap-2 font-semibold text-white text-sm"
+                >
+                  <div
+                    class="w-6 sm:w-8 h-6 sm:h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg"
+                  >
+                    <span class="text-xs font-bold">AI</span>
+                  </div>
+                  <span class="hidden sm:inline">Features Preview</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scrollable feature showcase -->
+
+            <div
+              #featureHScroll
+              class="feature-showcase overflow-hidden bg-gradient-to-r from-slate-900 to-blue-900"
+              
+            >
+              <div
+                class="flex transition-transform duration-500 ease-in-out"
+                [style.transform]="'translateX(' + currentSlide * -100 + '%)'"
+              >
+                <!-- Slide 1: Job Description Generator -->
+                <div class="w-full flex-shrink-0 p-6">
+                  <div class="mb-6">
+                    <h5 class="text-xl font-bold text-white mb-2">
+                      Create Job Descriptions in 60 Seconds
+                    </h5>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                      AI-powered job description generation with smart skill
+                      matching and interview question templates.
+                    </p>
+                  </div>
+
+                  <div
+                    class="bg-gradient-to-br from-white/5 to-white/10 border border-white/20 rounded-2xl p-6 backdrop-blur-sm"
+                  >
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                      <div class="space-y-2">
+                        <label class="text-xs text-slate-400 font-medium"
+                          >Job Title</label
+                        >
+                        <div class="relative">
+                          <input
+                            class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:border-blue-400 transition-colors"
+                            placeholder="Senior Frontend Engineer"
+                            readonly
+                          />
+                          <div
+                            class="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-transparent rounded-xl animate-shimmer"
+                          ></div>
+                        </div>
+                      </div>
+                      <div class="space-y-2">
+                        <label class="text-xs text-slate-400 font-medium"
+                          >Experience Level</label
+                        >
+                        <input
+                          class="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-slate-400"
+                          placeholder="4–6 years"
+                          readonly
+                        />
+                      </div>
+                    </div>
+
+                    <div class="space-y-3 mb-6">
+                      <label class="text-xs text-slate-400 font-medium"
+                        >Required Skills</label
+                      >
+                      <div class="flex flex-wrap gap-2">
+                        <span
+                          class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-blue-500/20 to-blue-600/30 text-blue-300 border border-blue-400/30"
+                          >React</span
+                        >
+                        <span
+                          class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-purple-500/20 to-purple-600/30 text-purple-300 border border-purple-400/30"
+                          >TypeScript</span
+                        >
+                        <span
+                          class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-emerald-500/20 to-emerald-600/30 text-emerald-300 border border-emerald-400/30"
+                          >UI/UX</span
+                        >
+                        <span
+                          class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-cyan-500/20 to-cyan-600/30 text-cyan-300 border border-cyan-400/30"
+                          >Node.js</span
+                        >
+                      </div>
+                    </div>
+
+                    <div class="flex items-center justify-between mb-4">
+                      <button
+                        class="px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                      >
+                        ✨ Generate JD
+                      </button>
+                      <div class="flex items-center gap-2 text-emerald-400">
+                        <div
+                          class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"
+                        ></div>
+                        <span class="text-xs font-medium"
+                          >Generated in 47s</span
+                        >
+                      </div>
+                    </div>
+
+                    <!-- Preview section -->
+                    <div
+                      class="bg-white/5 border border-white/10 rounded-xl p-4"
+                    >
+                      <div
+                        class="text-xs text-slate-400 mb-3 flex items-center gap-2"
+                      >
+                        <svg
+                          class="w-4 h-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                          <path
+                            fill-rule="evenodd"
+                            d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                          />
+                        </svg>
+                        Live Preview
+                      </div>
+                      <div class="space-y-3">
+                        <div
+                          class="h-3 bg-gradient-to-r from-slate-600 to-slate-700 rounded-full w-5/6 animate-pulse"
+                        ></div>
+                        <div
+                          class="h-3 bg-gradient-to-r from-slate-600 to-slate-700 rounded-full w-4/6 animate-pulse"
+                        ></div>
+                        <div
+                          class="h-3 bg-gradient-to-r from-slate-600 to-slate-700 rounded-full w-3/6 animate-pulse"
+                        ></div>
+                        <div
+                          class="h-3 bg-gradient-to-r from-slate-600 to-slate-700 rounded-full w-4/6 animate-pulse"
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slide 2: Smart Resume Screening -->
+                <div class="w-full flex-shrink-0 p-6">
+                  <div class="mb-6">
+                    <h5 class="text-xl font-bold text-white mb-2">
+                      Smart Resume Screening
+                    </h5>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                      Advanced AI filtering with skill-matching, cultural fit
+                      analysis, and experience ranking.
+                    </p>
+                  </div>
+
+                  <div
+                    class="bg-gradient-to-br from-white/5 to-white/10 border border-white/20 rounded-2xl p-6 backdrop-blur-sm"
+                  >
+                    <div class="space-y-4 mb-6">
+                      <!-- Candidate 1 -->
+                      <div
+                        class="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all duration-200"
+                      >
+                        <div
+                          class="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold text-lg shadow-lg"
+                        >
+                          A
+                        </div>
+                        <div class="flex-1">
+                          <div class="flex items-center justify-between mb-2">
+                            <span class="text-white font-semibold"
+                              >Ananya Gupta • React Developer</span
+                            >
+                            <div class="flex items-center gap-2">
+                              <div
+                                class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"
+                              ></div>
+                              <span class="text-emerald-400 font-bold text-sm"
+                                >96% match</span
+                              >
+                            </div>
+                          </div>
+                          <div
+                            class="h-2 bg-slate-700 rounded-full overflow-hidden"
+                          >
+                            <div
+                              class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full animate-progress"
+                              style="width: 96%"
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Candidate 2 -->
+                      <div
+                        class="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all duration-200"
+                      >
+                        <div
+                          class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold text-lg shadow-lg"
+                        >
+                          R
+                        </div>
+                        <div class="flex-1">
+                          <div class="flex items-center justify-between mb-2">
+                            <span class="text-white font-semibold"
+                              >Rohit Sharma • Full Stack</span
+                            >
+                            <div class="flex items-center gap-2">
+                              <div
+                                class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"
+                              ></div>
+                              <span class="text-blue-400 font-bold text-sm"
+                                >91% match</span
+                              >
+                            </div>
+                          </div>
+                          <div
+                            class="h-2 bg-slate-700 rounded-full overflow-hidden"
+                          >
+                            <div
+                              class="h-full bg-gradient-to-r from-blue-500 to-indigo-400 rounded-full animate-progress"
+                              style="width: 91%"
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Candidate 3 -->
+                      <div
+                        class="flex items-center gap-4 p-4 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all duration-200"
+                      >
+                        <div
+                          class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white font-bold text-lg shadow-lg"
+                        >
+                          P
+                        </div>
+                        <div class="flex-1">
+                          <div class="flex items-center justify-between mb-2">
+                            <span class="text-white font-semibold"
+                              >Priya Patel • Angular Dev</span
+                            >
+                            <div class="flex items-center gap-2">
+                              <div
+                                class="w-2 h-2 bg-purple-400 rounded-full animate-pulse"
+                              ></div>
+                              <span class="text-purple-400 font-bold text-sm"
+                                >88% match</span
+                              >
+                            </div>
+                          </div>
+                          <div
+                            class="h-2 bg-slate-700 rounded-full overflow-hidden"
+                          >
+                            <div
+                              class="h-full bg-gradient-to-r from-purple-500 to-pink-400 rounded-full animate-progress"
+                              style="width: 88%"
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Filtering criteria -->
+                    <div class="grid grid-cols-3 gap-3">
+                      <div
+                        class="bg-white/5 border border-emerald-400/30 rounded-xl p-3 text-center"
+                      >
+                        <div class="text-emerald-400 text-xs font-medium mb-1">
+                          Skill Match
+                        </div>
+                        <div class="text-white font-bold">Excellent</div>
+                      </div>
+                      <div
+                        class="bg-white/5 border border-blue-400/30 rounded-xl p-3 text-center"
+                      >
+                        <div class="text-blue-400 text-xs font-medium mb-1">
+                          Experience
+                        </div>
+                        <div class="text-white font-bold">5+ Years</div>
+                      </div>
+                      <div
+                        class="bg-white/5 border border-purple-400/30 rounded-xl p-3 text-center"
+                      >
+                        <div class="text-purple-400 text-xs font-medium mb-1">
+                          Location
+                        </div>
+                        <div class="text-white font-bold">India</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Slide 3: Predictive Analytics -->
+                <div class="w-full flex-shrink-0 p-6">
+                  <div class="mb-6">
+                    <h5 class="text-xl font-bold text-white mb-2">
+                      Predictive Hiring Insights
+                    </h5>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                      Real-time analytics dashboard with success metrics and
+                      predictive intelligence.
+                    </p>
+                  </div>
+
+                  <div
+                    class="bg-gradient-to-br from-white/5 to-white/10 border border-white/20 rounded-2xl p-6 backdrop-blur-sm"
+                  >
+                    <!-- Key metrics grid -->
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                      <div
+                        class="bg-gradient-to-br from-blue-500/10 to-blue-600/20 border border-blue-400/30 rounded-xl p-4 text-center"
+                      >
+                        <div class="text-blue-400 text-xs font-medium mb-2">
+                          Time-to-Hire
+                        </div>
+                        <div class="text-2xl font-black text-blue-300">
+                          -42%
+                        </div>
+                        <div class="text-blue-400 text-xs">vs last month</div>
+                      </div>
+                      <div
+                        class="bg-gradient-to-br from-emerald-500/10 to-emerald-600/20 border border-emerald-400/30 rounded-xl p-4 text-center"
+                      >
+                        <div class="text-emerald-400 text-xs font-medium mb-2">
+                          Acceptance Rate
+                        </div>
+                        <div class="text-2xl font-black text-emerald-300">
+                          +18%
+                        </div>
+                        <div class="text-emerald-400 text-xs">improvement</div>
+                      </div>
+                      <div
+                        class="bg-gradient-to-br from-amber-500/10 to-amber-600/20 border border-amber-400/30 rounded-xl p-4 text-center"
+                      >
+                        <div class="text-amber-400 text-xs font-medium mb-2">
+                          Churn Risk
+                        </div>
+                        <div class="text-2xl font-black text-amber-300">
+                          Low
+                        </div>
+                        <div class="text-amber-400 text-xs">predicted</div>
+                      </div>
+                    </div>
+
+                    <!-- Chart visualization -->
+                    <div
+                      class="bg-white/5 border border-white/10 rounded-xl p-4"
+                    >
+                      <div class="flex items-center justify-between mb-4">
+                        <div class="text-slate-300 text-sm font-medium">
+                          Hiring Success Trend
+                        </div>
+                        <div class="flex items-center gap-2">
+                          <div
+                            class="w-3 h-3 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full"
+                          ></div>
+                          <span class="text-slate-400 text-xs"
+                            >AI Predictions</span
+                          >
+                        </div>
+                      </div>
+                      <div
+                        class="h-32 relative rounded-lg overflow-hidden bg-gradient-to-b from-slate-800 to-slate-900"
+                      >
+                        <!-- Simulated chart bars -->
+                        <div
+                          class="absolute bottom-0 left-0 w-full h-full flex items-end justify-around px-2"
+                        >
+                          <div
+                            class="w-8 bg-gradient-to-t from-cyan-500 to-blue-400 rounded-t animate-grow-bar"
+                            style="height: 60%"
+                          ></div>
+                          <div
+                            class="w-8 bg-gradient-to-t from-cyan-500 to-blue-400 rounded-t animate-grow-bar"
+                            style="height: 75%; animation-delay: 0.1s"
+                          ></div>
+                          <div
+                            class="w-8 bg-gradient-to-t from-cyan-500 to-blue-400 rounded-t animate-grow-bar"
+                            style="height: 90%; animation-delay: 0.2s"
+                          ></div>
+                          <div
+                            class="w-8 bg-gradient-to-t from-cyan-500 to-blue-400 rounded-t animate-grow-bar"
+                            style="height: 85%; animation-delay: 0.3s"
+                          ></div>
+                          <div
+                            class="w-8 bg-gradient-to-t from-cyan-500 to-blue-400 rounded-t animate-grow-bar"
+                            style="height: 95%; animation-delay: 0.4s"
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide indicators -->
+            <div
+              class="flex justify-center gap-2 p-4 bg-gradient-to-r from-slate-800/30 to-slate-700/30"
+            >
+              <button
+                *ngFor="let slide of [0, 1, 2]; let i = index"
+                [class]="
+                  'w-2 h-2 rounded-full transition-all duration-300 ' +
+                  (currentSlide === i ? 'bg-blue-400 w-8' : 'bg-white/30')
+                "
+                (click)="goToSlide(i)"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Competitive Advantage Section - Mobile Optimized -->
+  <section class="py-12 sm:py-20 hidden sm:block bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2
+          class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-slate-900 mb-4 sm:mb-6"
+        >
+          Why HiyrNow Outperforms Traditional Hiring Tools
+        </h2>
+        <p
+          class="text-base sm:text-lg lg:text-xl text-slate-600 max-w-4xl mx-auto px-4"
+        >
+          Compare AI-driven automation with manual recruitment processes and
+          discover how HiyrNow gives your business the edge in India's
+          competitive talent market.
+        </p>
+      </div>
+      <div
+        class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200"
+      >
+        <div class="overflow-x-auto">
+          <table class="min-w-full">
+            <thead>
+              <tr
+                class="bg-gradient-to-r from-slate-900 to-blue-900 text-white"
+              >
+                <th class="py-6 px-8 text-left font-bold text-lg">
+                  Recruitment Feature
+                </th>
+                <th class="py-6 px-8 text-center font-bold text-lg">
+                  <div class="flex items-center justify-center gap-2">
+                    <div
+                      class="w-6 h-6 bg-blue-500 rounded flex items-center justify-center text-xs"
+                    >
+                      AI
+                    </div>
+                    HiyrNow Platform
+                  </div>
+                </th>
+                <th
+                  class="py-6 px-8 text-center font-bold text-lg text-slate-300"
+                >
+                  Traditional Methods
+                </th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-700">
+              <tr
+                class="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+              >
+                <td class="py-6 px-8 font-semibold">
+                  AI Job Description Generator
+                </td>
+                <td class="py-6 px-8 text-center">
+                  <div class="flex items-center justify-center gap-2">
+                    <svg
+                      class="w-5 h-5 text-green-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    <span class="font-bold text-green-600">
+                      Instantly creates engaging job descriptions with AI
+                    </span>
+                  </div>
+                </td>
+                <td class="py-6 px-8 text-center text-slate-500">
+                  <div class="flex items-center justify-center gap-2">
+                    <svg
+                      class="w-5 h-5 text-red-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    Manual JD writing, inconsistent quality & time-consuming
+                  </div>
+                </td>
+              </tr>
+
+              <tr
+                class="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+              >
+                <td class="py-6 px-8 font-semibold">
+                  AI-Powered Candidate Matching
+                </td>
+                <td class="py-6 px-8 text-center">
+                  <div class="flex items-center justify-center gap-2">
+                    <svg
+                      class="w-5 h-5 text-green-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    <span class="font-bold text-green-600"
+                      >99.5% accuracy with ML-driven matching</span
+                    >
+                  </div>
+                </td>
+                <td class="py-6 px-8 text-center text-slate-500">
+                  <div class="flex items-center justify-center gap-2">
+                    <svg
+                      class="w-5 h-5 text-red-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    Manual resume checks, high drop-off rates
+                  </div>
+                </td>
+              </tr>
+
+              <tr
+                class="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+              >
+                <td class="py-6 px-8 font-semibold">Skill-Based Assessments</td>
+                <td class="py-6 px-8 text-center">
+                  <div class="flex items-center justify-center gap-2">
+                    <svg
+                      class="w-5 h-5 text-green-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    <span class="font-bold text-green-600"
+                      >Built-in live coding & psychometric tests</span
+                    >
+                  </div>
+                </td>
+                <td class="py-6 px-8 text-center text-slate-500">
+                  <div class="flex items-center justify-center gap-2">
+                    <svg
+                      class="w-5 h-5 text-red-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    External tools, slow coordination
+                  </div>
+                </td>
+              </tr>
+
+              <tr
+                class="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+              >
+                <td class="py-6 px-8 font-semibold">Smart CRM Integration</td>
+                <td class="py-6 px-8 text-center">
+                  <div class="flex items-center justify-center gap-2">
+                    <svg
+                      class="w-5 h-5 text-green-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    <span class="font-bold text-green-600"
+                      >AI-powered CRM with candidate tracking</span
+                    >
+                  </div>
+                </td>
+                <td class="py-6 px-8 text-center text-slate-500">
+                  <div class="flex items-center justify-center gap-2">
+                    <svg
+                      class="w-5 h-5 text-red-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    Spreadsheets and manual follow-ups
+                  </div>
+                </td>
+              </tr>
+
+              <tr
+                class="border-b border-slate-100 hover:bg-slate-50 transition-colors"
+              >
+                <td class="py-6 px-8 font-semibold">
+                  Remote & Local Talent Access
+                </td>
+                <td class="py-6 px-8 text-center">
+                  <div class="flex items-center justify-center gap-2">
+                    <svg
+                      class="w-5 h-5 text-green-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    <span class="font-bold text-green-600"
+                      >Instant access across metro & Tier 2/3 cities</span
+                    >
+                  </div>
+                </td>
+                <td class="py-6 px-8 text-center text-slate-500">
+                  <div class="flex items-center justify-center gap-2">
+                    <svg
+                      class="w-5 h-5 text-red-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    Limited networks & slow reach
+                  </div>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-slate-50 transition-colors">
+                <td class="py-6 px-8 font-semibold">
+                  Predictive Hiring Analytics
+                </td>
+                <td class="py-6 px-8 text-center">
+                  <div class="flex items-center justify-center gap-2">
+                    <svg
+                      class="w-5 h-5 text-green-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    <span class="font-bold text-green-600"
+                      >Real-time dashboards & success forecasting</span
+                    >
+                  </div>
+                </td>
+                <td class="py-6 px-8 text-center text-slate-500">
+                  <div class="flex items-center justify-center gap-2">
+                    <svg
+                      class="w-5 h-5 text-red-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    Static reports, no predictive insights
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Success Stories Section - Mobile Optimized -->
+  <section class="py-12 sm:py-20 bg-gradient-to-br from-slate-50 to-indigo-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2
+          class="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-slate-900 mb-4 sm:mb-6"
+        >
+          Enterprise Success Stories
+        </h2>
+        <p
+          class="text-base sm:text-lg lg:text-xl text-slate-600 max-w-4xl mx-auto px-4"
+        >
+          How global enterprises are transforming recruitment with HiYrNow's AI
+          technology
+        </p>
+      </div>
+
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+      >
+        <!-- Testimonial Cards - Mobile optimized -->
+        <div
+          class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-200"
+        >
+          <div class="flex items-center mb-4 sm:mb-6">
+            <div
+              class="w-10 sm:w-12 h-10 sm:h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center text-white font-bold mr-3 sm:mr-4"
+            >
+              R
+            </div>
+            <div>
+              <h4 class="font-semibold text-slate-900 text-sm sm:text-base">
+                Rohit Mehra
+              </h4>
+              <p class="text-xs sm:text-sm text-slate-600">
+                Head of Talent, RETL Pvt. Ltd.
+              </p>
+            </div>
+          </div>
+          <p
+            class="text-slate-600 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base"
+          >
+            "HiYrNow's AI matching reduced our time-to-hire by 75%. The quality
+            of candidates has been exceptional, and the platform's insights help
+            us make data-driven hiring decisions."
+          </p>
+          <div class="flex items-center">
+            <div class="flex text-yellow-400 mr-3">
+              <svg
+                *ngFor="let star of [1, 2, 3, 4, 5]"
+                class="w-3 sm:w-4 h-3 sm:h-4"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+            </div>
+            <span class="text-xs sm:text-sm text-slate-600 font-medium"
+              >RETL Pvt. Ltd</span
+            >
+          </div>
+        </div>
+
+        <div
+          class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-200"
+        >
+          <div class="flex items-center mb-4 sm:mb-6">
+            <div
+              class="w-10 sm:w-12 h-10 sm:h-12 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold mr-3 sm:mr-4"
+            >
+              A
+            </div>
+            <div>
+              <h4 class="font-semibold text-slate-900 text-sm sm:text-base">
+                Ankita Sharma
+              </h4>
+              <p class="text-xs sm:text-sm text-slate-600">
+                HR Director, Dwiggly
+              </p>
+            </div>
+          </div>
+          <p
+            class="text-slate-600 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base"
+          >
+            "The AI-powered screening saved us countless hours. We're now able
+            to focus on interviewing the right candidates instead of sifting
+            through hundreds of resumes."
+          </p>
+          <div class="flex items-center">
+            <div class="flex text-yellow-400 mr-3">
+              <svg
+                *ngFor="let star of [1, 2, 3, 4, 5]"
+                class="w-3 sm:w-4 h-3 sm:h-4"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+            </div>
+            <span class="text-xs sm:text-sm text-slate-600 font-medium"
+              >Dwiggly</span
+            >
+          </div>
+        </div>
+
+        <div
+          class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-200 md:col-span-2 lg:col-span-1"
+        >
+          <div class="flex items-center mb-4 sm:mb-6">
+            <div
+              class="w-10 sm:w-12 h-10 sm:h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold mr-3 sm:mr-4"
+            >
+              N
+            </div>
+            <div>
+              <h4 class="font-semibold text-slate-900 text-sm sm:text-base">
+                Nikhil
+              </h4>
+              <p class="text-xs sm:text-sm text-slate-600">
+                CEO, Clusterzap.AI
+              </p>
+            </div>
+          </div>
+          <p
+            class="text-slate-600 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base"
+          >
+            "From automation to intelligent matching, HiYrNow is redefining the
+            way Indian companies hire. Our candidate engagement has
+            skyrocketed."
+          </p>
+          <div class="flex items-center">
+            <div class="flex text-yellow-400 mr-3">
+              <svg
+                *ngFor="let star of [1, 2, 3, 4, 5]"
+                class="w-3 sm:w-4 h-3 sm:h-4"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                ></path>
+              </svg>
+            </div>
+            <span class="text-xs sm:text-sm text-slate-600 font-medium"
+              >Clusterzap.AI</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section
+    id="get-started"
+    class="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white relative overflow-hidden"
+  >
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+      <div
+        class="absolute inset-0"
+        style="
+          background-image: radial-gradient(
+              circle at 25% 25%,
+              rgba(59, 130, 246, 0.3) 0%,
+              transparent 50%
+            ),
+            radial-gradient(
+              circle at 75% 75%,
+              rgba(139, 92, 246, 0.3) 0%,
+              transparent 50%
+            );
+        "
+      ></div>
+    </div>
+
+    <div class="container mx-auto px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-4xl mx-auto">
+        <h2 class="text-4xl lg:text-6xl font-bold mb-8 leading-tight">
+          Ready to Hire in India,
+          <span
+            class="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent"
+          >
+            Smarter & Faster?
+          </span>
+        </h2>
+
+        <p class="text-xl lg:text-2xl text-slate-300 mb-12 leading-relaxed">
+          Post your first job on HiyrNow and start receiving curated applicants
+          within hours. Transform your recruitment process with the power of AI.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row gap-6 justify-center mb-12">
+          <a
+            href="https://calendly.com/hiyrnow-info/30min"
+            target="_blank"
+            rel="noopener"
+            class="group inline-flex items-center justify-center px-10 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300"
+          >
+            <svg
+              class="w-6 h-6 mr-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+              ></path>
+            </svg>
+            Book a Demo
+            <svg
+              class="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-200"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              ></path>
+            </svg>
+          </a>
+
+          <a
+            href="/register"
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center justify-center px-10 py-4 border-2 border-cyan-400 hover:border-white text-cyan-400 hover:text-white font-bold text-lg rounded-2xl hover:bg-white/10 transition-all duration-300"
+          >
+            <svg
+              class="w-6 h-6 mr-3"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              ></path>
+            </svg>
+            Post a Job for Free
+          </a>
+        </div>
+
+        <!-- Pricing -->
+        <!-- <div
+          class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 mb-8 border border-white/20"
+        >
+          <div class="text-center">
+            <h3 class="text-2xl font-bold mb-4">Basic Package</h3>
+            <div class="text-4xl font-bold text-cyan-400 mb-4">₹25,000</div>
+            <p class="text-slate-300 text-lg leading-relaxed">
+              Complete package includes: Points for applied user profiles,
+              database access, PVC verifications, AI skill assessments, and
+              priority support.
+            </p>
+          </div>
+        </div> -->
+
+        <!-- Contact Information -->
+        <!-- <div class="grid md:grid-cols-3 gap-6 text-center">
+          <div
+            class="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+          >
+            <div
+              class="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mx-auto mb-4"
+            >
+              <svg
+                class="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                ></path>
+              </svg>
+            </div>
+            <h4 class="font-semibold mb-2">Email</h4>
+            <a
+              href="mailto:info@hiyrnow.com"
+              class="text-cyan-400 hover:text-white transition-colors"
+            >
+              info&#64;hiyrnow.com
+            </a>
+          </div>
+
+          <div
+            class="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+          >
+            <div
+              class="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4"
+            >
+              <svg
+                class="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                ></path>
+              </svg>
+            </div>
+            <h4 class="font-semibold mb-2">Phone</h4>
+            <a
+              href="tel:+918001234567"
+              class="text-cyan-400 hover:text-white transition-colors"
+            >
+              +91 (800) 123-4567
+            </a>
+          </div>
+
+          <div
+            class="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+          >
+            <div
+              class="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4"
+            >
+              <svg
+                class="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                ></path>
+              </svg>
+            </div>
+            <h4 class="font-semibold mb-2">Live Chat</h4>
+            <span class="text-slate-300">Available on our website</span>
+          </div>
+        </div> -->
+
+        <!-- Footer Message -->
+        <div class="mt-12 pt-8 border-t border-white/20">
+          <p class="text-slate-300 text-lg">
+            Join the ranks of successful companies that have optimized their
+            hiring with HiYrNow.
+            <br class="hidden sm:block" />
+            Don't let outdated recruitment methods hold you back—embrace the
+            future of hiring!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <app-faq-section></app-faq-section>
+</main>
+<!-- Login/Signup Modal -->
+<div
+  *ngIf="showModal"
+  class="fixed inset-0 z-50 overflow-y-auto"
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div
+    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+  >
+    <!-- Background overlay -->
+    <div
+      class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+      aria-hidden="true"
+    ></div>
+
+    <!-- Modal panel -->
+    <div
+      class="inline-block align-bottom bg-white/80 backdrop-blur-md rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full border border-white/20"
+      [@fadeIn]
+    >
+      <!-- Modal Content -->
+      <div class="px-6 pt-6 pb-4 sm:p-8 sm:pb-6">
+        <div class="sm:flex sm:items-start">
+          <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+            <h3 class="text-3xl font-bold text-gray-900 mb-4" id="modal-title">
+              Join HiyrNow Today
+            </h3>
+            <p class="text-gray-600 mb-6 text-base">
+              Get full access to AI-powered hiring tools and supercharge your
+              recruitment journey.
+            </p>
+            <div class="flex flex-col gap-4">
+              <app-ui-button [routerLink]="'/register'" block variant="primary">Create Account</app-ui-button>
+              <app-ui-button [routerLink]="'/login'" block variant="secondary">Login</app-ui-button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        class="bg-white/50 backdrop-blur-md px-6 py-4 sm:px-8 flex justify-end"
+      >
+        <app-ui-button type="button" variant="ghost" (click)="closeModal()">Maybe Later</app-ui-button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="bg-gray-900 text-gray-400 py-12 md:py-16">
+  <div class="container mx-auto px-4 md:px-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+      <!-- Brand Section -->
+      <section aria-labelledby="footer-about" class="space-y-5">
+        <h2 id="footer-about" class="text-3xl font-extrabold text-white">
+          HiYrNow
+        </h2>
+        <p class="text-gray-400 leading-relaxed text-sm md:text-base max-w-md">
+          HiYrNow is India’s leading AI-powered recruitment platform,
+          revolutionizing talent acquisition across major Indian cities like
+          Bengaluru, Mumbai, Chennai, and Gurgaon. Leveraging advanced
+          artificial intelligence and machine learning, we help Indian
+          enterprises and startups efficiently find the best candidates tailored
+          to local market needs.
+        </p>
+
+        <nav aria-label="Social media" class="flex space-x-6 mt-4">
+          <a
+            href="https://www.linkedin.com/company/hiyrnow"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-400 hover:text-white transition-colors"
+            aria-label="LinkedIn"
+          >
+            <svg
+              class="h-6 w-6"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.325V1.325C24 .593 23.407 0 22.675 0z"
+              />
+            </svg>
+          </a>
+          <a
+            href="https://twitter.com/hiyrnow_in"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-400 hover:text-white transition-colors"
+            aria-label="Twitter"
+          >
+            <svg
+              class="h-6 w-6"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 
+                   1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 
+                   1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 
+                   0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 
+                   2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 
+                   2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 
+                   1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 
+                   2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 
+                   14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"
+              />
+            </svg>
+          </a>
+          <a
+            href="https://www.instagram.com/hiyrnow"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-400 hover:text-white transition-colors"
+            aria-label="Instagram"
+          >
+            <svg
+              class="h-6 w-6"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 
+                   4.919 4.919.058 1.265.069 1.645.069 
+                   4.849 0 3.205-.012 3.584-.069 
+                   4.849-.149 3.225-1.664 4.771-4.919 
+                   4.919-1.266.058-1.644.07-4.85.07-3.204 
+                   0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 
+                   0-3.204.013-3.583.07-4.849.149-3.227 
+                   1.664-4.771 4.919-4.919 1.266-.057 
+                   1.645-.069 4.849-.069zM12 0C8.741 0 
+                   8.333.014 7.053.072 2.695.272.273 
+                   2.69.073 7.052.014 8.333 0 8.741 0 
+                   12c0 3.259.014 3.668.072 4.948.2 
+                   4.358 2.618 6.78 6.98 6.98C8.333 
+                   23.986 8.741 24 12 24c3.259 0 3.668-.014 
+                   4.948-.072 4.354-.2 6.782-2.618 
+                   6.979-6.98.059-1.28.073-1.689.073-4.948 
+                   0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 
+                   15.259 0 12 0zm0 5.838a6.162 
+                   6.162 0 100 12.324 6.162 6.162 0 
+                   000-12.324zM12 16a4 4 0 110-8 
+                   4 4 0 010 8zm6.406-11.845a1.44 
+                   1.44 0 100 2.881 1.44 1.44 0 
+                   000-2.881z"
+              />
+            </svg>
+          </a>
+        </nav>
+      </section>
+
+      <!-- Company Section -->
+      <section aria-labelledby="footer-company">
+        <h3 id="footer-company" class="text-xl font-semibold text-white mb-6">
+          Company
+        </h3>
+        <ul class="space-y-3 text-sm md:text-base">
+          <li>
+            <a routerLink="/about" class="hover:text-white transition-colors"
+              >About Us</a
+            >
+          </li>
+          <li>
+            <a routerLink="/blog" class="hover:text-white transition-colors"
+              >Blog & Insights</a
+            >
+          </li>
+          <!-- <li>
+            <a routerLink="/pricing" class="hover:text-white transition-colors"
+              >Pricing Plans</a
+            >
+          </li> -->
+          <li>
+            <a routerLink="/contact" class="hover:text-white transition-colors"
+              >Contact Us</a
+            >
+          </li>
+        </ul>
+      </section>
+
+      <!-- Resources Section -->
+      <section aria-labelledby="footer-resources">
+        <h3 id="footer-resources" class="text-xl font-semibold text-white mb-6">
+          Resources
+        </h3>
+        <ul class="space-y-3 text-sm md:text-base">
+          <li>
+            <a routerLink="/help" class="hover:text-white transition-colors"
+              >Help Center</a
+            >
+          </li>
+          <li>
+            <a routerLink="/privacy" class="hover:text-white transition-colors"
+              >Privacy Policy</a
+            >
+          </li>
+          <li>
+            <a routerLink="/terms" class="hover:text-white transition-colors"
+              >Terms & Conditions</a
+            >
+          </li>
+          <li>
+            <a routerLink="/cookies" class="hover:text-white transition-colors"
+              >Cookie Policy</a
+            >
+          </li>
+        </ul>
+      </section>
+
+      <!-- Locations Section -->
+      <section aria-labelledby="footer-locations">
+        <h3 id="footer-locations" class="text-xl font-semibold text-white mb-6">
+          Job Locations
+        </h3>
+        <ul class="space-y-3 text-sm md:text-base">
+          <li>
+            <a
+              routerLink="/job-list"
+              [queryParams]="{ location: 'bengaluru', keyword: '' }"
+              class="hover:text-white transition-colors"
+              >Jobs in Bengaluru</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/job-list"
+              [queryParams]="{ location: 'mumbai', keyword: '' }"
+              class="hover:text-white transition-colors"
+              >Jobs in Mumbai</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/job-list"
+              [queryParams]="{ location: 'gurgaon', keyword: '' }"
+              class="hover:text-white transition-colors"
+              >Jobs in Gurgaon</a
+            >
+          </li>
+          <li>
+            <a
+              routerLink="/job-list"
+              [queryParams]="{ location: 'chennai', keyword: '' }"
+              class="hover:text-white transition-colors"
+              >Jobs in Chennai</a
+            >
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <div
+      class="mt-10 pt-6 border-t border-gray-700 text-gray-500 text-center text-xs sm:text-sm md:flex md:justify-center md:space-x-6 md:text-sm"
+    >
+      <p>
+        &copy; 2025 HiYrNow AI Pvt Ltd. All rights reserved. India's Smartest AI
+        Hiring Platform.
+      </p>
+    </div>
+  </div>
+</footer>

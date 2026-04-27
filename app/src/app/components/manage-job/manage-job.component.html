@@ -1,0 +1,511 @@
+<!-- 🎨 MANAGE JOB - Premium HiYrNow Design -->
+<div class="min-h-screen bg-gradient-to-br from-[#F7F7FD] via-white to-[#EDEBFF]mt-20 mb-20 md:mt-0 md:mb-0">
+  
+  <!-- Page Container -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- Header Section -->
+    <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-white/60 p-6 mb-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        
+        <!-- Left: Back Button + Job Info -->
+        <div class="flex items-center gap-4">
+          <!-- Back Button -->
+          <button
+            routerLink="/company/job-postings"
+            class="flex items-center gap-2 px-4 py-2 bg-white border-2 border-gray-200 text-gray-700 rounded-xl font-semibold hover:border-[#6254E5] hover:text-[#6254E5] transition-all duration-300"
+          >
+            <i class="fas fa-arrow-left"></i>
+            <span class="hidden sm:inline">Back</span>
+          </button>
+
+          <!-- Job Title & Company -->
+          <div class="flex items-center gap-3">
+            <!-- Company Logo -->
+            <div class="hidden md:flex w-12 h-12 rounded-xl bg-gradient-to-br from-[#6254E5] to-[#8B73FF] p-0.5 shadow-md">
+              <div class="w-full h-full rounded-lg bg-white flex items-center justify-center overflow-hidden">
+                <img
+                  *ngIf="job.company_logo"
+                  [src]="job.company_logo"
+                  [alt]="job.company"
+                  class="w-full h-full object-contain p-1"
+                />
+                <i *ngIf="!job.company_logo" class="fas fa-building text-[#6254E5] text-lg"></i>
+              </div>
+            </div>
+
+            <!-- Title & Info -->
+            <div>
+              <h1 class="text-xl md:text-2xl font-bold text-gray-900">
+                {{ job.title || 'Job Candidates' }}
+              </h1>
+              <div class="flex items-center gap-3 text-sm text-gray-600 mt-1">
+                <span class="flex items-center gap-1">
+                  <i class="fas fa-building text-xs"></i>
+                  {{ job.company }}
+                </span>
+                <span class="hidden md:inline text-gray-300">•</span>
+                <span class="hidden md:flex items-center gap-1">
+                  <i class="fas fa-map-marker-alt text-xs"></i>
+                  {{ job.location }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Quick Actions -->
+        <div class="flex items-center gap-3">
+          <!-- Edit Job Button -->
+          <button
+            [routerLink]="['/edit-job-posting', jobId]"
+            class="flex items-center gap-2 px-4 py-2.5 bg-white border-2 border-gray-200 text-gray-700 rounded-xl font-semibold hover:border-[#6254E5] hover:text-[#6254E5] hover:bg-[#6254E5]/5 transition-all duration-300"
+          >
+            <i class="fas fa-edit"></i>
+            <span class="hidden sm:inline">Edit</span>
+          </button>
+
+          <!-- Share Button -->
+          <button
+            class="flex items-center gap-2 px-4 py-2.5  bg-gradient-to-br from-primary to-accent text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
+          >
+            <i class="fas fa-share-alt"></i>
+            <span class="hidden sm:inline">Share</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <!-- Total Applications -->
+      <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 p-6 hover:shadow-[0_8px_30px_rgba(98,84,229,0.15)] transition-all duration-300">
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/10 to-indigo-500/10 flex items-center justify-center">
+            <i class="fas fa-users text-[#6254E5] text-xl"></i>
+          </div>
+        </div>
+        <div class="text-3xl font-bold text-[#6254E5] mb-1">{{ appliedUsersCount }}</div>
+        <div class="text-sm text-gray-600">Total Applications</div>
+        </div>
+
+      <!-- Matched Candidates -->
+      <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 p-6 hover:shadow-[0_8px_30px_rgba(139,115,255,0.15)] transition-all duration-300">
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 flex items-center justify-center">
+            <i class="fas fa-star text-purple-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="text-3xl font-bold text-purple-600 mb-1">{{ matchedUsersCount }}</div>
+        <div class="text-sm text-gray-600">Matched</div>
+      </div>
+
+      <!-- PVC Candidates -->
+      <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 p-6 hover:shadow-[0_8px_30px_rgba(251,191,36,0.15)] transition-all duration-300">
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/10 to-orange-500/10 flex items-center justify-center">
+            <i class="fas fa-crown text-amber-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="text-3xl font-bold text-amber-600 mb-1">{{ pvcUsersCount }}</div>
+        <div class="text-sm text-gray-600">PVC Candidates</div>
+      </div>
+
+      <!-- Shortlisted -->
+      <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 p-6 hover:shadow-[0_8px_30px_rgba(16,185,129,0.15)] transition-all duration-300">
+        <div class="flex items-center justify-between mb-3">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500/10 to-green-500/10 flex items-center justify-center">
+            <i class="fas fa-check-circle text-emerald-600 text-xl"></i>
+          </div>
+        </div>
+        <div class="text-3xl font-bold text-emerald-600 mb-1">{{ getShortlistedCount() }}</div>
+        <div class="text-sm text-gray-600">Shortlisted</div>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 p-2 mb-6">
+      <div class="grid grid-cols-3 gap-2">
+        <!-- Applied Users Tab -->
+        <button
+          (click)="selectView('appliedUsers')"
+          class="px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-300"
+          [ngClass]="selectedView === 'appliedUsers' 
+            ? ' bg-gradient-to-br from-primary to-accent text-white shadow-md' 
+            : 'text-gray-600 hover:bg-gray-50'"
+        >
+          <i class="fas fa-users mr-2"></i>
+          <span class="hidden sm:inline">Applied</span>
+          <span class="inline sm:hidden">{{ appliedUsersCount }}</span>
+          <span class="hidden sm:inline ml-1.5 px-2 py-0.5 rounded-full text-xs"
+            [ngClass]="selectedView === 'appliedUsers' ? 'bg-white/20' : 'bg-gray-200'">
+            {{ appliedUsersCount }}
+          </span>
+        </button>
+
+        <!-- Matched Users Tab -->
+        <button
+          (click)="selectView('matchedUsers')"
+          class="px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-300"
+          [ngClass]="selectedView === 'matchedUsers' 
+            ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-md' 
+            : 'text-gray-600 hover:bg-gray-50'"
+        >
+          <i class="fas fa-star mr-2"></i>
+          <span class="hidden sm:inline">Matched</span>
+          <span class="inline sm:hidden">{{ matchedUsersCount }}</span>
+          <span class="hidden sm:inline ml-1.5 px-2 py-0.5 rounded-full text-xs"
+            [ngClass]="selectedView === 'matchedUsers' ? 'bg-white/20' : 'bg-gray-200'">
+            {{ matchedUsersCount }}
+          </span>
+        </button>
+
+        <!-- PVC Users Tab -->
+        <button
+          (click)="selectView('pvcUsers')"
+          class="px-4 py-3 rounded-xl font-semibold text-sm transition-all duration-300"
+          [ngClass]="selectedView === 'pvcUsers' 
+            ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white shadow-md' 
+            : 'text-gray-600 hover:bg-gray-50'"
+        >
+          <i class="fas fa-crown mr-2"></i>
+          <span class="hidden sm:inline">PVC</span>
+          <span class="inline sm:hidden">{{ pvcUsersCount }}</span>
+          <span class="hidden sm:inline ml-1.5 px-2 py-0.5 rounded-full text-xs"
+            [ngClass]="selectedView === 'pvcUsers' ? 'bg-white/20' : 'bg-gray-200'">
+            {{ pvcUsersCount }}
+          </span>
+        </button>
+      </div>
+          </div>
+
+    <!-- Content Area -->
+    <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 p-6">
+      
+      <!-- Loading State -->
+      <div *ngIf="loading" class="flex flex-col items-center justify-center py-20">
+        <div class="relative">
+          <div class="animate-spin rounded-full h-16 w-16 border-4 border-[#6254E5] border-t-transparent"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <i class="fas fa-users text-[#6254E5] text-xl animate-pulse"></i>
+          </div>
+        </div>
+        <p class="text-gray-600 font-semibold mt-4">Loading candidates...</p>
+    </div>
+
+      <!-- Applied Users View -->
+      <div *ngIf="!loading && selectedView === 'appliedUsers' && jobApplications.length > 0" class="space-y-4">
+        <div
+          *ngFor="let application of jobApplications; trackBy: trackByApplicationId"
+          class="group bg-gradient-to-r from-white to-gray-50 border border-gray-200 rounded-2xl p-6 hover:shadow-[0_8px_30px_rgba(98,84,229,0.15)] hover:border-[#6254E5]/30 transition-all duration-300"
+        >
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <!-- Candidate Info -->
+            <div class="flex items-center gap-4 flex-1 min-w-0">
+              <!-- Avatar -->
+              <div class="relative flex-shrink-0">
+                <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-[#6254E5] to-[#8B73FF] flex items-center justify-center text-white text-xl font-bold shadow-lg">
+                  <img
+                    *ngIf="getUserProfilePicUrl(application)"
+                    [src]="getUserProfilePicUrl(application)"
+                    [alt]="getCandidateName(application)"
+                    class="w-full h-full rounded-xl object-cover"
+                    (error)="setDefaultProfilePic(application)"
+                  />
+                  <span *ngIf="!getUserProfilePicUrl(application)">
+                    {{ getInitials(getCandidateFirstName(application), getCandidateLastName(application)) }}
+                  </span>
+                </div>
+                <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white shadow-md"></div>
+              </div>
+
+              <!-- Details -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <h3 class="text-lg font-bold text-gray-900 truncate">
+                    {{ getCandidateName(application) }}
+                  </h3>
+                  <app-ui-badge
+                    [variant]="getStatusVariant(application.application?.status || application.status)"
+                    [text]="(application.application?.status || application.status || 'pending')"
+                  ></app-ui-badge>
+                </div>
+                <p class="text-sm text-gray-600 truncate mb-2">
+                  {{ getCandidateEmail(application) }}
+                </p>
+                <div class="flex items-center gap-4 text-xs text-gray-500">
+                  <span class="flex items-center gap-1">
+                    <i class="fas fa-calendar"></i>
+                    Applied {{ getTimeAgo(application.application?.dateApplied || application.dateApplied) }}
+                  </span>
+              </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-2">
+              <button
+                [routerLink]="[
+                '/jobApplication',
+                jobId,
+                application.application.user._id
+              ]"
+                class="px-4 py-2 bg-white border-2 border-gray-200 text-gray-700 rounded-xl font-semibold text-sm hover:border-[#6254E5] hover:text-[#6254E5] hover:bg-[#6254E5]/5 transition-all duration-300"
+              >
+                <i class="fas fa-eye mr-2"></i>
+                View
+              </button>
+              <button
+                (click)="performAIAnalysis(application)"
+                class="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-xl font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105"
+              >
+                <i class="fas fa-brain mr-2"></i>
+                AI Analysis
+          </button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+      <!-- Matched Users View -->
+      <div *ngIf="!loading && selectedView === 'matchedUsers' && matchedUsers.length > 0" class="space-y-4">
+        <div
+          *ngFor="let match of matchedUsers; trackBy: trackByMatchedUserId"
+          class="group bg-gradient-to-r from-white to-purple-50/30 border border-purple-200 rounded-2xl p-6 hover:shadow-[0_8px_30px_rgba(139,115,255,0.15)] hover:border-purple-400 transition-all duration-300"
+        >
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <!-- Candidate Info -->
+            <div class="flex items-center gap-4 flex-1 min-w-0">
+              <!-- Avatar -->
+              <div class="relative flex-shrink-0">
+                <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white text-xl font-bold shadow-lg">
+                  <span>{{ getInitials(match.user?.firstName, match.user?.lastName) }}</span>
+                </div>
+                <div class="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md">
+                  {{ Math.round(match.totalScore) }}%
+                </div>
+              </div>
+
+              <!-- Details -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <h3 class="text-lg font-bold text-gray-900 truncate">
+                    {{ match.user?.username }} {{ match.user?.lastName }}
+                  </h3>
+                </div>
+                <p class="text-sm text-gray-600 truncate mb-2">
+                  <!-- {{ match.user?.email }} -->
+                </p>
+                <div class="flex flex-wrap items-center gap-2 text-xs text-gray-600">
+                  <ng-container *ngIf="match.user?.skills?.length; else noSkills">
+                    <span
+                      *ngFor="let skill of match.user?.skills | slice:0:4"
+                      class="px-3 py-1 rounded-full bg-purple-100 text-purple-700 font-medium"
+                    >
+                      {{ skill }}
+                    </span>
+                    <span
+                      *ngIf="match.user?.skills?.length > 4"
+                      class="px-3 py-1 rounded-full bg-purple-50 text-purple-600 font-medium"
+                    >
+                      +{{ match.user?.skills?.length - 4 }} more
+                    </span>
+                  </ng-container>
+                  <ng-template #noSkills>
+                    <span class="text-gray-400 italic">No skills listed</span>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-2">
+              <button
+                [routerLink]="['/Matched-Profile', match.user?._id, jobId]"
+                class="px-4 py-2 bg-white border-2 border-gray-200 text-gray-700 rounded-xl font-semibold text-sm hover:border-purple-500 hover:text-purple-600 hover:bg-purple-50 transition-all duration-300"
+              >
+                <i class="fas fa-eye mr-2"></i>
+                View
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PVC Users View -->
+      <div *ngIf="!loading && selectedView === 'pvcUsers' && pvcListUsers.length > 0" class="space-y-4">
+        <div
+          *ngFor="let pvcUser of pvcListUsers; trackBy: trackByPVCUserId"
+          class="group bg-gradient-to-r from-white to-amber-50/30 border border-amber-200 rounded-2xl p-6 hover:shadow-[0_8px_30px_rgba(251,191,36,0.15)] hover:border-amber-400 transition-all duration-300"
+        >
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <!-- Candidate Info -->
+            <div class="flex items-center gap-4 flex-1 min-w-0">
+              <!-- Avatar -->
+              <div class="relative flex-shrink-0">
+                <div class="w-16 h-16 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white text-xl font-bold shadow-lg">
+                  <span>{{ getInitials(getCandidateFirstName(pvcUser), getCandidateLastName(pvcUser)) }}</span>
+                </div>
+                <div class="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md">
+                  <i class="fas fa-crown"></i>
+                </div>
+              </div>
+
+              <!-- Details -->
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <h3 class="text-lg font-bold text-gray-900 truncate">
+                    {{ getCandidateName(pvcUser) }}
+                  </h3>
+                  <span class="px-2 py-1 bg-amber-100 text-amber-700 rounded-lg text-xs font-semibold">
+                    PVC
+                  </span>
+                </div>
+                <p class="text-sm text-gray-600 truncate mb-2">
+                  {{ getCandidateEmail(pvcUser) }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-2">
+              <button
+                [routerLink]="['/profile-seeker', getCandidateUserId(pvcUser)]"
+                class="px-4 py-2 bg-white border-2 border-gray-200 text-gray-700 rounded-xl font-semibold text-sm hover:border-amber-500 hover:text-amber-600 hover:bg-amber-50 transition-all duration-300"
+              >
+                <i class="fas fa-eye mr-2"></i>
+                View
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div 
+        *ngIf="!loading && getCandidatesForCurrentView().length === 0"
+        class="flex flex-col items-center justify-center py-20"
+      >
+        <div class="w-24 h-24 bg-gradient-to-br from-[#6254E5]/10 to-[#8B73FF]/10 rounded-full flex items-center justify-center mb-6">
+          <i class="fas fa-user-slash text-[#6254E5] text-4xl"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">No Candidates Yet</h3>
+        <p class="text-gray-600 text-center max-w-md">
+          {{ getEmptyStateMessage() }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AI Analysis Modal -->
+<div
+  *ngIf="isModalOpen && modalType === 'aiAnalysis'"
+  class="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4"
+  (click)="closeModal()"
+>
+  <div
+    class="bg-white rounded-3xl p-8 w-full max-w-3xl max-h-[90vh] overflow-y-auto shadow-2xl transform transition-all duration-300"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Close Button -->
+    <button
+      (click)="closeModal()"
+      class="absolute top-4 right-4 w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-xl flex items-center justify-center transition-all"
+    >
+      <i class="fas fa-times text-gray-600"></i>
+          </button>
+
+    <!-- AI Analysis Content -->
+    <div class="mb-6">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <i class="fas fa-brain text-white text-2xl"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-gray-900">AI Candidate Analysis</h2>
+          <p class="text-sm text-gray-600">Powered by HiYrNow AI</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Candidate Info -->
+    <div *ngIf="selectedCandidate" class="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-6 mb-6">
+      <div class="flex items-center gap-4">
+        <div class="w-16 h-16 rounded-full bg-gradient-to-br from-[#6254E5] to-[#8B73FF] flex items-center justify-center text-white text-xl font-bold shadow-lg">
+          {{ getInitials(selectedCandidate.user?.firstName, selectedCandidate.user?.lastName) }}
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-gray-900">
+            {{ selectedCandidate.user?.firstName }} {{ selectedCandidate.user?.lastName }}
+        </h3>
+          <p class="text-sm text-gray-600">{{ selectedCandidate.user?.email }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analysis Results -->
+    <div *ngIf="aiAnalysisResults" class="space-y-6">
+      <!-- Overall Score -->
+      <div class="bg-gradient-to-br from-[#6254E5]/10 to-[#8B73FF]/10 rounded-2xl p-6 border border-[#6254E5]/20">
+        <div class="text-center">
+          <div class="text-5xl font-bold text-[#6254E5] mb-2">
+            {{ aiAnalysisResults.overallScore }}%
+          </div>
+          <div class="text-sm font-semibold text-gray-700">Overall Match Score</div>
+        </div>
+      </div>
+
+      <!-- Strengths -->
+      <div *ngIf="aiAnalysisResults.strengths?.length > 0">
+        <h4 class="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+          <i class="fas fa-check-circle text-emerald-500"></i>
+          Strengths
+        </h4>
+        <div class="space-y-2">
+          <div
+            *ngFor="let strength of aiAnalysisResults.strengths"
+            class="flex items-start gap-3 p-3 bg-emerald-50 rounded-xl border border-emerald-200"
+          >
+            <i class="fas fa-plus text-emerald-600 mt-1"></i>
+            <span class="text-sm text-gray-700">{{ strength }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gaps -->
+      <div *ngIf="aiAnalysisResults.gaps?.length > 0">
+        <h4 class="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+          <i class="fas fa-exclamation-triangle text-amber-500"></i>
+          Areas for Improvement
+        </h4>
+        <div class="space-y-2">
+          <div
+            *ngFor="let gap of aiAnalysisResults.gaps"
+            class="flex items-start gap-3 p-3 bg-amber-50 rounded-xl border border-amber-200"
+          >
+            <i class="fas fa-minus text-amber-600 mt-1"></i>
+            <span class="text-sm text-gray-700">{{ gap }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex gap-3 mt-8">
+      <button
+        (click)="closeModal()"
+        class="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all"
+      >
+        Close
+          </button>
+        <button
+        (click)="shortlistCandidate(selectedCandidate)"
+        class="flex-1 px-6 py-3  bg-gradient-to-br from-primary to-accent text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95"
+      >
+        <i class="fas fa-check mr-2"></i>
+        Shortlist Candidate
+        </button>
+      </div>
+    </div>
+</div>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Hiyrnow – AI-Powered Hiring Platform for Smarter Recruitment</title>
+    <base href="/" />
+
+    <!-- Essential Meta Tags -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Hiyrnow is an AI-powered hiring platform that helps companies recruit faster, smarter, and better. Discover intelligent job matching, automated workflows, and top talent instantly."
+    />
+    <meta
+      name="keywords"
+      content="AI hiring platform, smart recruitment, job matching, AI recruitment tools, talent acquisition, Hiyrnow, automated hiring, job board, HR tech, hiring software"
+    />
+
+    <meta name="author" content="Hiyrnow Team" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="Hiyrnow – AI-Powered Hiring Platform" />
+    <meta
+      property="og:description"
+      content="Smarter, faster, and AI-driven hiring. Discover Hiyrnow's powerful tools for recruiters and job seekers."
+    />
+    <!-- <meta property="og:image" content="https://hiyrnow.in/assets/social-preview.jpg" /> -->
+    <meta property="og:url" content="https://hiyrnow.in/" />
+    <meta property="og:type" content="website" />
+
+    <meta
+      property="og:image"
+      content="https://hiyrnow.in/assets/hiyrnow_logo.png"
+    />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hiyrnow – AI-Powered Hiring Platform" />
+    <meta
+      name="twitter:description"
+      content="Smarter, faster, and AI-driven hiring. Discover Hiyrnow's powerful tools for recruiters and job seekers."
+    />
+    <!-- <meta name="twitter:image" content="https://hiyrnow.in/assets/social-preview.jpg" /> -->
+
+    <meta
+      name="twitter:image"
+      content="https://hiyrnow.in/assets/hiyrnow_logo.png"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json" />
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png" />
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#3498db" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="HiYrNow" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <!-- Sitemap -->
+    <link
+      rel="sitemap"
+      type="application/xml"
+      title="Sitemap"
+      href="https://hiyrnow-v1-721026586154.europe-west1.run.app/sitemap.xml"
+    />
+
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-3Y8HY6GLQ4"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-3Y8HY6GLQ4");
+    </script>
+
+    <!-- External Resources -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Source+Sans+Pro:wght@300;400;600;700&family=Open+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Loader Styles -->
+    <style>
+      .loader-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 0.5s;
+      }
+
+      .loader-hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .logo-container {
+        width: 150px;
+        height: 150px;
+        position: relative;
+      }
+
+      .logo {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      .spinner {
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loading Screen -->
+    <div class="loader-container" id="loader">
+      <div class="logo-container">
+        <img src="assets/hiyrnow_logo.png" alt="Hiyrnow Logo" class="logo" />
+        <div class="spinner"></div>
+      </div>
+    </div>
+
+    <!-- Loader Script -->
+    <script>
+      window.addEventListener("load", function () {
+        setTimeout(function () {
+          const loader = document.getElementById("loader");
+          loader.classList.add("loader-hidden");
+
+          loader.addEventListener("transitionend", function () {
+            document.body.removeChild(loader);
+          });
+        }, 1000);
+      });
+    </script>
+
+    <!-- Angular App Root -->
+    <app-root></app-root>
+  </body>
+</html>

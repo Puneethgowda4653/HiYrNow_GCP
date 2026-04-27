@@ -1,0 +1,453 @@
+<!-- Education Section -->
+<div class="education-container">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div>
+     
+      <p class="text-sm text-text-secondary mt-1">
+        {{ education.length }} qualification{{ education.length !== 1 ? 's' : '' }} added
+      </p>
+        </div>
+        <button
+      *ngIf="!isAddMode && !isEditMode"
+          (click)="add()"
+      class="px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      [attr.aria-label]="'Add education'"
+    >
+      <i class="fas fa-plus" aria-hidden="true"></i>
+          <span class="hidden sm:inline">Add Education</span>
+        </button>
+    </div>
+
+    <!-- Loading State -->
+  <div *ngIf="isLoading && education.length === 0" class="text-center py-12">
+    <div class="inline-block w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+    <p class="text-text-secondary mt-4">Loading education history...</p>
+    </div>
+
+  <!-- Add/Edit Form -->
+  <div *ngIf="isAddMode || isEditMode" class="bg-gradient-to-br from-primary/5 to-transparent rounded-2xl p-6 border-2 border-primary/20 mb-6 animate-slide-up">
+    <div class="flex items-center justify-between mb-6">
+      <h4 class="text-lg font-bold text-text-primary flex items-center gap-2">
+        <i class="fas fa-{{ isEditMode ? 'edit' : 'plus-circle' }} text-primary" aria-hidden="true"></i>
+        {{ isEditMode ? 'Edit' : 'Add New' }} Education
+      </h4>
+      <button
+        (click)="cancel()"
+        class="text-text-secondary hover:text-text-primary transition-colors"
+        [attr.aria-label]="'Cancel'"
+      >
+        <i class="fas fa-times text-xl" aria-hidden="true"></i>
+              </button>
+        </div>
+
+    <form [formGroup]="educationForm" (ngSubmit)="isEditMode ? update() : create()" class="space-y-4">
+      <!-- Step Indicator -->
+      <div class="flex items-center justify-center gap-2 mb-6">
+        <div 
+          *ngFor="let step of [1, 2, 3]; let i = index"
+          class="flex items-center"
+        >
+          <div 
+            class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300"
+            [ngClass]="currentStep > i + 1 ? 'bg-success text-white' : currentStep === i + 1 ? 'bg-primary text-white' : 'bg-gray-200 text-gray-500'"
+          >
+            <i *ngIf="currentStep > i + 1" class="fas fa-check" aria-hidden="true"></i>
+            <span *ngIf="currentStep <= i + 1">{{ i + 1 }}</span>
+          </div>
+          <div 
+            *ngIf="i < 2"
+            class="w-12 h-1 mx-2 rounded-full transition-all duration-300"
+            [ngClass]="currentStep > i + 1 ? 'bg-success' : 'bg-gray-200'"
+            ></div>
+  </div>
+</div>
+
+      <!-- Step 1: Basic Information -->
+      <div *ngIf="currentStep === 1" class="space-y-4">
+        <!-- Institution Name -->
+        <div>
+          <label for="institute" class="block text-sm font-semibold text-text-primary mb-2">
+            Institution Name <span class="text-error">*</span>
+          </label>
+          <input
+            id="institute"
+            type="text"
+            formControlName="institute"
+            placeholder="e.g., Stanford University"
+            class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            [ngClass]="getFieldError('institute') ? 'border-error' : 'border-gray-300'"
+          />
+          <p *ngIf="getFieldError('institute')" class="text-error text-xs mt-1 flex items-center gap-1">
+            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+            {{ getFieldError('institute') }}
+          </p>
+        </div>
+
+        <!-- Location -->
+        <div>
+          <label for="location" class="block text-sm font-semibold text-text-primary mb-2">
+            Location <span class="text-error">*</span>
+          </label>
+          <input
+            id="location"
+            type="text"
+            formControlName="location"
+            placeholder="e.g., Stanford, CA"
+            class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            [ngClass]="getFieldError('location') ? 'border-error' : 'border-gray-300'"
+          />
+          <p *ngIf="getFieldError('location')" class="text-error text-xs mt-1 flex items-center gap-1">
+            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+            {{ getFieldError('location') }}
+          </p>
+        </div>
+
+        <!-- Date Range -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="startMonth" class="block text-sm font-semibold text-text-primary mb-2">
+              Start Date <span class="text-error">*</span>
+            </label>
+            <div class="grid grid-cols-2 gap-2">
+              <select
+                id="startMonth"
+                formControlName="startMonth"
+                class="px-3 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none bg-white text-sm"
+                [ngClass]="getFieldError('startMonth') ? 'border-error' : 'border-gray-300'"
+              >
+                <option value="Month">Month</option>
+                <option *ngFor="let month of months.slice(1)" [value]="month">{{ month }}</option>
+              </select>
+              <select
+                id="startYear"
+                formControlName="startYear"
+                class="px-3 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none bg-white text-sm"
+                [ngClass]="getFieldError('startYear') ? 'border-error' : 'border-gray-300'"
+              >
+                <option value="Year">Year</option>
+                <option *ngFor="let year of years.slice(1)" [value]="year">{{ year }}</option>
+              </select>
+            </div>
+            <p *ngIf="getFieldError('startMonth') || getFieldError('startYear')" class="text-error text-xs mt-1">
+              Required
+            </p>
+          </div>
+
+          <div>
+            <label for="endMonth" class="block text-sm font-semibold text-text-primary mb-2">
+              End Date
+              <span *ngIf="!educationForm.get('ongoingStatus')?.value" class="text-error">*</span>
+            </label>
+            <div class="grid grid-cols-2 gap-2">
+              <select
+                id="endMonth"
+                formControlName="endMonth"
+                [disabled]="educationForm.get('ongoingStatus')?.value"
+                class="px-3 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none bg-white text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+                [ngClass]="getFieldError('endMonth') ? 'border-error' : 'border-gray-300'"
+              >
+                <option value="Month">Month</option>
+                <option *ngFor="let month of months.slice(1)" [value]="month">{{ month }}</option>
+              </select>
+              <select
+                id="endYear"
+                formControlName="endYear"
+                [disabled]="educationForm.get('ongoingStatus')?.value"
+                class="px-3 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none bg-white text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+                [ngClass]="getFieldError('endYear') ? 'border-error' : 'border-gray-300'"
+              >
+                <option value="Year">Year</option>
+                <option *ngFor="let year of years.slice(1)" [value]="year">{{ year }}</option>
+              </select>
+            </div>
+            <p *ngIf="getFieldError('endMonth') || getFieldError('endYear')" class="text-error text-xs mt-1">
+              Required
+            </p>
+          </div>
+        </div>
+
+        <!-- Currently Pursuing -->
+        <div class="flex items-center gap-3 p-4 bg-primary/5 rounded-xl">
+          <input
+            id="ongoingStatus"
+            type="checkbox"
+            formControlName="ongoingStatus"
+            class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
+          />
+          <label for="ongoingStatus" class="text-sm font-medium text-text-primary cursor-pointer select-none">
+            I am currently pursuing this degree
+          </label>
+        </div>
+        </div>
+
+      <!-- Step 2: Degree Details -->
+      <div *ngIf="currentStep === 2" class="space-y-4">
+        <!-- Degree -->
+        <div>
+          <label for="degree" class="block text-sm font-semibold text-text-primary mb-2">
+            Degree <span class="text-error">*</span>
+          </label>
+          <input
+            id="degree"
+            type="text"
+            formControlName="degree"
+            placeholder="e.g., Bachelor of Science"
+            class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            [ngClass]="getFieldError('degree') ? 'border-error' : 'border-gray-300'"
+          />
+          <p *ngIf="getFieldError('degree')" class="text-error text-xs mt-1 flex items-center gap-1">
+            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+            {{ getFieldError('degree') }}
+          </p>
+        </div>
+
+        <!-- Field of Study -->
+        <div>
+          <label for="fieldOfStudy" class="block text-sm font-semibold text-text-primary mb-2">
+            Field of Study <span class="text-error">*</span>
+          </label>
+          <input
+            id="fieldOfStudy"
+            type="text"
+            formControlName="fieldOfStudy"
+            placeholder="e.g., Computer Science"
+            class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            [ngClass]="getFieldError('fieldOfStudy') ? 'border-error' : 'border-gray-300'"
+          />
+          <p *ngIf="getFieldError('fieldOfStudy')" class="text-error text-xs mt-1 flex items-center gap-1">
+            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+            {{ getFieldError('fieldOfStudy') }}
+          </p>
+        </div>
+
+        <!-- Grade -->
+        <div>
+          <label for="grade" class="block text-sm font-semibold text-text-primary mb-2">
+            Grade / GPA (Optional)
+          </label>
+          <input
+            id="grade"
+            type="text"
+            formControlName="grade"
+            placeholder="e.g., 3.8 GPA or First Class"
+            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          />
+        </div>
+        </div>
+
+      <!-- Step 3: Additional Details -->
+      <div *ngIf="currentStep === 3" class="space-y-4">
+        <!-- Description -->
+        <div>
+          <label for="description" class="block text-sm font-semibold text-text-primary mb-2">
+            Description (Optional)
+          </label>
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="4"
+            placeholder="Describe your coursework, achievements, activities..."
+            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none"
+          ></textarea>
+        </div>
+
+        <!-- URL -->
+        <div>
+          <label for="url" class="block text-sm font-semibold text-text-primary mb-2">
+            Institution Website (Optional)
+          </label>
+          <input
+            id="url"
+            type="url"
+            formControlName="url"
+            placeholder="https://..."
+            class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            [ngClass]="getFieldError('url') ? 'border-error' : 'border-gray-300'"
+          />
+          <p *ngIf="getFieldError('url')" class="text-error text-xs mt-1 flex items-center gap-1">
+            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+            {{ getFieldError('url') }}
+          </p>
+        </div>
+
+        <!-- Notes -->
+        <div>
+          <label for="notes" class="block text-sm font-semibold text-text-primary mb-2">
+            Notes (Optional)
+          </label>
+          <textarea
+            id="notes"
+            formControlName="notes"
+            rows="3"
+            placeholder="Any additional information..."
+            class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Form Navigation -->
+      <div class="flex gap-3 pt-6 border-t-2 border-gray-100">
+        <button
+          *ngIf="currentStep > 1"
+          type="button"
+          (click)="previousStep()"
+          class="flex-1 px-6 py-3 border-2 border-gray-300 text-text-primary rounded-xl font-semibold hover:bg-gray-50 transition-all focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+        >
+          <i class="fas fa-arrow-left mr-2" aria-hidden="true"></i>
+          Previous
+        </button>
+
+        <button
+          *ngIf="currentStep < 3"
+          type="button"
+          (click)="nextStep()"
+          class="flex-1 px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        >
+          Next
+          <i class="fas fa-arrow-right ml-2" aria-hidden="true"></i>
+        </button>
+
+        <button
+          *ngIf="currentStep === 3"
+          type="submit"
+          [disabled]="educationForm.invalid || isLoading"
+          class="flex-1 px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        >
+          <i class="fas fa-{{ isEditMode ? 'save' : 'plus' }} mr-2" aria-hidden="true"></i>
+          {{ isEditMode ? 'Update' : 'Add' }} Education
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && education.length === 0 && !isAddMode && !isEditMode" class="text-center py-12">
+    <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+      <i class="fas fa-graduation-cap text-primary text-4xl" aria-hidden="true"></i>
+    </div>
+    <h4 class="text-lg font-semibold text-text-primary mb-2">No education added yet</h4>
+    <p class="text-text-secondary mb-6">Add your educational qualifications to complete your profile</p>
+    <button
+      (click)="add()"
+      class="px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 inline-flex items-center gap-2"
+    >
+      <i class="fas fa-plus" aria-hidden="true"></i>
+      Add Your First Education
+    </button>
+  </div>
+
+  <!-- Education Timeline -->
+  <div *ngIf="education.length > 0 && !isAddMode && !isEditMode" class="space-y-4">
+    <div
+      *ngFor="let edu of education"
+      class="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-all duration-300 group relative overflow-hidden"
+    >
+      <!-- Education Header -->
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex items-start gap-4 flex-1">
+          <!-- Icon -->
+          <div class="w-14 h-14 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+            <i class="fas fa-graduation-cap text-white text-2xl" aria-hidden="true"></i>
+        </div>
+
+          <!-- Content -->
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xl font-bold text-text-primary mb-1">{{ edu.degree }}</h4>
+            <p class="text-base font-semibold text-primary mb-1">{{ edu.institute }}</p>
+            <p class="text-sm text-text-secondary">{{ edu.fieldOfStudy }}</p>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-2">
+          <button
+            (click)="edit(edu, edu._id)"
+            class="w-9 h-9 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            [attr.aria-label]="'Edit education'"
+            title="Edit education"
+          >
+            <i class="fas fa-edit" aria-hidden="true"></i>
+          </button>
+          <button
+            (click)="delete(edu._id)"
+            [disabled]="isLoading"
+            class="w-9 h-9 bg-error/10 text-error rounded-lg hover:bg-error hover:text-white transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2 disabled:opacity-50"
+            [attr.aria-label]="'Delete education'"
+            title="Delete education"
+          >
+            <i class="fas fa-trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Education Details -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+        <!-- Location -->
+        <div class="flex items-center gap-3 p-3 bg-purple-50 rounded-xl">
+          <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-map-marker-alt text-purple-600" aria-hidden="true"></i>
+          </div>
+          <div class="min-w-0">
+            <p class="text-xs font-medium text-purple-600 uppercase">Location</p>
+            <p class="text-sm font-semibold text-text-primary truncate">{{ edu.location }}</p>
+          </div>
+        </div>
+
+        <!-- Duration -->
+        <div class="flex items-center gap-3 p-3 bg-blue-50 rounded-xl">
+          <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-calendar-alt text-blue-600" aria-hidden="true"></i>
+          </div>
+          <div class="min-w-0">
+            <p class="text-xs font-medium text-blue-600 uppercase">Duration</p>
+            <p class="text-sm font-semibold text-text-primary truncate">
+              {{ edu.startDate.month }} {{ edu.startDate.year }} - 
+              {{ isEducationOngoing(edu) ? 'Present' : (edu.endDate.month + ' ' + edu.endDate.year) }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Grade -->
+        <div *ngIf="edu.grade" class="flex items-center gap-3 p-3 bg-green-50 rounded-xl">
+          <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-award text-green-600" aria-hidden="true"></i>
+          </div>
+          <div class="min-w-0">
+            <p class="text-xs font-medium text-green-600 uppercase">Grade</p>
+            <p class="text-sm font-semibold text-text-primary truncate">{{ edu.grade }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div *ngIf="edu.description" class="mb-4">
+        <div class="prose max-w-none text-sm text-text-secondary" [innerHTML]="sanitizeHtml(edu.description)"></div>
+      </div>
+
+      <!-- URL -->
+      <div *ngIf="edu.url" class="mb-4">
+        <a
+          [href]="edu.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 text-sm text-primary hover:text-primary-hover font-semibold transition-colors"
+        >
+          <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+          Visit Institution Website
+        </a>
+      </div>
+
+      <!-- Ongoing Badge -->
+      <div *ngIf="isEducationOngoing(edu)" class="absolute top-6 right-6">
+        <span class="px-3 py-1 bg-success text-white text-xs font-bold rounded-full shadow-md">
+          <i class="fas fa-circle-notch fa-spin mr-1" aria-hidden="true"></i>
+          Ongoing
+        </span>
+      </div>
+
+      <!-- Decorative Element -->
+      <div class="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-primary/5 to-transparent rounded-tl-full"></div>
+    </div>
+  </div>
+</div>

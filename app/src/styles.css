@@ -1,0 +1,252 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@fortawesome/fontawesome-free/css/all.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import '~quill/dist/quill.snow.css';
+
+/* Professional Typography System */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Source+Sans+Pro:wght@300;400;600;700&family=Open+Sans:wght@300;400;500;600;700;800&display=swap');
+
+/* Font Family Variables */
+:root {
+  --font-primary: 'Inter', 'Source Sans Pro', 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-heading: 'Inter', 'Source Sans Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter', 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --hn-primary: #0E6BFF;
+  --hn-primary-hover: #3DA0FF;
+}
+
+:root {
+    --primary-color: #564fac;
+  }
+
+/* HiYrNow Brand Color System */
+:root {
+  --primary-color: #33034f;
+  --primary-hover: #af19e1;
+  --accent-color: #00c4b4;
+  --background: #f9fafb;
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b7280;
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --error: #dc2626;
+}
+
+  @import "~bootstrap/dist/css/bootstrap.min.css";
+
+  /* Brand utilities */
+  .hn-gradient {
+    background-image: linear-gradient(90deg, var(--hn-primary), var(--hn-primary-hover));
+  }
+  .hn-text-gradient {
+    background: linear-gradient(90deg, var(--hn-primary), var(--hn-primary-hover));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hn-btn {
+    border-radius: 1rem;
+    transition: all 200ms ease;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  }
+  .hn-btn-primary {
+    color: #fff;
+    background-image: linear-gradient(90deg, var(--hn-primary), var(--hn-primary-hover));
+  }
+  .hn-btn-primary:hover {
+    filter: brightness(1.05);
+    box-shadow: 0 20px 25px -5px rgba(14,107,255,0.25), 0 10px 10px -5px rgba(10,69,209,0.15);
+  }
+  .hn-btn-outline {
+    color: var(--hn-primary);
+    border: 1px solid rgba(51,3,79,0.2);
+    background: #fff;
+  }
+  .hn-btn-outline:hover {
+    color: #fff;
+    background-image: linear-gradient(90deg, var(--hn-primary), var(--hn-primary-hover));
+    border-color: transparent;
+  }
+
+  body {
+    /* transform: scale(0.9); */
+    /* transform-origin: top; */
+    /* position: relative; */
+  }
+
+  /* Override Toastr position */
+#toast-container {
+  position: fixed !important;
+  top: 12px !important;
+  right: 12px !important;
+  z-index: 9999 !important; /* Ensure it's on top of everything */
+}
+/* General Toast Container Styling */
+#toast-container > div {
+    border-radius: 8px; /* Rounded corners */
+    padding: 15px;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Modern shadow */
+    border-left: 5px solid transparent; /* For accent border */
+}
+
+/* Success Toast */
+#toast-container > .toast-success {
+    background: linear-gradient(135deg, #4caf50, #388e3c);
+    border-left-color: #2e7d32;
+    color: #fff;
+}
+
+/* Error Toast */
+#toast-container > .toast-error {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    border-left-color: #c62828;
+    color: #fff;
+}
+
+/* Info Toast */
+#toast-container > .toast-info {
+    background: linear-gradient(135deg, #2196f3, #1976d2);
+    border-left-color: #1565c0;
+    color: #fff;
+}
+
+/* Warning Toast */
+#toast-container > .toast-warning {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    border-left-color: #ef6c00;
+    color: #fff;
+}
+
+/* Toast Title */
+#toast-container .toast-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+/* Toast Message */
+#toast-container .toast-message {
+    font-size: 14px;
+}
+
+/* Progress Bar */
+#toast-container .toast-progress {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+/* Animation for Toast */
+#toast-container > div {
+    animation: fadeInUp 0.5s ease-in-out, fadeOut 0.5s ease-in-out 3s;
+}
+
+/* Keyframes for animation */
+@keyframes fadeInUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+
+/* --- Deprecated palette cleaned and aligned to brand --- */
+.primary-bg { background-color: var(--hn-primary) !important; }
+.primary-text { color: var(--hn-primary) !important; }
+.primary-border { border-color: var(--hn-primary) !important; }
+.secondary-bg { background-color: var(--hn-primary-hover) !important; }
+.secondary-text { color: var(--hn-primary-hover) !important; }
+.secondary-border { border-color: var(--hn-primary-hover) !important; }
+.dark-text { color: #333333 !important; }
+.dark-bg { background-color: #333333 !important; }
+.light-bg { background-color: #F5F5F5 !important; }
+.light-text { color: #F5F5F5 !important; }
+.white-bg { background-color: #FFFFFF !important; }
+.white-text { color: #FFFFFF !important; }
+.primary-gradient-background { background: linear-gradient(90deg, var(--hn-primary) 0%, var(--hn-primary-hover) 100%) !important; }
+
+/* Professional Typography Utilities */
+.font-heading {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.font-body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.font-display {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1.1;
+}
+
+/* LinkedIn-style typography */
+.linkedin-heading {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.linkedin-body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.5;
+  color: #333;
+}
+
+.linkedin-caption {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #666;
+}
+
+/* Font smoothing for better rendering */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+  
+/* ============================================================
+   ngx-file-drop — remove default library wrapper styles
+   Must be in global styles.css (not component CSS)
+   because Angular encapsulation blocks library elements
+   ============================================================ */
+
+ngx-file-drop .ngx-file-drop__drop-zone {
+  border: none !important;
+  border-radius: 0 !important;
+  height: auto !important;
+  min-height: unset !important;
+}
+
+ngx-file-drop .ngx-file-drop__content {
+  display: block !important;
+  height: auto !important;
+  color: inherit !important;
+}

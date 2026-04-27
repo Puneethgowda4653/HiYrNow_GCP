@@ -1,0 +1,25 @@
+.admin-dashboard {
+  padding: 24px;
+}
+.admin-dashboard table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.admin-dashboard th, .admin-dashboard td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+.admin-dashboard th {
+  background-color: #f2f2f2;
+}
+.admin-dashboard button {
+  padding: 6px 12px;
+  background: #673ab7;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.admin-dashboard button:hover {
+  background: #512da8;
+} 

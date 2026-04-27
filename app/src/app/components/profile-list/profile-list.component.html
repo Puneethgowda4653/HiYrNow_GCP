@@ -1,0 +1,617 @@
+<!-- profile-list.component.html -->
+<div class="min-h-screen bg-gray-50">
+  <!-- Page Header with Job Details -->
+  <header class="bg-white shadow-sm border-b sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900 flex items-center">
+            <span class="mr-2">{{ job.title || "Job Candidates" }}</span>
+            <span
+              *ngIf="loading"
+              class="ml-3 h-4 w-4 rounded-full border-2 border-blue-600 border-t-transparent animate-spin"
+            ></span>
+          </h1>
+          <p class="mt-1 text-sm text-gray-500">
+            {{ job.company }} • {{ job.location }}
+          </p>
+        </div>
+        <div class="mt-4 md:mt-0 flex flex-wrap gap-2">
+          <a
+            [routerLink]="['/job-details', jobId]"
+            class="inline-flex items-center px-3 py-1.5 text-sm rounded-md border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 transition-all duration-150"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 mr-1.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+              />
+            </svg>
+            View Job
+          </a>
+          <button
+            class="inline-flex items-center px-3 py-1.5 text-sm rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-150"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4 mr-1.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              />
+            </svg>
+            Invite Candidates
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Loader Overlay -->
+    <div
+      *ngIf="loading"
+      class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50"
+    >
+      <div class="bg-white p-5 rounded-lg shadow-lg flex flex-col items-center">
+        <div
+          class="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"
+        ></div>
+        <p class="text-gray-700">Loading candidates...</p>
+      </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="flex flex-wrap gap-2 mb-6 bg-white p-2 rounded-lg shadow-sm">
+      <button
+        *ngFor="let view of ['appliedUsers', 'pvcUsers', 'matchedUsers']"
+        (click)="selectedView = view"
+        class="relative px-6 py-3 rounded-md font-medium text-sm transition-all duration-200 flex items-center"
+        [class]="
+          selectedView === view
+            ? 'bg-indigo-600 text-white shadow-lg'
+            : 'bg-white text-gray-600 hover:bg-gray-50'
+        "
+      >
+        <!-- Tab Icons -->
+        <span [ngSwitch]="view" class="mr-2">
+          <svg
+            *ngSwitchCase="'appliedUsers'"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <svg
+            *ngSwitchCase="'pvcUsers'"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+            />
+          </svg>
+          <svg
+            *ngSwitchCase="'matchedUsers'"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            />
+          </svg>
+        </span>
+
+        <!-- Tab Labels -->
+        <span>{{
+          view === "appliedUsers"
+            ? "Applied"
+            : view === "pvcUsers"
+            ? "Pre-Vetted"
+            : "Matched"
+        }}</span>
+
+        <!-- Count Badge -->
+        <span
+          class="ml-2 min-w-[1.75rem] px-1.5 py-0.5 rounded-full text-xs flex items-center justify-center"
+          [class]="
+            selectedView === view
+              ? 'bg-indigo-500 text-white'
+              : 'bg-gray-200 text-gray-700'
+          "
+        >
+          {{ getCandidateCount(view) }}
+        </span>
+      </button>
+    </div>
+
+    <!-- Search and Filter Controls -->
+    <div class="bg-white p-4 rounded-lg shadow-sm mb-6">
+      <div
+        class="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+      >
+        <!-- Search Box -->
+        <div class="relative flex-grow max-w-xl">
+          <div
+            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+          >
+            <svg
+              class="h-5 w-5 text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
+          <input
+            type="text"
+            [(ngModel)]="searchTerm"
+            placeholder="Search by name, email, skill, etc."
+            class="block w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="flex flex-wrap gap-2">
+          <!-- Status Filter (for Applied Users) -->
+          <div *ngIf="selectedView === 'appliedUsers'">
+            <select
+              [(ngModel)]="statusFilter"
+              class="block w-full pl-3 pr-10 py-2.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="all">All Statuses</option>
+              <option value="new">New</option>
+              <option value="screening">Screening</option>
+              <option value="interview">Interview</option>
+              <option value="offer">Offer</option>
+              <option value="rejected">Rejected</option>
+              <option value="hired">Hired</option>
+            </select>
+          </div>
+
+          <!-- Sort Dropdown -->
+          <div class="relative">
+            <button
+              (click)="
+                toggleSort(
+                  selectedView === 'matchedUsers' ? 'matchScore' : 'name'
+                )
+              "
+              class="inline-flex items-center px-4 py-2.5 border border-gray-300 rounded-md bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              <span
+                >Sort by:
+                {{
+                  sortBy === "matchScore"
+                    ? "Score"
+                    : sortBy === "name"
+                    ? "Name"
+                    : "Date"
+                }}</span
+              >
+              <svg
+                class="ml-2 h-5 w-5 text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  *ngIf="sortDirection === 'desc'"
+                  fill-rule="evenodd"
+                  d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                />
+                <path
+                  *ngIf="sortDirection === 'asc'"
+                  fill-rule="evenodd"
+                  d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div
+      *ngIf="!loading && filteredCandidates.length === 0"
+      class="bg-white rounded-lg p-12 shadow-sm text-center"
+    >
+      <div
+        class="inline-flex h-16 w-16 items-center justify-center rounded-full bg-blue-50 text-blue-600 mb-6"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-8 w-8"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+          />
+        </svg>
+      </div>
+      <h3 class="text-lg font-medium text-gray-900 mb-2">
+        No candidates found
+      </h3>
+      <p class="text-gray-500 max-w-md mx-auto mb-6">
+        {{
+          selectedView === "appliedUsers"
+            ? "No candidates have applied for this position yet."
+            : selectedView === "pvcUsers"
+            ? "No pre-vetted candidates are available for this role."
+            : "No matched candidates found based on job requirements."
+        }}
+      </p>
+      <button
+        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4 mr-2"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+        Invite Candidates
+      </button>
+    </div>
+
+    <!-- List Container -->
+    <div *ngIf="!loading && filteredCandidates.length > 0" class="space-y-5">
+      <!-- Applied Candidates View -->
+      <div *ngIf="selectedView === 'appliedUsers'">
+        <div class="shadow-sm overflow-hidden sm:rounded-md">
+          <ul class="bg-white divide-y divide-gray-200">
+            <li
+              *ngFor="let application of filteredCandidates"
+              class="hover:bg-blue-50 transition-colors duration-150"
+            >
+              <div class="block p-4 sm:p-6">
+                <div
+                  class="flex flex-col sm:flex-row items-start justify-between"
+                >
+                  <!-- Candidate Info -->
+                  <div
+                    class="flex items-start space-x-4 flex-grow mb-4 sm:mb-0"
+                  >
+                    <!-- Avatar -->
+                    <!-- Profile Picture Container - Add this to your profile-list.component.html -->
+                    <div class="profile-pic-container">
+                      <img
+                        [src]="defaultProfilePicUrl"
+                        [alt]="profilePic"
+                        
+                        class="h-12 w-12 rounded-full object-cover border border-gray-200 shadow-sm"
+                        
+                      />
+                    </div>
+
+                    <!-- Details -->
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">
+                          {{ application.userName.firstName }}
+                          {{ application.userName.lastName }}
+                        </h3>
+                        <span
+                          class="ml-3 px-2.5 py-0.5 rounded-full text-xs font-medium"
+                          [ngClass]="
+                            getStatusColor(application.application.status)
+                          "
+                        >
+                          {{ application.application.status }}
+                        </span>
+                        <span class="ml-3 text-sm text-gray-500">
+                          Applied on
+                          {{
+                            application.application.dateApplied
+                              | date : "mediumDate"
+                          }}
+                        </span>
+                      </div>
+
+                      <!-- <p class="mt-1 text-sm text-gray-600">{{application.user.location}}</p> -->
+
+                      <!-- todo: Skills Tags -->
+                      <!-- <div class="mt-2 flex flex-wrap gap-1">
+                        <span *ngFor="let skill of application.user.skills.slice(0, 5)" 
+                              class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-blue-100 text-blue-800">
+                          {{skill}}
+                        </span>
+                        <span *ngIf="application.user.skills.length > 5"
+                              class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-800">
+                          +{{application.user.skills.length - 5}} more
+                        </span>
+                      </div> -->
+
+                      <!-- todo: Experience Summary -->
+                      <!-- <p class="mt-2 text-sm text-gray-600">
+                        {{application.user.currentRole}} at {{application.user.currentCompany}} • 
+                        {{application.user.experience}} years experience
+                      </p> -->
+                      
+                    </div>
+                  </div>
+
+                  <!-- Action Buttons -->
+                  <div
+                    class="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2"
+                  >
+                    <button
+                      class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4 mr-1.5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"
+                        />
+                        <path
+                          d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"
+                        />
+                      </svg>
+                      Message
+                    </button>
+
+                    <button
+                    [routerLink]="['/jobApplication', jobId, application.userName._id]"
+                      class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4 mr-1.5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                        />
+                      </svg>
+                      Review
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Resume Preview Link -->
+                <div class="mt-4 flex items-center">
+                  <!-- <span class="mx-3 text-gray-300">|</span> -->
+
+                  <span class="text-sm text-gray-500">
+                    Interview scheduled:
+                    {{
+                      application.application.interviewDate
+                        ? (application.application.interviewDate
+                          | date : "medium")
+                        : "Not scheduled"
+                    }}
+                  </span>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Pre-Vetted/Matched Candidates View -->
+      <div *ngIf="selectedView !== 'appliedUsers'">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            *ngFor="let candidate of filteredCandidates"
+            class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200"
+          >
+            <!-- Card Header -->
+            <div class="p-5 border-b border-gray-200">
+              <div class="flex items-start justify-between">
+                <!-- Profile Info -->
+                <div class="flex items-center space-x-3">
+                  <!-- Profile Picture Container - Add this to your profile-list.component.html -->
+                  <div class="profile-pic-container">
+                    <img
+                      [src]="getUserProfilePicUrl(candidate)"
+                      [alt]="
+                        (selectedView === 'matchedUsers'
+                          ? candidate.user.firstName
+                          : candidate.userName.firstName) + '\'s profile'
+                      "
+                      class="h-12 w-12 rounded-full object-cover border border-gray-200 shadow-sm"
+                      (error)="setDefaultProfilePic(candidate)"
+                    />
+                  </div>
+                  <div>
+                    <h3 class="text-base font-medium text-gray-900">
+                      {{ candidate.user.username }}
+                    </h3>
+                    <!-- <p class="text-sm text-gray-500">{{candidate.location}}</p> -->
+                  </div>
+                </div>
+
+                <!-- Match Score (for Matched Users) -->
+                <div
+                  *ngIf="selectedView === 'matchedUsers'"
+                  class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center"
+                  [ngClass]="{
+                    'bg-green-100': candidate.matchScore >= 80,
+                    'bg-yellow-100':
+                      candidate.matchScore >= 60 && candidate.matchScore < 80,
+                    'bg-orange-100': candidate.matchScore < 60
+                  }"
+                >
+                  <span
+                    class="text-sm font-medium"
+                    [ngClass]="{
+                      'text-green-800': candidate.matchScore >= 80,
+                      'text-yellow-800':
+                        candidate.matchScore >= 60 && candidate.matchScore < 80,
+                      'text-orange-800': candidate.matchScore < 60
+                    }"
+                  >
+                    {{ candidate.totalScore }}%
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="p-5">
+              <!-- Current Position -->
+              <!-- <div class="mb-4">
+                <h4
+                  class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1"
+                >
+                  Current Position
+                </h4>
+                <p class="text-sm text-gray-900">{{candidate.currentRole}} at {{candidate.currentCompany}}</p>
+                <p class="text-xs text-gray-500 mt-1">{{candidate.experience}} years experience</p>
+                
+              </div> -->
+
+              <!-- Skills -->
+              <div>
+                <h4
+                  class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2"
+                >
+                  Top Skills
+                </h4>
+                <div class="flex flex-wrap gap-1">
+                  <span
+                    *ngFor="let skill of candidate.user.skills.slice(0, 5)"
+                    class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-blue-100 text-blue-800"
+                  >
+                    {{ skill }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Footer -->
+            <div
+              class="bg-gray-50 px-5 py-3 border-t border-gray-200 flex justify-between"
+            >
+              <button
+              [routerLink]="['/Matched-Profile', candidate.user._id, jobId]"
+                class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 mr-1.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                  />
+                </svg>
+                View Profile
+              </button>
+              <button
+  class="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-800 disabled:text-gray-400 disabled:cursor-not-allowed"
+  [disabled]="isButtonDisabled"
+>
+  Invite
+</button>
+              <!-- <button
+                class="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-800"
+               
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 mr-1.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
+                Invite
+              </button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

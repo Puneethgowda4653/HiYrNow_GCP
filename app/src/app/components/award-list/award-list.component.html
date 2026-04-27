@@ -1,0 +1,257 @@
+<!-- Awards & Achievements Section -->
+<div class="awards-container">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h3 class="text-xl font-bold text-text-primary flex items-center gap-2">
+        <i class="fas fa-trophy text-warning" aria-hidden="true"></i>
+        Awards & Achievements
+      </h3>
+      <p class="text-sm text-text-secondary mt-1">Showcase your recognitions and accomplishments</p>
+    </div>
+    <button
+      *ngIf="!addMode"
+      (click)="addAward()"
+      class="px-4 py-2 bg-gradient-to-r from-warning to-warning-light text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-warning focus:ring-offset-2"
+      [attr.aria-label]="'Add new award'"
+    >
+      <i class="fas fa-plus" aria-hidden="true"></i>
+      <span class="hidden sm:inline">Add Award</span>
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading && !addMode" class="text-center py-12">
+    <div class="inline-block w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+    <p class="text-text-secondary mt-4">Loading awards...</p>
+  </div>
+
+  <!-- Add/Edit Form -->
+  <div *ngIf="addMode" class="bg-gradient-to-br from-warning/5 to-transparent rounded-2xl p-6 border-2 border-warning/20 mb-6 animate-slide-up">
+    <div class="flex items-center justify-between mb-6">
+      <h4 class="text-lg font-bold text-text-primary flex items-center gap-2">
+        <i class="fas fa-{{ editMode ? 'edit' : 'plus-circle' }} text-warning" aria-hidden="true"></i>
+        {{ editMode ? 'Edit' : 'Add New' }} Award
+      </h4>
+      <button
+        (click)="resetForm()"
+        class="text-text-secondary hover:text-text-primary transition-colors"
+        [attr.aria-label]="'Cancel'"
+      >
+        <i class="fas fa-times text-xl" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <form [formGroup]="awardForm" (ngSubmit)="saveAward()" class="space-y-4">
+      <!-- Title -->
+      <div>
+        <label for="title" class="block text-sm font-semibold text-text-primary mb-2">
+          Award Title <span class="text-error">*</span>
+        </label>
+        <input
+          id="title"
+          type="text"
+          formControlName="title"
+          placeholder="e.g., Employee of the Year"
+          class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-warning focus:border-warning"
+          [ngClass]="awardForm.get('title')?.invalid && awardForm.get('title')?.touched ? 'border-error' : 'border-gray-300'"
+        />
+        <p *ngIf="getFieldError('title')" class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          {{ getFieldError('title') }}
+        </p>
+      </div>
+
+      <!-- Issuer -->
+      <div>
+        <label for="issuer" class="block text-sm font-semibold text-text-primary mb-2">
+          Issued By <span class="text-error">*</span>
+        </label>
+        <input
+          id="issuer"
+          type="text"
+          formControlName="issuer"
+          placeholder="e.g., Company Name or Organization"
+          class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-warning focus:border-warning"
+          [ngClass]="awardForm.get('issuer')?.invalid && awardForm.get('issuer')?.touched ? 'border-error' : 'border-gray-300'"
+        />
+        <p *ngIf="getFieldError('issuer')" class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          {{ getFieldError('issuer') }}
+        </p>
+      </div>
+
+      <!-- Date -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="month" class="block text-sm font-semibold text-text-primary mb-2">
+            Month <span class="text-error">*</span>
+          </label>
+          <select
+            id="month"
+            formControlName="month"
+            class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-warning focus:border-warning appearance-none bg-white"
+            [ngClass]="awardForm.get('month')?.invalid && awardForm.get('month')?.touched ? 'border-error' : 'border-gray-300'"
+          >
+            <option value="">Select Month</option>
+            <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+          </select>
+          <p *ngIf="getFieldError('month')" class="text-error text-xs mt-1">
+            {{ getFieldError('month') }}
+          </p>
+        </div>
+
+        <div>
+          <label for="year" class="block text-sm font-semibold text-text-primary mb-2">
+            Year <span class="text-error">*</span>
+          </label>
+          <select
+            id="year"
+            formControlName="year"
+            class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-warning focus:border-warning appearance-none bg-white"
+            [ngClass]="awardForm.get('year')?.invalid && awardForm.get('year')?.touched ? 'border-error' : 'border-gray-300'"
+          >
+            <option value="">Select Year</option>
+            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+          </select>
+          <p *ngIf="getFieldError('year')" class="text-error text-xs mt-1">
+            {{ getFieldError('year') }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label for="description" class="block text-sm font-semibold text-text-primary mb-2">
+          Description
+        </label>
+        <textarea
+          id="description"
+          formControlName="description"
+          rows="3"
+          placeholder="Describe your achievement..."
+          class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-warning focus:border-warning resize-none"
+        ></textarea>
+      </div>
+
+      <!-- URL -->
+      <div>
+        <label for="url" class="block text-sm font-semibold text-text-primary mb-2">
+          Certificate URL (Optional)
+        </label>
+        <input
+          id="url"
+          type="url"
+          formControlName="url"
+          placeholder="https://..."
+          class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-warning focus:border-warning"
+          [ngClass]="awardForm.get('url')?.invalid && awardForm.get('url')?.touched ? 'border-error' : 'border-gray-300'"
+        />
+        <p *ngIf="getFieldError('url')" class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          {{ getFieldError('url') }}
+        </p>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="flex gap-3 pt-4">
+        <button
+          type="button"
+          (click)="resetForm()"
+          class="flex-1 px-6 py-3 border-2 border-gray-300 text-text-primary rounded-xl font-semibold hover:bg-gray-50 transition-all focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          [disabled]="awardForm.invalid || isLoading"
+          class="flex-1 px-6 py-3 bg-gradient-to-r from-warning to-warning-light text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-warning focus:ring-offset-2"
+        >
+          <i class="fas fa-{{ editMode ? 'save' : 'plus' }} mr-2" aria-hidden="true"></i>
+          {{ editMode ? 'Update' : 'Add' }} Award
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Awards List -->
+  <div *ngIf="!isLoading && awards.length === 0 && !addMode" class="text-center py-12">
+    <div class="w-24 h-24 bg-warning/10 rounded-full flex items-center justify-center mx-auto mb-4">
+      <i class="fas fa-trophy text-warning text-4xl" aria-hidden="true"></i>
+    </div>
+    <h4 class="text-lg font-semibold text-text-primary mb-2">No awards yet</h4>
+    <p class="text-text-secondary mb-6">Start adding your achievements and recognitions</p>
+    <button
+      (click)="addAward()"
+      class="px-6 py-3 bg-gradient-to-r from-warning to-warning-light text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 inline-flex items-center gap-2"
+    >
+      <i class="fas fa-plus" aria-hidden="true"></i>
+      Add Your First Award
+    </button>
+  </div>
+
+  <!-- Awards Grid -->
+  <div *ngIf="awards.length > 0 && !addMode" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div
+      *ngFor="let award of awards"
+      class="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-all duration-300 group"
+    >
+      <!-- Award Header -->
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex items-start gap-4 flex-1">
+          <!-- Icon -->
+          <div class="w-12 h-12 bg-gradient-to-br from-warning to-warning-light rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+            <i class="fas fa-trophy text-white text-xl" aria-hidden="true"></i>
+          </div>
+          
+          <!-- Content -->
+          <div class="flex-1 min-w-0">
+            <h4 class="text-lg font-bold text-text-primary mb-1 line-clamp-2">{{ award.title }}</h4>
+            <p class="text-sm text-text-secondary font-medium">{{ award.issuer }}</p>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <button
+            (click)="editAward(award)"
+            class="w-8 h-8 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            [attr.aria-label]="'Edit award'"
+          >
+            <i class="fas fa-edit text-sm" aria-hidden="true"></i>
+          </button>
+          <button
+            (click)="deleteAward(award._id!)"
+            class="w-8 h-8 bg-error/10 text-error rounded-lg hover:bg-error hover:text-white transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2"
+            [attr.aria-label]="'Delete award'"
+          >
+            <i class="fas fa-trash text-sm" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Date -->
+      <div class="flex items-center gap-2 text-sm text-text-secondary mb-3">
+        <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+        <span>{{ award.date.month }} {{ award.date.year }}</span>
+      </div>
+
+      <!-- Description -->
+      <p *ngIf="award.description" class="text-sm text-text-secondary line-clamp-3 mb-3">
+        {{ award.description }}
+      </p>
+
+      <!-- Certificate Link -->
+      <a
+        *ngIf="award.url"
+        [href]="award.url"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 text-sm text-primary hover:text-primary-hover font-semibold transition-colors"
+      >
+        <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+        View Certificate
+      </a>
+    </div>
+  </div>
+</div>

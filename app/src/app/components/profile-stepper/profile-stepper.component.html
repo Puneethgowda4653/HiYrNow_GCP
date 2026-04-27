@@ -1,0 +1,117 @@
+<div class="bg-white rounded-card shadow-elev-md border border-gray-100 p-6">
+  <!-- Progress Bar -->
+  <div class="mb-6">
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-sm font-medium text-text-secondary">Progress</span>
+      <span class="text-sm font-semibold text-text-primary">{{ progressPercentage }}%</span>
+    </div>
+    <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+      <div 
+        class="h-full transition-all duration-300 ease-out rounded-full bg-gradient-to-r from-primary to-accent"
+        [style.width.%]="progressPercentage"
+        [attr.role]="'progressbar'"
+        [attr.aria-valuenow]="progressPercentage"
+        [attr.aria-valuemin]="0"
+        [attr.aria-valuemax]="100"
+        [attr.aria-label]="'Form progress: ' + progressPercentage + ' percent'"
+      ></div>
+    </div>
+  </div>
+
+  <!-- Steps List -->
+  <nav class="space-y-2" [attr.aria-label]="'Profile form steps'">
+    <button
+      *ngFor="let step of stepsList; let i = index"
+      type="button"
+      (click)="goToStep(i)"
+      (keydown)="handleKeyPress($event, i)"
+      [disabled]="step.disabled"
+      [attr.aria-current]="i === currentStep ? 'step' : null"
+      [attr.aria-disabled]="step.disabled"
+      [attr.aria-label]="step.label + (step.completed ? ', completed' : '') + (i === currentStep ? ', current step' : '')"
+      class="w-full flex items-center gap-3 px-4 py-3 rounded-card transition-all duration-200 text-left focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+      [ngClass]="{
+        'bg-gradient-to-r from-primary/10 to-accent/10 border-2 border-primary/20': i === currentStep,
+        'bg-gray-50 hover:bg-gray-100 border-2 border-transparent': i !== currentStep && !step.disabled,
+        'opacity-50 cursor-not-allowed': step.disabled
+      }"
+    >
+      <!-- Step Number/Icon -->
+      <div 
+        class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-200"
+        [ngClass]="{
+          'bg-gradient-to-r from-primary to-accent text-white shadow-lg': i === currentStep,
+          'bg-success text-white': step.completed && i !== currentStep,
+          'bg-gray-200 text-text-secondary': !step.completed && i !== currentStep
+        }"
+      >
+        <i 
+          *ngIf="step.completed && i !== currentStep" 
+          class="fas fa-check text-xs"
+          aria-hidden="true"
+        ></i>
+        <span *ngIf="!step.completed || i === currentStep" [attr.aria-hidden]="true">
+          {{ i + 1 }}
+        </span>
+      </div>
+
+      <!-- Step Label -->
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2">
+          <i 
+            [ngClass]="'fas ' + step.icon" 
+            class="text-sm"
+            [ngClass]="{
+              'text-primary': i === currentStep,
+              'text-success': step.completed && i !== currentStep,
+              'text-text-secondary': !step.completed && i !== currentStep
+            }"
+            aria-hidden="true"
+          ></i>
+          <span 
+            class="font-medium text-sm"
+            [ngClass]="{
+              'text-primary': i === currentStep,
+              'text-text-primary': step.completed || i === currentStep,
+              'text-text-secondary': !step.completed && i !== currentStep
+            }"
+          >
+            {{ step.label }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Arrow Icon -->
+      <i 
+        *ngIf="i < stepsList.length - 1"
+        class="fas fa-chevron-right text-xs text-text-muted flex-shrink-0"
+        aria-hidden="true"
+      ></i>
+    </button>
+  </nav>
+
+  <!-- Navigation Buttons (Mobile) -->
+  <div class="mt-6 flex gap-2 md:hidden">
+    <button
+      type="button"
+      (click)="previousStep()"
+      [disabled]="currentStep === 0"
+      class="flex-1 px-4 py-2 border border-gray-300 rounded-card text-text-secondary font-medium hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      [attr.aria-label]="'Go to previous step'"
+    >
+      <i class="fas fa-arrow-left mr-2" aria-hidden="true"></i>
+      Previous
+    </button>
+    <button
+      type="button"
+      (click)="nextStep()"
+      [disabled]="currentStep === stepsList.length - 1"
+      class="flex-1 px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-card font-medium hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      [attr.aria-label]="'Go to next step'"
+    >
+      Next
+      <i class="fas fa-arrow-right ml-2" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>
+

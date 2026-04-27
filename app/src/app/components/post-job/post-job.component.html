@@ -1,0 +1,1326 @@
+<!-- 🎨 POST JOB - Premium HiYrNow Design -->
+<div class="min-h-screen bg-gradient-to-br from-[#F7F7FD] via-white to-[#EDEBFF]py-6 px-4 sm:px-6 lg:px-8">
+  <!-- Premium Header -->
+  <div class="max-w-7xl mx-auto mb-6" [@fadeInDown]>
+    <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 p-6">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl  bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-2xl sm:text-3xl font-bold  bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent">
+              {{ isEditMode ? 'Edit Job Posting' : 'Create Job Posting' }}
+            </h1>
+            <p class="text-sm text-gray-600 mt-1">{{ isEditMode ? 'Update your job posting details' : 'AI-Powered Recruitment Platform' }}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 px-3 py-2 bg-[#EDEBFF] rounded-xl">
+            <img
+              [src]="companyLogo"
+              alt="Company Logo"
+              class="w-8 h-8 rounded-full object-cover border-2 border-white shadow-sm"
+            />
+            <span class="text-sm font-semibold text-gray-700 hidden sm:inline">{{ companyName }}</span>
+          </div>
+          <button
+            type="button"
+            routerLink="/company/dashboard"
+            class="w-10 h-10 rounded-xl bg-white border-2 border-gray-200 flex items-center justify-center hover:border-[#6254E5] hover:bg-[#6254E5]/5 transition-all duration-300 hover:shadow-md"
+          >
+            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Premium Step Indicator -->
+  <div class="max-w-7xl mx-auto mb-6" [@fadeInUp]>
+    <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 p-6">
+      <!-- Mobile Step Indicator (Simplified) -->
+      <div class="block sm:hidden mb-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-semibold text-gray-700">Step {{ currentStep }} of 5</span>
+          <span class="text-sm text-gray-500">{{ getStepProgress() }}%</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div
+            class=" bg-gradient-to-br from-primary to-accent h-2 rounded-full transition-all duration-500"
+            [style.width.%]="getStepProgress()"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Desktop Step Indicator -->
+      <div class="hidden sm:flex items-center justify-between">
+        <!-- Step 1 -->
+        <div class="flex items-center gap-3 flex-1">
+          <div class="flex flex-col items-center gap-2">
+            <div
+              class="w-12 h-12 rounded-xl flex items-center justify-center border-2 transition-all duration-300 shadow-sm"
+              [ngClass]="{
+                ' bg-gradient-to-br from-primary to-accent border-[#6254E5] text-white shadow-lg scale-110': currentStep === 1,
+                'bg-green-500 border-green-500 text-white': currentStep > 1,
+                'bg-gray-100 border-gray-300 text-gray-400': currentStep < 1
+              }"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" *ngIf="currentStep <= 1">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" *ngIf="currentStep > 1">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <div class="text-center">
+              <div class="text-xs font-semibold" [ngClass]="currentStep >= 1 ? 'text-[#6254E5]' : 'text-gray-400'">Job Details</div>
+            </div>
+          </div>
+          <div class="flex-1 h-1 rounded-full transition-all duration-300" [ngClass]="currentStep >= 2 ? ' bg-gradient-to-br from-primary to-accent' : 'bg-gray-200'"></div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex items-center gap-3 flex-1">
+          <div class="flex flex-col items-center gap-2">
+            <div
+              class="w-12 h-12 rounded-xl flex items-center justify-center border-2 transition-all duration-300 shadow-sm"
+              [ngClass]="{
+                ' bg-gradient-to-br from-primary to-accent border-[#6254E5] text-white shadow-lg scale-110': currentStep === 2,
+                'bg-green-500 border-green-500 text-white': currentStep > 2,
+                'bg-gray-100 border-gray-300 text-gray-400': currentStep < 2
+              }"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" *ngIf="currentStep <= 2">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" *ngIf="currentStep > 2">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <div class="text-center">
+              <div class="text-xs font-semibold" [ngClass]="currentStep >= 2 ? 'text-[#6254E5]' : 'text-gray-400'">Description</div>
+            </div>
+          </div>
+          <div class="flex-1 h-1 rounded-full transition-all duration-300" [ngClass]="currentStep >= 3 ? ' bg-gradient-to-br from-primary to-accent' : 'bg-gray-200'"></div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex items-center gap-3 flex-1">
+          <div class="flex flex-col items-center gap-2">
+            <div
+              class="w-12 h-12 rounded-xl flex items-center justify-center border-2 transition-all duration-300 shadow-sm"
+              [ngClass]="{
+                ' bg-gradient-to-br from-primary to-accent border-[#6254E5] text-white shadow-lg scale-110': currentStep === 3,
+                'bg-green-500 border-green-500 text-white': currentStep > 3,
+                'bg-gray-100 border-gray-300 text-gray-400': currentStep < 3
+              }"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" *ngIf="currentStep <= 3">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+              </svg>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" *ngIf="currentStep > 3">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <div class="text-center">
+              <div class="text-xs font-semibold" [ngClass]="currentStep >= 3 ? 'text-[#6254E5]' : 'text-gray-400'">Skills</div>
+            </div>
+          </div>
+          <div class="flex-1 h-1 rounded-full transition-all duration-300" [ngClass]="currentStep >= 4 ? ' bg-gradient-to-br from-primary to-accent' : 'bg-gray-200'"></div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="flex items-center gap-3 flex-1">
+          <div class="flex flex-col items-center gap-2">
+            <div
+              class="w-12 h-12 rounded-xl flex items-center justify-center border-2 transition-all duration-300 shadow-sm"
+              [ngClass]="{
+                ' bg-gradient-to-br from-primary to-accent border-[#6254E5] text-white shadow-lg scale-110': currentStep === 4,
+                'bg-green-500 border-green-500 text-white': currentStep > 4,
+                'bg-gray-100 border-gray-300 text-gray-400': currentStep < 4
+              }"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" *ngIf="currentStep <= 4">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" *ngIf="currentStep > 4">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <div class="text-center">
+              <div class="text-xs font-semibold" [ngClass]="currentStep >= 4 ? 'text-[#6254E5]' : 'text-gray-400'">Questions</div>
+            </div>
+          </div>
+          <div class="flex-1 h-1 rounded-full transition-all duration-300" [ngClass]="currentStep >= 5 ? ' bg-gradient-to-br from-primary to-accent' : 'bg-gray-200'"></div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="flex items-center gap-3">
+          <div class="flex flex-col items-center gap-2">
+            <div
+              class="w-12 h-12 rounded-xl flex items-center justify-center border-2 transition-all duration-300 shadow-sm"
+              [ngClass]="{
+                ' bg-gradient-to-br from-primary to-accent border-[#6254E5] text-white shadow-lg scale-110': currentStep === 5,
+                'bg-gray-100 border-gray-300 text-gray-400': currentStep < 5
+              }"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+              </svg>
+            </div>
+            <div class="text-center">
+              <div class="text-xs font-semibold" [ngClass]="currentStep >= 5 ? 'text-[#6254E5]' : 'text-gray-400'">Preview</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Text -->
+      <div class="flex items-center justify-between text-sm mt-4 pt-4 border-t border-gray-100">
+        <span class="font-semibold text-gray-700">Step {{ currentStep }} of 5</span>
+        <span class="text-gray-500">{{ getStepProgress() }}% complete</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Form Container -->
+  <div class="max-w-7xl mx-auto">
+    <form [formGroup]="jobForm" (ngSubmit)="onSubmit()" class="space-y-6 post-job-form">
+      <!-- Step 1: Job Details -->
+      <div *ngIf="currentStep === 1" class="space-y-6" [@fadeIn]>
+        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 p-6 sm:p-8">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Job Details</h2>
+              <p class="text-gray-600">
+                Define the core requirements and specifications for your position
+              </p>
+            </div>
+            <button
+              type="button"
+              (click)="toggleAIGenerator()"
+              class="group relative inline-flex items-center px-6 py-3  bg-gradient-to-br from-primary to-accent text-white font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-[#6254E5]/30 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
+              <div class="relative flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                </svg>
+                <span>{{ showAIGenerator ? "Hide AI Generator" : "Draft with AI ✨" }}</span>
+              </div>
+            </button>
+          </div>
+
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Job Title -->
+          <div class="md:col-span-2">
+            <label
+              for="title"
+              class="block text-sm font-semibold text-gray-700 mb-2"
+            >
+              Job Title <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <input
+                id="title"
+                formControlName="title"
+                type="text"
+                class="w-full pl-12 pr-4 py-3.5 bg-white border-2 rounded-xl focus:ring-2 focus:ring-[#6254E5] focus:border-[#6254E5] transition-all duration-300 shadow-sm hover:shadow-md"
+                [class]="
+                  jobForm.get('title')?.invalid && jobForm.get('title')?.touched
+                    ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                    : 'border-gray-200 focus:ring-[#6254E5] focus:border-[#6254E5]'
+                "
+                placeholder="e.g. Senior AI Engineer"
+              />
+              
+            </div>
+            <div
+              *ngIf="
+                jobForm.get('title')?.invalid && jobForm.get('title')?.touched
+              "
+              class="mt-2 flex items-center text-sm text-red-600"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              Job title is required
+            </div>
+            <div class="mt-2 flex items-start text-sm text-gray-500">
+              <svg class="w-4 h-4 mr-2 mt-0.5 text-[#6254E5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span>Enter a clear, descriptive job title that attracts the right candidates</span>
+            </div>
+          </div>
+
+          <!-- Location Type and Job Type -->
+          <div>
+            <label
+              for="locationType"
+              class="block text-sm font-semibold text-gray-700 mb-2"
+            >
+              Location Type <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <select
+                id="locationType"
+                formControlName="locationType"
+                class="w-full px-4 py-3.5 pr-10 bg-white border-2 rounded-xl focus:ring-2 focus:ring-[#6254E5] focus:border-[#6254E5] transition-all duration-300 shadow-sm hover:shadow-md appearance-none"
+                [class]="
+                  jobForm.get('locationType')?.invalid &&
+                  jobForm.get('locationType')?.touched
+                    ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                    : 'border-gray-200 focus:ring-[#6254E5] focus:border-[#6254E5]'
+                "
+              >
+                <option value="">Select location type</option>
+                <option value="On-site">On-site</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="Remote">Remote</option>
+              </select>
+            </div>
+            <div
+              *ngIf="
+                jobForm.get('locationType')?.invalid &&
+                jobForm.get('locationType')?.touched
+              "
+              class="mt-2 flex items-center text-sm text-red-600"
+            >
+              <i class="fas fa-exclamation-circle mr-2"></i>
+              Location type is required
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="type"
+              class="block text-sm font-semibold text-gray-700 mb-2"
+            >
+              Job Type <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <select
+                id="type"
+                formControlName="type"
+                class="w-full px-4 py-3.5 pr-10 bg-white border-2 rounded-xl focus:ring-2 focus:ring-[#6254E5] focus:border-[#6254E5] transition-all duration-300 shadow-sm hover:shadow-md appearance-none"
+                [class]="
+                  jobForm.get('type')?.invalid && jobForm.get('type')?.touched
+                    ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                    : 'border-gray-200 focus:ring-[#6254E5] focus:border-[#6254E5]'
+                "
+              >
+                <option value="">Select job type</option>
+                <option value="Full Time">Full Time</option>
+                <option value="Part Time">Part Time</option>
+                <option value="Contract">Contract</option>
+                <option value="Internship">Internship</option>
+              </select>
+            </div>
+            <div
+              *ngIf="
+                jobForm.get('type')?.invalid && jobForm.get('type')?.touched
+              "
+              class="mt-2 flex items-center text-sm text-red-600"
+            >
+              <i class="fas fa-exclamation-circle mr-2"></i>
+              Job type is required
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div class="md:col-span-2">
+            <label
+              for="location"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Location <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <mat-form-field class="w-full">
+                <input
+                  type="text"
+                  placeholder="Select location(s)"
+                  matInput
+                  class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  [class]="
+                    jobForm.get('location')?.invalid &&
+                    jobForm.get('location')?.touched
+                      ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                      : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+                  "
+                  #locationInput
+                  [formControl]="locationControl"
+                  [matAutocomplete]="auto"
+                />
+              
+                <mat-autocomplete
+                  #auto="matAutocomplete"
+                  (optionSelected)="onLocationSelect($event)"
+                >
+                  <mat-option
+                    *ngFor="let city of filteredCities | async"
+                    [value]="city"
+                  >
+                    {{ city }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-3">
+              <span
+                *ngFor="let location of selectedLocations"
+                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-[#EDEBFF] to-[#F7F7FD] border-2 border-[#6254E5]/20 text-[#6254E5] rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all duration-300"
+              >
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                {{ location }}
+                <button
+                  type="button"
+                  (click)="removeLocation(location)"
+                  class="ml-2 w-5 h-5 bg-[#6254E5]/10 hover:bg-[#6254E5]/20 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
+                >
+                  <svg class="w-3 h-3 text-[#6254E5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </span>
+            </div>
+            <div
+              *ngIf="
+                jobForm.get('location')?.invalid &&
+                jobForm.get('location')?.touched
+              "
+              class="mt-2 flex items-center text-sm text-red-600"
+            >
+              <i class="fas fa-exclamation-circle mr-2"></i>
+              At least one location is required
+            </div>
+          </div>
+
+          <!-- Experience Range -->
+          <div>
+            <label
+              for="minExp"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Min Experience (years) <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <input
+                id="minExp"
+                formControlName="minExp"
+                type="number"
+                class="w-full px-4 py-3.5 bg-white border-2 rounded-xl focus:ring-2 focus:ring-[#6254E5] focus:border-[#6254E5] transition-all duration-300 shadow-sm hover:shadow-md"
+                [class]="
+                  jobForm.get('minExp')?.invalid &&
+                  jobForm.get('minExp')?.touched
+                    ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                    : 'border-gray-200 focus:ring-[#6254E5] focus:border-[#6254E5]'
+                "
+                placeholder="e.g. 2"
+                min="0"
+              />
+            </div>
+            <div
+              *ngIf="
+                jobForm.get('minExp')?.invalid && jobForm.get('minExp')?.touched
+              "
+              class="mt-2 flex items-center text-sm text-red-600"
+            >
+              <i class="fas fa-exclamation-circle mr-2"></i>
+              Minimum experience is required
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="maxExp"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Max Experience (years) <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <input
+                id="maxExp"
+                formControlName="maxExp"
+                type="number"
+                class="w-full px-4 py-3.5 bg-white border-2 rounded-xl focus:ring-2 focus:ring-[#6254E5] focus:border-[#6254E5] transition-all duration-300 shadow-sm hover:shadow-md"
+                [class]="
+                  jobForm.get('maxExp')?.invalid &&
+                  jobForm.get('maxExp')?.touched
+                    ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                    : 'border-gray-200 focus:ring-[#6254E5] focus:border-[#6254E5]'
+                "
+                placeholder="e.g. 5"
+                min="0"
+              />
+            </div>
+            <div
+              *ngIf="
+                jobForm.get('maxExp')?.invalid && jobForm.get('maxExp')?.touched
+              "
+              class="mt-2 flex items-center text-sm text-red-600"
+            >
+              <i class="fas fa-exclamation-circle mr-2"></i>
+              Maximum experience is required
+            </div>
+            <div
+              *ngIf="jobForm.hasError('expRange')"
+              class="mt-2 flex items-center text-sm text-red-600"
+            >
+              <i class="fas fa-exclamation-circle mr-2"></i>
+              Max experience must be greater than or equal to min experience
+            </div>
+          </div>
+
+          <!-- Salary Range -->
+          <div>
+            <label
+              for="minSalary"
+              class="block text-sm font-medium text-gray-700 mb-2"
+              >Min Salary (Annual)</label
+            >
+            <div class="relative">
+             
+              <input
+                id="minSalary"
+                formControlName="minSalary"
+                type="number"
+                class="w-full pl-12 pr-4 py-3.5 bg-white border-2 rounded-xl focus:ring-2 focus:ring-[#6254E5] focus:border-[#6254E5] transition-all duration-300 shadow-sm hover:shadow-md"
+                placeholder="e.g. 50000"
+                min="0"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label
+              for="maxSalary"
+              class="block text-sm font-medium text-gray-700 mb-2"
+              >Max Salary (Annual)</label
+            >
+            <div class="relative">
+              
+              <input
+                id="maxSalary"
+                formControlName="maxSalary"
+                type="number"
+                class="w-full pl-12 pr-4 py-3.5 bg-white border-2 rounded-xl focus:ring-2 focus:ring-[#6254E5] focus:border-[#6254E5] transition-all duration-300 shadow-sm hover:shadow-md"
+                placeholder="e.g. 120000"
+                min="0"
+              />
+            </div>
+            <div
+              *ngIf="jobForm.hasError('salaryRange')"
+              class="mt-2 flex items-center text-sm text-red-600"
+            >
+              <i class="fas fa-exclamation-circle mr-2"></i>
+              Max salary must be greater than or equal to min salary
+            </div>
+          </div>
+
+          <!-- Qualification -->
+          <div class="md:col-span-2">
+            <label
+              for="minQualification"
+              class="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Minimum Qualification <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <select
+                id="minQualification"
+                formControlName="minQualification"
+                class="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors appearance-none bg-white"
+                [class]="
+                  jobForm.get('minQualification')?.invalid &&
+                  jobForm.get('minQualification')?.touched
+                    ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                    : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+                "
+              >
+                <option value="">Select minimum qualification</option>
+                <option value="12th Grade">12th Grade</option>
+                <option value="High School Diploma">High School Diploma</option>
+                <option value="Associate's Degree">Associate's Degree</option>
+                <option value="Bachelor's Degree">Bachelor's Degree</option>
+                <option value="Master's Degree">Master's Degree</option>
+                <option value="Doctorate">Doctorate</option>
+                <option value="Professional Certification">
+                  Professional Certification
+                </option>
+                <option value="No Formal Education Required">
+                  No Formal Education Required
+                </option>
+              </select>
+              <i
+                class="fas fa-graduation-cap absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"
+              ></i>
+            </div>
+            <div
+              *ngIf="
+                jobForm.get('minQualification')?.invalid &&
+                jobForm.get('minQualification')?.touched
+              "
+              class="mt-2 flex items-center text-sm text-red-600"
+            >
+              <i class="fas fa-exclamation-circle mr-2"></i>
+              Minimum qualification is required
+            </div>
+          </div>
+
+          <!-- Posting As -->
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Posting As</label
+            >
+            <div class="flex space-x-4">
+              <button
+                type="button"
+                (click)="setPostingAsClient(false)"
+                [class]="
+                  !postingAsClient
+                    ? 'bg-gray-600 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                "
+                class="flex-1 px-4 py-3 rounded-lg border transition-all duration-200 font-medium"
+              >
+                {{ companyName }}
+              </button>
+              <button
+                type="button"
+                (click)="setPostingAsClient(true)"
+                [class]="
+                  postingAsClient
+                    ? 'bg-gray-600 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                "
+                class="flex-1 px-4 py-3 rounded-lg border transition-all duration-200 font-medium"
+              >
+                Post For Client
+              </button>
+            </div>
+          </div>
+
+          <!-- Client Information -->
+          <div *ngIf="postingAsClient" class="md:col-span-2">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  for="company"
+                  class="block text-sm font-medium text-gray-700 mb-2"
+                  >Client Company</label
+                >
+                <div class="relative">
+                  
+                  <input
+                    id="company"
+                    formControlName="company"
+                    type="text"
+                    class="w-full pl-12 pr-4 py-3.5 bg-white border-2 rounded-xl focus:ring-2 focus:ring-[#6254E5] focus:border-[#6254E5] transition-all duration-300 shadow-sm hover:shadow-md"
+                    placeholder="Client's company name"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  for="company_url"
+                  class="block text-sm font-medium text-gray-700 mb-2"
+                  >Company Website</label
+                >
+                <div class="relative">
+                 
+                  <input
+                    id="company_url"
+                    formControlName="company_url"
+                    type="url"
+                    class="w-full pl-12 pr-4 py-3.5 bg-white border-2 rounded-xl focus:ring-2 focus:ring-[#6254E5] focus:border-[#6254E5] transition-all duration-300 shadow-sm hover:shadow-md"
+                    placeholder="https://company.com"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  for="company_logo"
+                  class="block text-sm font-medium text-gray-700 mb-2"
+                  >Company Logo URL</label
+                >
+                <div class="relative">
+                 
+                  <input
+                    id="company_logo"
+                    formControlName="company_logo"
+                    type="url"
+                    class="w-full pl-12 pr-4 py-3.5 bg-white border-2 rounded-xl focus:ring-2 focus:ring-[#6254E5] focus:border-[#6254E5] transition-all duration-300 shadow-sm hover:shadow-md"
+                    placeholder="https://example.com/logo.png"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <!-- Step 2: Description -->
+      <div *ngIf="currentStep === 2" class="space-y-6" [@fadeIn]>
+        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 p-6 sm:p-8">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                Job Description
+              </h2>
+              <p class="text-gray-600">
+                Craft a compelling description that showcases your role and
+                attracts top talent
+              </p>
+            </div>
+            <div class="flex items-center space-x-3">
+            <!-- <button
+              type="button"
+              (click)="enhanceDescription()"
+              [disabled]="
+                isEnhancingDescription || !jobForm.get('description')?.value
+              "
+              [class]="
+                isEnhancingDescription || !jobForm.get('description')?.value
+                  ? 'opacity-50 cursor-not-allowed'
+                  : 'hover:from-purple-600 hover:to-blue-600'
+              "
+              class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+            >
+              <i
+                class="fas fa-spinner fa-spin mr-2"
+                *ngIf="isEnhancingDescription"
+              ></i>
+              <i class="fas fa-magic mr-2" *ngIf="!isEnhancingDescription"></i>
+              {{ isEnhancingDescription ? "Enhancing..." : "Enhance with AI" }}
+            </button> -->
+            <!-- <button
+              type="button"
+              (click)="generateJobTitles()"
+              class="inline-flex items-center px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-all duration-200 shadow-md hover:shadow-lg"
+            >
+              <i class="fas fa-lightbulb mr-2"></i>
+              Suggest Titles
+            </button> -->
+          </div>
+        </div>
+
+          <div class="w-full">
+            <label
+              for="description"
+              class="block text-sm font-semibold text-gray-700 mb-2"
+            >
+              Job Description <span class="text-red-500">*</span>
+            </label>
+            <div
+              class="w-full border-2 rounded-xl focus-within:ring-2 focus-within:ring-[#6254E5] focus-within:border-[#6254E5] transition-all duration-300 shadow-sm"
+              [class]="
+                jobForm.get('description')?.invalid &&
+                jobForm.get('description')?.touched
+                  ? 'border-red-500 focus-within:ring-red-500 focus-within:border-red-500'
+                  : 'border-gray-200 focus-within:ring-[#6254E5] focus-within:border-[#6254E5]'
+              "
+            >
+              <quill-editor
+                formControlName="description"
+                [modules]="quillModules"
+                placeholder="Enter a detailed job description that highlights responsibilities, requirements, and benefits..."
+                class="rich-editor w-full h-80"
+                style="min-height: 300px;"
+              ></quill-editor>
+            </div>
+            <div
+              *ngIf="
+                jobForm.get('description')?.invalid &&
+                jobForm.get('description')?.touched
+              "
+              class="mt-2 flex items-center text-sm text-red-600"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              Job description is required
+            </div>
+            <div class="mt-4 p-4 bg-gradient-to-r from-[#EDEBFF] to-[#F7F7FD] border-2 border-[#6254E5]/20 rounded-xl">
+              <div class="flex items-start">
+                <svg class="w-5 h-5 text-[#6254E5] mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <div class="text-sm text-gray-700">
+                  <strong class="text-[#6254E5]">Pro Tips:</strong>
+                  <ul class="mt-2 space-y-1.5">
+                    <li class="flex items-start">
+                      <span class="text-[#6254E5] mr-2">•</span>
+                      <span>Use the "Draft with AI" button to generate a professional job description</span>
+                    </li>
+                    <li class="flex items-start">
+                      <span class="text-[#6254E5] mr-2">•</span>
+                      <span>Include specific responsibilities, requirements, and growth opportunities</span>
+                    </li>
+                    <li class="flex items-start">
+                      <span class="text-[#6254E5] mr-2">•</span>
+                      <span>Highlight company culture and benefits to attract top talent</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Skills -->
+      <div *ngIf="currentStep === 3" class="space-y-6" [@fadeIn]>
+        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 p-6 sm:p-8">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div class="flex-1">
+              <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                Skills & Requirements
+              </h2>
+              <p class="text-gray-600 mb-3">
+                Define the technical and soft skills required for this position
+              </p>
+              <div
+                class="flex items-center text-sm text-orange-600 bg-orange-50 px-4 py-2 rounded-xl border border-orange-200"
+              >
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                At least 3 skills must be marked as "Must Have"
+              </div>
+            </div>
+          <!-- <button
+            type="button"
+            (click)="generateSkills()"
+            class="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-all duration-200 shadow-md hover:shadow-lg"
+          >
+            <i class="fas fa-cogs mr-2"></i>
+            Generate Skills with AI
+          </button> -->
+        </div>
+
+        <div formArrayName="coreSkills" class="space-y-4">
+          <div
+            *ngFor="let skill of skillsFormArray.controls; let i = index"
+            [formGroupName]="i"
+            class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div class="space-y-4">
+              <div>
+                <div class="relative">
+                  <input
+                    type="text"
+                    formControlName="name"
+                    class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    [class]="
+                      skill.get('name')?.invalid && skill.get('name')?.touched
+                        ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                        : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+                    "
+                    [placeholder]="'Skill ' + (i + 1) + ' Name'"
+                  />
+                
+                </div>
+                <div
+                  *ngIf="
+                    skill.get('name')?.invalid && skill.get('name')?.touched
+                  "
+                  class="mt-2 flex items-center text-sm text-red-600"
+                >
+                  <i class="fas fa-exclamation-circle mr-2"></i>
+                  Skill name is required
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-6">
+                  <label class="flex items-center">
+                    <input
+                      type="checkbox"
+                      formControlName="mustHave"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                    />
+                    <span
+                      class="ml-2 flex items-center text-sm font-medium text-gray-700"
+                    >
+                      <i class="fas fa-star text-yellow-500 mr-1"></i>
+                      Must Have
+                    </span>
+                  </label>
+
+                  <label class="flex items-center">
+                    <input
+                      type="checkbox"
+                      formControlName="niceToHave"
+                      class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 focus:ring-2"
+                    />
+                    <span
+                      class="ml-2 flex items-center text-sm font-medium text-gray-700"
+                    >
+                      <i class="fas fa-plus text-green-500 mr-1"></i>
+                      Nice to Have
+                    </span>
+                  </label>
+                </div>
+
+                <app-ui-button size="sm" variant="secondary" (click)="removeSkill(i)">
+                  <i class="fas fa-trash mr-1"></i>
+                  Remove
+                </app-ui-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <app-ui-button variant="primary" (click)="addSkill()">
+          <i class="fas fa-plus mr-2"></i>
+          Add Skill
+        </app-ui-button>
+
+        <div
+          *ngIf="!validateSkills() && skillsFormArray.touched"
+          class="flex items-center text-sm text-red-600 bg-red-50 px-4 py-3 rounded-lg"
+        >
+          <i class="fas fa-exclamation-triangle mr-2"></i>
+          At least 3 skills must be marked as "Must Have"
+        </div>
+      </div>
+</div>
+      <!-- Step 4: Custom Questions -->
+      <div *ngIf="currentStep === 4" class="space-y-6" [@fadeIn]>
+        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 p-6 sm:p-8">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <div>
+              <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                Custom Questions
+              </h2>
+              <p class="text-gray-600">
+                Add custom questions for applicants to answer during the
+                application process
+              </p>
+            </div>
+          <!-- <button
+            type="button"
+            (click)="analyzeJobPosting()"
+            class="inline-flex items-center px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-all duration-200 shadow-md hover:shadow-lg"
+          >
+            <i class="fas fa-chart-line mr-2"></i>
+            Analyze Job Posting
+          </button> -->
+        </div>
+
+        <div formArrayName="customQuestions" class="space-y-6">
+          <div
+            *ngFor="let q of customQuestionsFormArray.controls; let i = index"
+            [formGroupName]="i"
+            class="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div class="flex items-center justify-between mb-4">
+              <span
+                class="inline-flex items-center justify-center w-8 h-8 bg-blue-100 text-blue-600 rounded-full font-medium text-sm"
+                >Q{{ i + 1 }}</span
+              >
+              <button
+                type="button"
+                (click)="removeCustomQuestion(i)"
+                class="w-8 h-8 bg-red-50 text-red-600 rounded-lg flex items-center justify-center hover:bg-red-100 transition-colors"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+
+            <div class="space-y-6">
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2"
+                  >Question</label
+                >
+                <div class="relative">
+                  <input
+                    type="text"
+                    formControlName="question"
+                    class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    [class]="
+                      q.get('question')?.invalid && q.get('question')?.touched
+                        ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                        : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+                    "
+                    placeholder="Enter your question here"
+                  />
+                
+                </div>
+                <div
+                  *ngIf="
+                    q.get('question')?.invalid && q.get('question')?.touched
+                  "
+                  class="mt-2 flex items-center text-sm text-red-600"
+                >
+                  <i class="fas fa-exclamation-circle mr-2"></i>
+                  Question is required
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Answer Type</label
+                  >
+                  <div class="relative">
+                    <select
+                      formControlName="answerType"
+                      class="w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors appearance-none bg-white"
+                    >
+                      <option value="Short Answer">Short Answer</option>
+                      <option value="Paragraph">Long Answer</option>
+                      <option value="Yes/No">Yes/No</option>
+                      <option value="Multiple Choice">Multiple Choice</option>
+                    </select>
+                 
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-2"
+                    >Required</label
+                  >
+                  <label class="flex items-center">
+                    <input
+                      type="checkbox"
+                      formControlName="required"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                    />
+                    <span class="ml-2 text-sm text-gray-700"
+                      >Required field</span
+                    >
+                  </label>
+                </div>
+              </div>
+
+              <!-- Multiple Choice Options -->
+              <div
+                *ngIf="q.get('answerType').value === 'Multiple Choice'"
+                class="space-y-4"
+              >
+                <label class="block text-sm font-medium text-gray-700"
+                  >Options</label
+                >
+                <div formArrayName="options" class="space-y-3">
+                  <div
+                    *ngFor="let opt of q.get('options').controls; let j = index"
+                    class="flex items-center space-x-3"
+                  >
+                    <div class="relative flex-1">
+                      <input
+                        type="text"
+                        [formControlName]="j"
+                        class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        [class]="
+                          opt.invalid && opt.touched
+                            ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+                            : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
+                        "
+                        [placeholder]="'Option ' + (j + 1)"
+                      />
+                    
+                    </div>
+                <app-ui-button size="sm" variant="secondary" (click)="removeOption(i, j)">
+                      <i class="fas fa-times"></i>
+                </app-ui-button>
+                  </div>
+                </div>
+                <app-ui-button size="sm" variant="primary" (click)="addOption(i)">
+                  <i class="fas fa-plus mr-2"></i>
+                  Add Option
+                </app-ui-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <app-ui-button variant="primary" (click)="addCustomQuestion()">
+          <i class="fas fa-plus mr-2"></i>
+          Add Question
+        </app-ui-button>
+      </div>
+      </div>
+
+      <!-- Step 5: Preview -->
+      <div *ngIf="currentStep === 5" class="space-y-6" [@fadeIn]>
+        <div class="bg-white/90 backdrop-blur-xl rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 p-6 sm:p-8">
+          <div class="mb-6">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+              Job Posting Preview
+            </h2>
+            <p class="text-gray-600">Review your job posting before publishing</p>
+          </div>
+
+        <div
+          class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden"
+        >
+          <div class="p-6 border-b border-gray-200">
+            <div class="flex items-start space-x-4">
+              <img
+                [src]="
+                  postingAsClient
+                    ? jobForm.get('company_logo').value
+                    : companyLogo
+                "
+                alt="Company Logo"
+                class="w-16 h-16 rounded-lg object-cover border border-gray-200"
+              />
+              <div class="flex-1">
+                <h3 class="text-2xl font-bold text-gray-900 mb-1">
+                  {{ jobForm.get("title").value }}
+                </h3>
+                <p class="text-lg text-gray-600">
+                  {{
+                    postingAsClient ? jobForm.get("company").value : companyName
+                  }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 space-y-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div class="flex items-center space-x-2 text-gray-600">
+                <i class="fas fa-map-marker-alt text-blue-500"></i>
+                <span class="text-sm">{{ selectedLocations.join(", ") }}</span>
+              </div>
+              <div class="flex items-center space-x-2 text-gray-600">
+                <i class="fas fa-building text-green-500"></i>
+                <span class="text-sm">{{
+                  jobForm.get("locationType").value
+                }}</span>
+              </div>
+              <div class="flex items-center space-x-2 text-gray-600">
+                <i class="fas fa-clock text-purple-500"></i>
+                <span class="text-sm">{{ jobForm.get("type").value }}</span>
+              </div>
+              <div class="flex items-center space-x-2 text-gray-600">
+                <i class="fas fa-graduation-cap text-orange-500"></i>
+                <span class="text-sm">{{
+                  jobForm.get("minQualification").value
+                }}</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-blue-50 p-4 rounded-lg">
+                <h4 class="font-semibold text-blue-900 mb-1">
+                  Experience Required
+                </h4>
+                <p class="text-blue-700">
+                  {{ jobForm.get("minExp").value }} -
+                  {{ jobForm.get("maxExp").value }} years
+                </p>
+              </div>
+              <div
+                class="bg-green-50 p-4 rounded-lg"
+                *ngIf="
+                  jobForm.get('minSalary').value &&
+                  jobForm.get('maxSalary').value
+                "
+              >
+                <h4 class="font-semibold text-green-900 mb-1">Salary Range</h4>
+                <p class="text-green-700">
+                  {{ jobForm.get("minSalary").value | currency }} -
+                  {{ jobForm.get("maxSalary").value | currency }} / year
+                </p>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <h4 class="text-lg font-semibold text-gray-900">
+                Job Description
+              </h4>
+              <div
+                class="prose prose-sm max-w-none text-gray-700 leading-relaxed"
+                [innerHTML]="jobForm.get('description').value"
+              ></div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="space-y-3">
+                <h4 class="text-lg font-semibold text-gray-900">
+                  Required Skills
+                </h4>
+                <div class="flex flex-wrap gap-2">
+                  <ng-container *ngFor="let skill of skillsFormArray.controls">
+                    <span
+                      *ngIf="skill.get('mustHave').value"
+                      class="inline-flex items-center px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-medium"
+                    >
+                      {{ skill.get("name").value }}
+                    </span>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                <h4 class="text-lg font-semibold text-gray-900">
+                  Nice to Have Skills
+                </h4>
+                <div class="flex flex-wrap gap-2">
+                  <ng-container *ngFor="let skill of skillsFormArray.controls">
+                    <span
+                      *ngIf="skill.get('niceToHave').value"
+                      class="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
+                    >
+                      {{ skill.get("name").value }}
+                    </span>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="customQuestionsFormArray.length > 0" class="space-y-4">
+              <h4 class="text-lg font-semibold text-gray-900">
+                Custom Questions
+              </h4>
+              <div class="space-y-4">
+                <div
+                  *ngFor="
+                    let q of customQuestionsFormArray.controls;
+                    let i = index
+                  "
+                  class="bg-gray-50 p-4 rounded-lg"
+                >
+                  <div class="flex items-start justify-between mb-2">
+                    <div class="flex items-center space-x-2">
+                      <span
+                        class="inline-flex items-center justify-center w-6 h-6 bg-blue-100 text-blue-600 rounded-full text-xs font-medium"
+                        >Q{{ i + 1 }}</span
+                      >
+                      <span class="text-sm font-medium text-gray-900">{{
+                        q.get("question").value
+                      }}</span>
+                      <span
+                        *ngIf="q.get('required').value"
+                        class="text-red-500 text-sm"
+                        >*</span
+                      >
+                    </div>
+                    <span
+                      class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full"
+                    >
+                      {{ q.get("answerType").value }}
+                    </span>
+                  </div>
+                  <div
+                    *ngIf="q.get('answerType').value === 'Multiple Choice'"
+                    class="ml-8 space-y-1"
+                  >
+                    <div
+                      *ngFor="let opt of q.get('options').value"
+                      class="text-sm text-gray-600"
+                    >
+                      • {{ opt }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="sticky bottom-0 bg-white/95 backdrop-blur-xl border-t border-gray-200 py-4 px-6 -mx-6 sm:-mx-8 rounded-b-2xl shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <button
+            type="button"
+            (click)="prevStep()"
+            [disabled]="currentStep === 1"
+            class="group relative w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-white border-2 border-gray-200 text-gray-700 font-semibold rounded-xl transition-all duration-300 hover:border-[#6254E5] hover:text-[#6254E5] hover:bg-[#6254E5]/5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:border-gray-200 disabled:hover:text-gray-700 disabled:hover:bg-white"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+            Previous
+          </button>
+
+          <div class="flex items-center gap-3 w-full sm:w-auto">
+            <button
+              type="button"
+              routerLink="/company/dashboard"
+              class="group relative w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-white border-2 border-gray-200 text-gray-700 font-semibold rounded-xl transition-all duration-300 hover:border-red-300 hover:text-red-600 hover:bg-red-50"
+            >
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+              Cancel
+            </button>
+
+            <button
+              *ngIf="currentStep < 5"
+              type="button"
+              (click)="nextStep()"
+              class="group relative w-full sm:w-auto inline-flex items-center justify-center px-6 py-3  bg-gradient-to-br from-primary to-accent text-white font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-[#6254E5]/30 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
+              <div class="relative flex items-center gap-2">
+                Next
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </div>
+            </button>
+
+            <button
+              *ngIf="currentStep === 5"
+              type="submit"
+              class="group relative w-full sm:w-auto inline-flex items-center justify-center px-8 py-3  bg-gradient-to-br from-primary to-accent text-white font-semibold rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-[#6254E5]/30 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 skew-x-12"></div>
+              <div class="relative flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                </svg>
+                {{ isEditMode ? 'Update Job' : 'Post Job' }}
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+        <!-- AI Job Generator Modal -->
+        <div
+          *ngIf="showAIGenerator"
+          class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto"
+          (click)="closeAIGenerator()"
+        >
+          <div
+            class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col"
+            (click)="$event.stopPropagation()"
+          >
+            <app-ui-modal title="AI Job Generator" subtitle="Let AI help you create the perfect job posting" (close)="closeAIGenerator()" [hasActions]="false">
+              <div class="overflow-y-auto max-h-[calc(90vh-120px)]">
+                <app-ai-job-generator
+                  [companyName]="companyName"
+                  (jobGenerated)="onJobGenerated($event)"
+                  (skillsGenerated)="onSkillsGenerated($event)"
+                  (customQuestionsGenerated)="onCustomQuestionsGenerated($event)"
+                ></app-ai-job-generator>
+              </div>
+            </app-ui-modal>
+          </div>
+        </div>
+</div>

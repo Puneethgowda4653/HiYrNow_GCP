@@ -1,0 +1,48 @@
+<div class="p-4">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-semibold">Pricing Plans</h2>
+    <button class="bg-blue-600 text-white px-4 py-2 rounded" (click)="startCreate()">New Plan</button>
+  </div>
+
+  <div *ngIf="editing" class="mb-4 border rounded p-4 space-y-2">
+    <div class="grid md:grid-cols-2 gap-2">
+      <input class="border rounded px-3 py-2" placeholder="Code" [(ngModel)]="editing.code">
+      <input class="border rounded px-3 py-2" placeholder="Name" [(ngModel)]="editing.name">
+      <input class="border rounded px-3 py-2" placeholder="Price" type="number" [(ngModel)]="editing.price">
+      <input class="border rounded px-3 py-2" placeholder="Job Posts Limit" type="number" [(ngModel)]="editing.limits.jobPosts">
+      <input class="border rounded px-3 py-2" placeholder="AI JD Credits" type="number" [(ngModel)]="editing.limits.aiJdCredits">
+      <input class="border rounded px-3 py-2" placeholder="Profile Views" type="number" [(ngModel)]="editing.limits.profileViews">
+    </div>
+    <div class="space-x-2">
+      <button class="bg-green-600 text-white px-4 py-2 rounded" (click)="save()">Save</button>
+      <button class="bg-gray-200 px-4 py-2 rounded" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+
+  <div class="overflow-auto border rounded">
+    <table class="min-w-full">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="text-left p-2">Code</th>
+          <th class="text-left p-2">Name</th>
+          <th class="text-left p-2">Price</th>
+          <th class="text-left p-2">Limits</th>
+          <th class="text-left p-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of plans" class="border-t">
+          <td class="p-2">{{p.code}}</td>
+          <td class="p-2">{{p.name}}</td>
+          <td class="p-2">₹{{p.price}}</td>
+          <td class="p-2 text-sm">Jobs: {{p.limits?.jobPosts}} | AI JD: {{p.limits?.aiJdCredits}} | Views: {{p.limits?.profileViews}}</td>
+          <td class="p-2">
+            <button class="px-3 py-1 rounded bg-yellow-600 text-white" (click)="edit(p)">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+

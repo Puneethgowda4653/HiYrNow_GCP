@@ -1,0 +1,198 @@
+<div
+  *ngIf="isOpen"
+  class="fixed inset-0 z-50 overflow-y-auto"
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <!-- Background overlay -->
+  <div
+    class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+    (click)="closeModal()"
+  ></div>
+
+  <!-- Modal container -->
+  <div class="flex min-h-full items-center justify-center p-4">
+    <div
+      class="relative w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white shadow-xl transition-all"
+    >
+      <!-- Modal header -->
+      <div class="bg-gradient-to-r from-primary to-primary-hover px-6 py-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-white">Send Notification</h3>
+            <p class="text-sm text-white/80 mt-1">
+              Sending to {{ recipientCount }} recipient(s)
+            </p>
+          </div>
+          <button
+            (click)="closeModal()"
+            class="text-white hover:text-gray-200 transition-colors"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal body -->
+      <div class="p-6">
+        <!-- Notification type selection -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 mb-3">
+            Notification Type
+          </label>
+          <div class="grid grid-cols-3 gap-3">
+            <button
+              *ngFor="let type of notificationTypes"
+              (click)="notificationType = type.value"
+              [class]="
+                notificationType === type.value
+                  ? 'bg-primary text-white border-primary'
+                  : 'bg-white text-gray-700 border-gray-300 hover:border-primary'
+              "
+              class="flex flex-col items-center justify-center gap-2 p-4 border-2 rounded-xl transition-all duration-200"
+            >
+              <span class="text-2xl">{{ type.icon }}</span>
+              <span class="text-sm font-medium">{{ type.label }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Template selection -->
+        <div class="mb-6" *ngIf="templates.length > 0">
+          <label class="block text-sm font-medium text-gray-700 mb-3">
+            Quick Templates
+          </label>
+          <select
+            [(ngModel)]="selectedTemplateId"
+            (change)="selectedTemplateId && selectTemplate(selectedTemplateId)"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors bg-white"
+          >
+            <option value="">Select a template...</option>
+            <option *ngFor="let template of templates" [value]="template.id">
+              {{ template.title }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Title input -->
+        <div class="mb-6">
+          <label
+            for="notification-title"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Title *
+          </label>
+          <input
+            id="notification-title"
+            type="text"
+            [(ngModel)]="title"
+            placeholder="e.g., Interview Invitation"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+          />
+        </div>
+
+        <!-- Message textarea -->
+        <div class="mb-6">
+          <label
+            for="notification-message"
+            class="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Message *
+          </label>
+          <textarea
+            id="notification-message"
+            [(ngModel)]="message"
+            rows="6"
+            placeholder="Enter your message..."
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors resize-none"
+          ></textarea>
+        </div>
+
+        <!-- Recipients -->
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Recipients
+          </label>
+          <div class="bg-gray-50 rounded-lg p-4">
+            <div class="flex flex-wrap gap-2">
+              <span
+                *ngFor="let name of recipientNames; let i = index"
+                class="inline-flex items-center gap-2 px-3 py-1 bg-white border border-gray-300 rounded-full text-sm"
+              >
+                {{ name }}
+                <button
+                  (click)="recipientNames.splice(i, 1); recipientIds.splice(i, 1)"
+                  class="text-gray-500 hover:text-gray-700"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="bg-gray-50 px-6 py-4 flex items-center justify-end gap-3">
+        <app-ui-button variant="secondary" (click)="closeModal()">
+          Cancel
+        </app-ui-button>
+        <app-ui-button
+          variant="primary"
+          (click)="sendNotification()"
+          [disabled]="isSending || !title || !message"
+        >
+          <span *ngIf="!isSending">Send Notification</span>
+          <span *ngIf="isSending" class="flex items-center gap-2">
+            <svg
+              class="animate-spin h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            Sending...
+          </span>
+        </app-ui-button>
+      </div>
+    </div>
+  </div>
+</div>
+

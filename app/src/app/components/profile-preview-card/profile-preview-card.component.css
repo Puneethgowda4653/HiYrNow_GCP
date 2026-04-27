@@ -1,0 +1,77 @@
+/* Profile Preview Card Component Styles */
+
+.profile-preview-card {
+  animation: fadeInScale 0.6s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.skill-badge {
+  transition: all 0.3s ease;
+}
+
+.skill-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.2);
+}
+
+.profile-strength-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-strength-fill {
+  transition: width 1s ease-out;
+  position: relative;
+}
+
+.profile-strength-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.star {
+  fill: #F9A826;
+  transition: transform 0.2s ease;
+}
+
+.star-empty {
+  fill: #E5E7EB;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .profile-preview-card {
+    padding: 1.5rem;
+  }
+}
+

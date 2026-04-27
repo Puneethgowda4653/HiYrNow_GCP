@@ -1,0 +1,64 @@
+/* Removed hard-coded color definitions; fully handled by Tailwind classes in component template.*/
+
+  .dark-text {
+    color: #333333 !important;
+  }
+  .dark-bg {
+    background-color: #333333 !important;
+  }
+
+  .light-bg {
+    background-color: #f5f5f5 !important;
+  }
+  .light-text {
+    color: #f5f5f5 !important;
+  }
+
+  .white-bg {
+    background-color: #ffffff !important;
+  }
+  .white-text {
+    color: #ffffff !important;
+  }
+
+  /* Gradient utility for primary-secondary */
+  .primary-gradient-background {
+    background: linear-gradient(90deg, #0066cc 0%, #00aeef 100%) !important;
+  }
+  .primary-gradient {
+    color: linear-gradient(90deg, #0066cc 0%, #00aeef 100%) !important;
+  }
+  /* Button utility classes */
+  .btn-primary {
+    background-color: #0066cc !important;
+    color: #ffffff !important;
+    border: none;
+  }
+  .btn-primary:hover {
+    background-color: #005bb5 !important;
+  }
+
+  .btn-secondary {
+    background-color: #00aeef !important;
+    color: #ffffff !important;
+    border: none;
+  }
+  .btn-secondary:hover {
+    background-color: #008fc1 !important;
+  }
+
+  /* Link utility */
+  .link-primary {
+    color: #0066cc !important;
+  }
+  .link-primary:hover {
+    color: #005bb5 !important;
+  }
+
+  /* Accent for icons */
+  .icon-primary {
+    color: #0066cc !important;
+  }
+  .icon-secondary {
+    color: #00aeef !important ;
+  }

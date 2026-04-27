@@ -1,0 +1,397 @@
+<div class="min-h-screen bg-gradient-to-br from-surface-muted via-surface-subtlePurple to-white relative overflow-hidden">
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="relative z-10 flex items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8">
+    <div class="w-full max-w-2xl">
+      <app-progress-stepper
+        [currentStep]="currentStep"
+        [totalSteps]="totalSteps"
+        [steps]="steps"
+      ></app-progress-stepper>
+
+      <app-ui-card>
+        <div>
+          <!-- Step 1: Account + Company Email -->
+          <div *ngIf="currentStep === 1" class="space-y-6">
+            <div>
+              <h2 class="text-2xl font-bold text-slate-800 mb-2">Create Recruiter Account</h2>
+              <p class="text-slate-600">We'll verify your company email for security</p>
+            </div>
+
+            <form [formGroup]="step1Form" class="space-y-5">
+              <div>
+                <label for="email" class="block text-sm font-semibold text-slate-700 mb-2">
+                  Your Email <span class="text-red-500">*</span>
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  formControlName="email"
+                  placeholder="you@example.com"
+                  class="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all text-slate-900 placeholder-slate-400"
+                />
+              </div>
+
+              <div>
+                <label for="companyEmail" class="block text-sm font-semibold text-slate-700 mb-2">
+                  Company Email <span class="text-red-500">*</span>
+                  <span class="text-xs text-slate-500 ml-2">(We'll send verification code)</span>
+                </label>
+                <input
+                  id="companyEmail"
+                  type="email"
+                  formControlName="companyEmail"
+                  placeholder="you@company.com"
+                  class="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all text-slate-900 placeholder-slate-400"
+                />
+              </div>
+
+              <div>
+                <label for="password" class="block text-sm font-semibold text-slate-700 mb-2">
+                  Password <span class="text-red-500">*</span>
+                </label>
+                <div class="relative">
+                  <input
+                    id="password"
+                    [type]="showPassword ? 'text' : 'password'"
+                    formControlName="password"
+                    placeholder="Create a secure password"
+                    class="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none transition-all pr-12 text-slate-900 placeholder-slate-400"
+                  />
+                  <button
+                    type="button"
+                    (click)="togglePasswordVisibility()"
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600"
+                  >
+                    <svg *ngIf="!showPassword" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7s-8.268-2.943-9.542-7z" />
+                    </svg>
+                    <svg *ngIf="showPassword" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M3 3l18 18" />
+                    </svg>
+                  </button>
+                </div>
+                <app-password-strength *ngIf="password?.value" [password]="password?.value"></app-password-strength>
+              </div>
+
+              <div class="flex items-start space-x-3">
+                <input
+                  id="acceptTerms"
+                  type="checkbox"
+                  formControlName="acceptTerms"
+                  class="mt-1 w-4 h-4 text-primary border-2 border-slate-300 rounded focus:ring-primary"
+                />
+                <label for="acceptTerms" class="text-sm text-slate-600">
+                  I agree to the
+                  <a routerLink="/terms" class="text-primary hover:underline">Terms of Service</a>
+                  and
+                  <a routerLink="/privacy" class="text-primary hover:underline">Privacy Policy</a>
+                </label>
+              </div>
+
+              <div class="flex justify-end space-x-3 pt-4">
+                <button
+                  type="button"
+                  (click)="nextStep()"
+                  [disabled]="step1Form.invalid || isLoading"
+                  class="px-6 py-3 bg-gradient-to-r from-primary to-accent text-white font-semibold rounded-xl hover:shadow-lg transition-all disabled:opacity-50"
+                >
+                  Continue
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Step 2: Company Info -->
+          <div *ngIf="currentStep === 2" class="space-y-6">
+            <div>
+              <h2 class="text-2xl font-bold text-slate-800 mb-2">Company Information</h2>
+              <p class="text-slate-600">Tell us about your company</p>
+            </div>
+
+            <form [formGroup]="step2Form" class="space-y-5">
+              <div>
+                <label for="companyName" class="block text-sm font-semibold text-slate-700 mb-2">
+                  Company Name <span class="text-red-500">*</span>
+                </label>
+                <input
+                  id="companyName"
+                  type="text"
+                  formControlName="companyName"
+                  placeholder="Acme Inc."
+                  class="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-slate-900 placeholder-slate-400"
+                />
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-2">Industry</label>
+                  <select formControlName="industry" class="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-slate-900">
+                    <option value="">Select industry</option>
+                    <option *ngFor="let ind of industries" [value]="ind">{{ ind }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label for="website" class="block text-sm font-semibold text-slate-700 mb-2">
+                  Company Website <span class="text-slate-400 text-xs">(Optional)</span>
+                </label>
+                <input
+                  id="website"
+                  type="url"
+                  formControlName="website"
+                  placeholder="https://company.com"
+                  class="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-slate-900 placeholder-slate-400"
+                />
+              </div>
+
+              <!-- GST Number -->
+              <div class="space-y-2">
+                <label for="gstNumber" class="block text-sm font-semibold text-slate-700 mb-2">
+                  GST Number
+                  <span class="text-xs text-slate-500 font-normal">(Optional)</span>
+                </label>
+                <input
+                  id="gstNumber"
+                  type="text"
+                  formControlName="gstNumber"
+                  placeholder="22AAAAA0000A1Z5"
+                  maxlength="15"
+                  (input)="formatGstNumber($event)"
+                  class="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-slate-900 placeholder-slate-400 uppercase"
+                  [ngClass]="{
+                    'border-red-300 focus:ring-red-500 focus:border-red-500': isGstNumberInvalid(),
+                    'border-green-300 focus:ring-green-500 focus:border-green-500': gstNumber?.value && gstNumber?.valid
+                  }"
+                />
+                <div *ngIf="isGstNumberInvalid()" class="text-xs text-red-500 mt-1">
+                  Please enter a valid GST number (15 characters)
+                </div>
+                <div *ngIf="gstNumber?.value && gstNumber?.valid" class="text-xs text-green-600 mt-1 flex items-center">
+                  <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                  </svg>
+                  Valid GST format
+                </div>
+              </div>
+
+              <!-- Referral Code -->
+              <div class="space-y-2">
+                <label for="referralCode" class="block text-sm font-semibold text-slate-700 mb-2">
+                  Referral Code <span class="text-xs text-slate-500 font-normal">(Optional)</span>
+                </label>
+                <input
+                  id="referralCode"
+                  type="text"
+                  formControlName="referralCode"
+                  placeholder="Enter referral code if you have one"
+                  (blur)="validateReferralCode()"
+                  class="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-slate-900 placeholder-slate-400 uppercase"
+                />
+                <p class="text-xs text-slate-500 mt-1">
+                  Get special offers and benefits with a valid referral code
+                </p>
+                <div *ngIf="referralValidationMessage" class="text-xs mt-1" 
+                     [class.text-green-600]="referralValidationMessage.includes('✅')"
+                     [class.text-red-500]="referralValidationMessage.includes('❌')">
+                  {{ referralValidationMessage }}
+                </div>
+              </div>
+
+              <div class="flex justify-between space-x-3 pt-4">
+                <button
+                  type="button"
+                  (click)="previousStep()"
+                  class="px-6 py-3 border-2 border-slate-200 text-slate-700 font-semibold rounded-xl hover:bg-slate-50"
+                >
+                  Back
+                </button>
+                <button
+                  type="button"
+                  (click)="nextStep()"
+                  [disabled]="step2Form.invalid"
+                  class="px-6 py-3 bg-gradient-to-r from-primary to-accent text-white font-semibold rounded-xl hover:shadow-lg disabled:opacity-50"
+                >
+                  Continue
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Step 3: Personal Info -->
+          <div *ngIf="currentStep === 3" class="space-y-6">
+            <div>
+              <h2 class="text-2xl font-bold text-slate-800 mb-2">Your Information</h2>
+              <p class="text-slate-600">Tell us about your role</p>
+            </div>
+
+            <form [formGroup]="step3Form" class="space-y-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label for="firstName" class="block text-sm font-semibold text-slate-700 mb-2">
+                    First Name <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    id="firstName"
+                    type="text"
+                    formControlName="firstName"
+                    class="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-slate-900 placeholder-slate-400"
+                  />
+                </div>
+                <div>
+                  <label for="lastName" class="block text-sm font-semibold text-slate-700 mb-2">
+                    Last Name <span class="text-red-500">*</span>
+                  </label>
+                  <input
+                    id="lastName"
+                    type="text"
+                    formControlName="lastName"
+                    class="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-slate-900 placeholder-slate-400"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="roleAtCompany" class="block text-sm font-semibold text-slate-700 mb-2">
+                  Your Role at Company <span class="text-red-500">*</span>
+                </label>
+                <input
+                  id="roleAtCompany"
+                  type="text"
+                  formControlName="roleAtCompany"
+                  placeholder="e.g., HR Manager, Talent Acquisition"
+                  class="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-slate-900 placeholder-slate-400"
+                />
+              </div>
+
+              <div class="flex justify-between space-x-3 pt-4">
+                <button
+                  type="button"
+                  (click)="previousStep()"
+                  class="px-6 py-3 border-2 border-slate-200 text-slate-700 font-semibold rounded-xl hover:bg-slate-50"
+                >
+                  Back
+                </button>
+                <button
+                  type="button"
+                  (click)="nextStep()"
+                  [disabled]="step3Form.invalid"
+                  class="px-6 py-3 bg-gradient-to-r from-primary to-accent text-white font-semibold rounded-xl hover:shadow-lg disabled:opacity-50"
+                >
+                  Continue
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Step 4: Preferences -->
+          <div *ngIf="currentStep === 4" class="space-y-6">
+            <div>
+              <h2 class="text-2xl font-bold text-slate-800 mb-2">Hiring Preferences</h2>
+              <p class="text-slate-600">Help us customize your experience</p>
+            </div>
+
+            <form [formGroup]="step4Form" class="space-y-5">
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-2">Hiring Needs</label>
+                <textarea
+                  formControlName="hiringNeeds"
+                  rows="4"
+                  placeholder="Describe your typical hiring needs..."
+                  class="w-full px-4 py-3 bg-white border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none text-slate-900 placeholder-slate-400"
+                ></textarea>
+              </div>
+
+              <div class="flex justify-between space-x-3 pt-4">
+                <button
+                  type="button"
+                  (click)="previousStep()"
+                  class="px-6 py-3 border-2 border-slate-200 text-slate-700 font-semibold rounded-xl hover:bg-slate-50"
+                >
+                  Back
+                </button>
+                <div class="flex space-x-3">
+                  <button
+                    type="button"
+                    (click)="skipStep()"
+                    class="px-6 py-3 text-slate-600 font-medium hover:text-slate-800"
+                  >
+                    Skip
+                  </button>
+                  <button
+                    type="button"
+                    (click)="completeRegistration()"
+                    [disabled]="isLoading"
+                    class="px-6 py-3 bg-gradient-to-r from-primary to-accent text-white font-semibold rounded-xl hover:shadow-lg disabled:opacity-50"
+                  >
+                    {{ isLoading ? 'Creating Account...' : 'Complete Registration' }}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Step 5: Success -->
+          <div *ngIf="currentStep === 5" class="text-center space-y-6 py-8">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+              <svg class="w-10 h-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold text-slate-800 mb-2">Welcome to HiYrNow!</h2>
+              <p class="text-slate-600">Your recruiter account has been created</p>
+            </div>
+            <p class="text-sm text-slate-500">Redirecting to your dashboard...</p>
+          </div>
+        </div>
+      </app-ui-card>
+    </div>
+  </div>
+
+  <!-- OTP Modal -->
+  <div *ngIf="showOtpModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+    <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-md w-full">
+      <h3 class="text-xl font-bold text-slate-800 mb-2">Verify Company Email</h3>
+      <p class="text-sm text-slate-600 mb-6">
+        Enter the 6-digit code we sent to {{ emailForOtp }}
+      </p>
+      <app-otp-input
+        #otpInput
+        [length]="6"
+        (otpChange)="onOtpChange($event)"
+      ></app-otp-input>
+      <div class="mt-6 flex space-x-3">
+        <button
+          (click)="showOtpModal = false"
+          class="flex-1 px-4 py-2 border-2 border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50"
+        >
+          Cancel
+        </button>
+        <button
+          (click)="verifyOtp()"
+          [disabled]="!otpCode || otpCode.length !== 6 || isLoading"
+          class="flex-1 px-4 py-2 bg-primary text-white rounded-xl hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {{ isLoading ? 'Verifying...' : 'Verify' }}
+        </button>
+      </div>
+      <div class="mt-4 text-center">
+        <button
+          (click)="resendOtp()"
+          [disabled]="!canResendOtp || isLoading"
+          class="text-sm text-primary hover:underline disabled:text-slate-400"
+        >
+          Resend code {{ !canResendOtp ? '(' + otpResendTimer + 's)' : '' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

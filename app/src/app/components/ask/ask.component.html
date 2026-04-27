@@ -1,0 +1,109 @@
+<div style="padding: 1.5rem 2rem; max-width: 100%; box-sizing: border-box; overflow-x: hidden;">
+
+  <!-- Hero -->
+  <div style="margin-bottom: 2.5rem;">
+    <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #185FA5; background: #E6F1FB; padding: 4px 12px; border-radius: 20px; margin-bottom: 1rem;">
+      Support
+    </div>
+    <h1 style="font-size: 28px; font-weight: 500; color: #111; margin: 0 0 0.5rem;">Help & Support</h1>
+    <p style="font-size: 15px; color: #666; margin: 0; line-height: 1.6;">Browse common questions or send us a message — we'll get back to you quickly.</p>
+  </div>
+
+  <!-- Quick Links -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 2rem;">
+    <a href="/faq" style="background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.1rem 1.25rem; display: flex; align-items: center; gap: 12px; text-decoration: none;">
+      <div style="width: 36px; height: 36px; border-radius: 8px; background: #E6F1FB; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#185FA5" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M6 6.5C6 5.4 6.9 4.5 8 4.5s2 .9 2 2c0 1.5-2 1.5-2 3M8 12v.5"/></svg>
+      </div>
+      <div>
+        <p style="font-size: 14px; font-weight: 500; color: #111; margin: 0 0 2px;">Frequently asked questions</p>
+        <p style="font-size: 12px; color: #888; margin: 0;">Browse answers to common questions</p>
+      </div>
+    </a>
+    <a href="/contact" style="background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.1rem 1.25rem; display: flex; align-items: center; gap: 12px; text-decoration: none;">
+      <div style="width: 36px; height: 36px; border-radius: 8px; background: #EAF3DE; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#3B6D11" stroke-width="1.5"><rect x="1.5" y="3.5" width="13" height="10" rx="1.5"/><path d="M1.5 5.5l6.5 4.5 6.5-4.5"/></svg>
+      </div>
+      <div>
+        <p style="font-size: 14px; font-weight: 500; color: #111; margin: 0 0 2px;">Contact support</p>
+        <p style="font-size: 12px; color: #888; margin: 0;">Reach our team directly</p>
+      </div>
+    </a>
+  </div>
+
+  <!-- Divider -->
+  <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 2rem;">
+    <div style="flex: 1; height: 1px; background: #e5e7eb;"></div>
+    <span style="font-size: 12px; color: #aaa; white-space: nowrap;">or send us a message</span>
+    <div style="flex: 1; height: 1px; background: #e5e7eb;"></div>
+  </div>
+
+  <!-- Form Card -->
+  <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1.5rem; box-sizing: border-box;">
+    <div style="margin-bottom: 1.5rem;">
+      <h2 style="font-size: 17px; font-weight: 500; color: #111; margin: 0 0 4px;">Submit a query</h2>
+      <p style="font-size: 13px; color: #888; margin: 0;">Fill in the form below and we'll respond as soon as possible.</p>
+    </div>
+
+    <form [formGroup]="helpForm" (ngSubmit)="onSubmit()">
+
+      <!-- Name + Email row -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 14px;">
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <label for="name" style="font-size: 13px; font-weight: 500; color: #555;">Name</label>
+          <input id="name" type="text" formControlName="name" placeholder="Your full name"
+            style="height: 38px; padding: 0 12px; font-size: 14px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; color: #111; outline: none; width: 100%; box-sizing: border-box;" />
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <label for="email" style="font-size: 13px; font-weight: 500; color: #555;">Email</label>
+          <input id="email" type="email" formControlName="email" placeholder="you@company.com"
+            style="height: 38px; padding: 0 12px; font-size: 14px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; color: #111; outline: none; width: 100%; box-sizing: border-box;" />
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <div style="display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px;">
+        <label for="phone" style="font-size: 13px; font-weight: 500; color: #555;">Phone number</label>
+        <input id="phone" type="tel" formControlName="phone" placeholder="+91 00000 00000"
+          style="height: 38px; padding: 0 12px; font-size: 14px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; color: #111; outline: none; width: min(220px, 100%); box-sizing: border-box;" />
+      </div>
+
+      <!-- Topic chips -->
+      <div style="display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px;">
+        <label style="font-size: 13px; font-weight: 500; color: #555;">Topic</label>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <span *ngFor="let topic of topics"
+            (click)="selectTopic(topic)"
+            [style.background]="selectedTopic === topic ? '#E6F1FB' : '#fff'"
+            [style.color]="selectedTopic === topic ? '#185FA5' : '#888'"
+            [style.border]="selectedTopic === topic ? '1px solid transparent' : '1px solid #e5e7eb'"
+            style="padding: 5px 12px; font-size: 12px; font-weight: 500; border-radius: 20px; cursor: pointer;">
+            {{ topic }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div style="display: flex; flex-direction: column; gap: 5px;">
+        <label for="query" style="font-size: 13px; font-weight: 500; color: #555;">Message</label>
+        <textarea id="query" formControlName="query" placeholder="Describe your issue or question in detail…" rows="4"
+          style="padding: 10px 12px; font-size: 14px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; color: #111; outline: none; resize: vertical; width: 100%; box-sizing: border-box; font-family: inherit; line-height: 1.5;"></textarea>
+      </div>
+
+      <!-- Footer -->
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid #e5e7eb;">
+        <span style="font-size: 12px; color: #aaa; display: flex; align-items: center; gap: 6px;">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5L2 4v4c0 3.3 2.5 6.3 6 7 3.5-.7 6-3.7 6-7V4L8 1.5z"/></svg>
+          Your data is safe and never shared
+        </span>
+        <button type="submit"
+          style="height: 38px; padding: 0 24px; font-size: 14px; font-weight: 500; color: #fff; background: #185FA5; border: none; border-radius: 8px; cursor: pointer;">
+          Send message
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+<app-footer></app-footer>

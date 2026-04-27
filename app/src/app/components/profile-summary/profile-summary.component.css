@@ -1,0 +1,7 @@
+/* Profile Summary Component Styles */
+/* Most styles are handled by Tailwind, but we can add custom animations here if needed */
+
+.progress-bar {
+  transition: width 0.5s ease-out;
+}
+

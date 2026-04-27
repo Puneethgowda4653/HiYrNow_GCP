@@ -1,0 +1,143 @@
+<div class="container mx-auto p-6">
+  <!-- Dashboard Statistics -->
+  <div class="grid grid-cols-4 gap-4 mb-6">
+    <div  [routerLink]="'/Alluser'" class="bg-white shadow-md rounded-lg p-4">
+      <h3 class="text-gray-500 text-sm">Total Users</h3>
+      <p class="text-2xl font-bold">{{ systemStats.totalUsers }}</p>
+    </div>
+    <div class="bg-white shadow-md rounded-lg p-4">
+      <h3 class="text-gray-500 text-sm">Total Recruiters</h3>
+      <p class="text-2xl font-bold">{{ systemStats.totalRecruiters }}</p>
+    </div>
+    <div class="bg-white shadow-md rounded-lg p-4">
+      <h3 class="text-gray-500 text-sm">Premium Users</h3>
+      <p class="text-2xl font-bold">{{ systemStats.totalPremiumUsers }}</p>
+    </div>
+    <div class="bg-white shadow-md rounded-lg p-4">
+      <h3 class="text-gray-500 text-sm">Pending Approvals</h3>
+      <p class="text-2xl font-bold">{{ systemStats.pendingApprovals }}</p>
+    </div>
+  </div>
+
+  <!-- Pending Recruiters Section -->
+  <div class="bg-white shadow-md rounded-lg mb-6">
+    <div class="p-4 border-b flex justify-between items-center">
+      <h2 class="text-xl font-semibold">Pending  Requests</h2>
+      <div class="flex items-center">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          placeholder="Search recruiters..." 
+          class="mr-2 p-2 border rounded"
+        >
+        <select 
+          [(ngModel)]="filterRole" 
+          class="mr-2 p-2 border rounded"
+        >
+          <option value="">All Roles</option>
+          <option value="Recruiter">Recruiters</option>
+          <option value="JobSeeker">Job Seekers</option>
+        </select>
+      </div>
+    </div>
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="p-3 text-left">Company/Username</th>
+          <th class="p-3 text-left">Email</th>
+          <th class="p-3 text-left">phone</th>
+          <th class="p-3 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filterUsers()" class="border-b">
+          <td class="p-3">{{ user.username }}</td>
+          <td class="p-3">{{ user.email }}</td>
+          <td class="p-3">{{ user.phone || 'N/A' }}</td>
+          <td class="p-3 flex justify-center space-x-2">
+            <!-- <button 
+              class="btn btn-info" 
+              (click)="showUserDetails(user)"
+            >
+              View Details
+            </button> -->
+            <button 
+              *ngIf="user.role === 'Recruiter'"
+              class="btn btn-success" 
+              (click)="approveRecruiter(user)"
+            >
+              Approve
+            </button>
+            <button 
+              *ngIf="user.role === 'Recruiter'"
+              class="btn btn-danger" 
+              (click)="rejectRecruiter(user)"
+            >
+              Reject
+            </button>
+            <button 
+              *ngIf="user.role === 'JobSeeker' && user.premiumRequestStatus === 'Pending'"
+              class="btn btn-primary" 
+              (click)="grantPremiumAccess(user)"
+            >
+              Grant Premium
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+<div>
+  <!-- Admin Creation Form -->
+<!--    
+  <div class="bg-white w-[50%] shadow-md rounded-lg p-6">
+    <h2 class="text-xl font-semibold mb-4">Create New Admin</h2>
+    <form #adminForm="ngForm" (ngSubmit)="createAdmin()" class="grid grid-cols-3 gap-4">
+      <input 
+        type="text" 
+        name="username"
+        [(ngModel)]="newAdmin.username"
+        placeholder="Username" 
+        class="p-2 border rounded"
+        required
+      >
+      <input 
+        type="email" 
+        name="email"
+        [(ngModel)]="newAdmin.email"
+        placeholder="Email" 
+        class="p-2 border rounded"
+        required
+      >
+      <input 
+        type="password" 
+        name="password"
+        [(ngModel)]="newAdmin.password"
+        placeholder="Password" 
+        class="p-2 border rounded"
+        required
+      >
+      <button 
+        type="submit" 
+        class="btn btn-primary col-span-3"
+        [disabled]="adminForm.invalid"
+      >
+        Create Admin
+      </button>
+    </form>
+  </div> -->
+
+  <button  routerLink="blog" class="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+    Add blog
+</button>
+
+   <!-- Add Credits Form -->
+</div>
+<!-- Credits Management Section -->
+<app-admin-credit-management></app-admin-credit-management>
+  <!-- User Details Modal -->
+  <!-- <app-user-details-modal 
+    [user]="selectedUser"
+    [(show)]="showUserDetailsModal"
+  ></app-user-details-modal> -->
+</div>

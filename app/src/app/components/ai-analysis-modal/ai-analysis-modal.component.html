@@ -1,0 +1,291 @@
+<div
+  *ngIf="isOpen"
+  class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto"
+  >
+    <!-- Modal Header -->
+    <div class="p-6 border-b border-gray-200">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-bold text-gray-900">AI Analysis Results</h3>
+        <button (click)="onClose()" class="text-gray-400 hover:text-gray-500">
+          <svg
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Content -->
+    <div class="p-6">
+      <!-- Loading State -->
+      <div
+        *ngIf="isAnalyzing"
+        class="flex flex-col items-center justify-center py-8"
+      >
+        <div
+          class="w-16 h-16 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mb-4"
+        ></div>
+        <p class="text-purple-700 font-medium">
+          Analyzing candidate profile...
+        </p>
+      </div>
+
+      <!-- Analysis Results -->
+      <div *ngIf="!isAnalyzing && analysisResults" class="space-y-6">
+        <!-- Overall Score & Confidence -->
+        <div
+          class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-6"
+        >
+          <div class="flex-1">
+            <h4
+              class="text-lg font-semibold text-gray-900 flex items-center gap-2"
+            >
+              <span>Overall Match Score</span>
+              <span
+                class="ml-2"
+                title="How well the candidate matches the job (0-100%)"
+              >
+                <svg
+                  class="h-5 w-5 text-purple-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <circle cx="12" cy="12" r="10" stroke-width="2" />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v4l3 3"
+                  />
+                </svg>
+              </span>
+            </h4>
+            <div class="flex items-center mt-2">
+              <div class="relative w-20 h-20">
+                <svg class="w-20 h-20" viewBox="0 0 100 100">
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    fill="none"
+                    stroke="#E5E7EB"
+                    stroke-width="8"
+                  />
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    fill="none"
+                    stroke="#8B5CF6"
+                    stroke-width="8"
+                    [attr.stroke-dasharray]="283"
+                    [attr.stroke-dashoffset]="
+                      283 - (283 * analysisResults.matchScore) / 100
+                    "
+                  />
+                </svg>
+                <span
+                  class="absolute inset-0 flex items-center justify-center text-2xl font-bold text-purple-700"
+                  >{{ analysisResults.matchScore }}%</span
+                >
+              </div>
+              <div class="ml-6">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm text-gray-600">Confidence Score</span>
+                  <span class="ml-1" title="AI's confidence in this analysis">
+                    <svg
+                      class="h-4 w-4 text-indigo-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <circle cx="12" cy="12" r="10" stroke-width="2" />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8v4l3 3"
+                      />
+                    </svg>
+                  </span>
+                </div>
+                <span class="text-lg font-semibold text-indigo-700"
+                  >{{ analysisResults.confidence }}%</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <h4
+            class="text-lg font-semibold text-gray-900 mb-2 flex items-center gap-2"
+          >
+            <span>AI Summary</span>
+            <span class="ml-2" title="Short summary of the candidate's fit">
+              <svg
+                class="h-5 w-5 text-blue-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"
+                />
+              </svg>
+            </span>
+          </h4>
+          <p class="text-gray-700 text-base">{{ analysisResults.summary }}</p>
+        </div>
+
+        <!-- Strengths & Gaps -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Strengths -->
+          <div
+            class="bg-green-50 rounded-xl p-6 border border-green-200 shadow-sm"
+          >
+            <h4
+              class="text-lg font-semibold text-green-800 mb-4 flex items-center gap-2"
+            >
+              <svg
+                class="h-6 w-6 text-green-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              Key Strengths
+            </h4>
+            <ul class="space-y-2">
+              <li
+                *ngFor="let strength of analysisResults.strengths"
+                class="flex items-start"
+              >
+                <span class="text-green-700">{{ strength }}</span>
+              </li>
+            </ul>
+          </div>
+          <!-- Gaps -->
+          <div
+            class="bg-amber-50 rounded-xl p-6 border border-amber-200 shadow-sm"
+          >
+            <h4
+              class="text-lg font-semibold text-amber-800 mb-4 flex items-center gap-2"
+            >
+              <svg
+                class="h-6 w-6 text-amber-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
+              </svg>
+              Identified Gaps
+            </h4>
+            <ul class="space-y-2">
+              <li
+                *ngFor="let gap of analysisResults.gaps"
+                class="flex items-start"
+              >
+                <span class="text-amber-700">{{ gap }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Recommended Action & Assignments -->
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <h4
+            class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2"
+          >
+            <svg
+              class="h-6 w-6 text-purple-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 17v-2a4 4 0 018 0v2m-4-4v4"
+              />
+            </svg>
+            Recommended Action
+          </h4>
+          <div class="mb-4">
+            <span
+              class="inline-block bg-purple-100 text-purple-800 px-4 py-2 rounded-full font-semibold text-base"
+            >
+              {{ analysisResults.recommendedAction }}
+            </span>
+          </div>
+          <div
+            *ngIf="
+              analysisResults.assignments &&
+              analysisResults.assignments.length > 0
+            "
+          >
+            <h5 class="font-medium text-gray-900 mb-2">
+              Suggested Assignments
+            </h5>
+            <div class="space-y-3">
+              <div
+                *ngFor="let assignment of analysisResults.assignments"
+                class="flex items-start p-4 rounded-lg border border-gray-100 bg-gray-50"
+              >
+                <div class="flex-1">
+                  <h6 class="font-semibold text-gray-800">
+                    {{ assignment.type | titlecase }}
+                  </h6>
+                  <p class="text-sm text-gray-600 mt-1">
+                    {{ assignment.description }}
+                  </p>
+                </div>
+                <span
+                  class="ml-4 px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  [ngClass]="{
+                    'bg-purple-100 text-purple-800':
+                      assignment.priority === 'high',
+                    'bg-gray-100 text-gray-800':
+                      assignment.priority === 'medium'
+                  }"
+                >
+                  {{ assignment.priority | titlecase }} Priority
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<!-- users-list.component.html -->
+<div class="users-container">
+    <h2>Users List</h2>
+    
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Languages</th>
+          <th>Created At</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td>{{ user.requestStatus }}</td>
+          <td>
+            <span *ngFor="let lang of user.languagesKnown; let last = last">
+              {{ lang }}{{ !last ? ', ' : '' }}
+            </span>
+          </td>
+          <td>{{ user.accountCreatedAt | date:'medium' }}</td>
+          <td>
+            <div class="btn-group">
+              <button class="btn btn-view" (click)="viewUserDetails(user)">View</button>
+              <!-- <button class="btn btn-edit" (click)="editUser(user)">Edit</button> -->
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div *ngIf="users.length === 0" class="no-users">
+      No users found.
+    </div>
+  </div>

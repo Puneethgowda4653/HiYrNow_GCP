@@ -1,0 +1,23 @@
+  <!-- Profile Completion Card -->
+  <div class="bg-white rounded-xl shadow-sm mb-6">
+    <div class="p-4 md:p-6">
+      <h2 class="text-xl font-semibold mb-2">Profile Completion</h2>
+      
+      <!-- Progress Bar -->
+      <div class="relative h-2 bg-gray-200 rounded-full overflow-hidden">
+        <div class="absolute top-0 left-0 h-full bg-indigo-600 transition-all duration-300"
+            [style.width.%]="profileCompletion.score">
+        </div>
+      </div>
+      
+      <!-- Progress Stats -->
+      <div class="flex items-center justify-between mt-2 text-sm">
+        <span>{{profileCompletion.sectionsCompleted}} of {{profileCompletion.totalSections}} sections completed</span>
+        <span class="font-medium">{{profileCompletion.score}}%</span>
+      </div>
+
+     
+
+   
+    </div>
+  </div>

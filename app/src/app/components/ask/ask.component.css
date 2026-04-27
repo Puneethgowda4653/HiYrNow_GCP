@@ -1,0 +1,52 @@
+/* .help-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .help-container h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
+  
+  .help-container p {
+    font-size: 1.2em;
+    line-height: 1.5;
+  }
+  
+  .help-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .help-container ul li {
+    margin: 10px 0;
+  }
+  
+  .help-container ul li a {
+    text-decoration: none;
+    color: #007bff;
+  }
+  
+  .help-container ul li a:hover {
+    text-decoration: underline;
+  }
+   */
+
+   :host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+input, textarea {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  h1 {
+    font-size: 22px !important;
+  }
+}

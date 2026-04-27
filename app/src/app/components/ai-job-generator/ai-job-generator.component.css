@@ -1,0 +1,163 @@
+.ai-job-generator {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ai-job-generator input:focus,
+.ai-job-generator select:focus,
+.ai-job-generator textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+}
+
+.ai-job-generator button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.ai-job-generator .skill-tag {
+  transition: all 0.2s ease-in-out;
+}
+
+.ai-job-generator .skill-tag:hover {
+  transform: scale(1.05);
+}
+
+/* Loading animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.ai-job-generator .loading {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Gradient text effect */
+.ai-job-generator .gradient-text {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Hover effects for cards */
+.ai-job-generator .bg-white {
+  transition: all 0.3s ease;
+}
+
+.ai-job-generator .bg-white:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom scrollbar for generated content */
+.ai-job-generator .generated-content {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.ai-job-generator .generated-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ai-job-generator .generated-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.ai-job-generator .generated-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.ai-job-generator .generated-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ai-job-generator {
+    padding: 1rem;
+  }
+  
+  .ai-job-generator .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .ai-job-generator .flex {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* Success animation */
+@keyframes successPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.ai-job-generator .success-animation {
+  animation: successPulse 0.6s ease-in-out;
+}
+
+/* Form validation styles */
+.ai-job-generator .form-error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.ai-job-generator .error-message {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Tooltip styles */
+.ai-job-generator .tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.ai-job-generator .tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.ai-job-generator .tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+} 

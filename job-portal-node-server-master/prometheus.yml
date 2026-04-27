@@ -1,0 +1,80 @@
+# Prometheus Configuration
+# 
+# Usage:
+#   docker run -p 9090:9090 -v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus
+
+global:
+  scrape_interval: 15s # Scrape targets every 15 seconds
+  evaluation_interval: 15s # Evaluate rules every 15 seconds
+  
+  # Attach these labels to any time series or alerts
+  external_labels:
+    monitor: 'job-portal-monitor'
+    environment: 'production'
+
+# Alertmanager configuration (optional)
+# alerting:
+#   alertmanagers:
+#     - static_configs:
+#         - targets:
+#           - localhost:9093
+
+# Load rules once and periodically evaluate them
+# rule_files:
+#   - "alerts.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Job Portal API Server
+  - job_name: 'job-portal-api'
+    static_configs:
+      - targets: ['localhost:9464'] # Your app's metrics endpoint
+        labels:
+          service: 'api-server'
+          instance: 'primary'
+    
+    # Scrape interval for this job (override global)
+    scrape_interval: 10s
+    scrape_timeout: 5s
+    
+    # Metrics path (default: /metrics)
+    metrics_path: '/metrics'
+    
+    # Add custom labels
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        regex: '([^:]+):.*'
+        replacement: '${1}'
+
+  # MongoDB Exporter (if you set up MongoDB monitoring)
+  # - job_name: 'mongodb'
+  #   static_configs:
+  #     - targets: ['localhost:9216']
+  #       labels:
+  #         service: 'mongodb'
+
+  # Redis Exporter (if you set up Redis monitoring)
+  # - job_name: 'redis'
+  #   static_configs:
+  #     - targets: ['localhost:9121']
+  #       labels:
+  #         service: 'redis'
+
+  # Node Exporter (system metrics)
+  # - job_name: 'node'
+  #   static_configs:
+  #     - targets: ['localhost:9100']
+  #       labels:
+  #         service: 'system'
+
+  # If you have multiple API server instances (load balanced)
+  # - job_name: 'job-portal-api-cluster'
+  #   static_configs:
+  #     - targets:
+  #       - 'api-server-1:9464'
+  #       - 'api-server-2:9464'
+  #       - 'api-server-3:9464'
+  #       labels:
+  #         cluster: 'production'
+

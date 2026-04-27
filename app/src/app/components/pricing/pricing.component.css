@@ -1,0 +1,350 @@
+/* Pricing Component Styles */
+
+/* Animated Background Blobs */
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+/* Scrollbar Styling */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #d1b3e0;
+  border-radius: 10px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #af19e1;
+}
+
+.scrollbar-thumb-purple-300::-webkit-scrollbar-thumb {
+  background: #d1b3e0;
+}
+
+.scrollbar-track-gray-100::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+
+/* Card Hover Effects */
+app-ui-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+app-ui-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Gradient Text Animation */
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.bg-gradient-to-r {
+  background-size: 200% auto;
+  animation: gradient-x 3s ease infinite;
+}
+
+/* Button Hover States */
+app-ui-button:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(175, 25, 225, 0.3);
+}
+
+app-ui-button:not(:disabled):active {
+  transform: translateY(0);
+}
+
+/* Progress Bar Animations */
+.h-full {
+  transition: width 0.5s ease-out, background-color 0.3s ease;
+}
+
+/* Pricing Card Scale Effect */
+.lg\:scale-105 {
+  /* box-shadow: 0 20px 40px -10px rgba(51, 3, 79, 0.2); */
+  /* padding: 12px; */
+  /* background-color: antiquewhite; */
+}
+
+/* Table Sticky Header */
+.sticky {
+  position: sticky;
+}
+
+.sticky.left-0 {
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Comparison Table Hover Effect */
+tbody tr:hover td {
+  background-color: rgba(168, 85, 247, 0.05);
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+  .grid-cols-1 {
+    gap: 1.5rem;
+  }
+
+  .text-4xl {
+    font-size: 2rem;
+  }
+
+  .text-5xl {
+    font-size: 2.5rem;
+  }
+
+  .text-6xl {
+    font-size: 3rem;
+  }
+}
+
+/* Focus States for Accessibility */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #af19e1;
+  outline-offset: 2px;
+}
+
+/* Loading Skeleton (if needed) */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e0e0e0 50%,
+    #f0f0f0 75%
+  );
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Badge Pulse Animation */
+@keyframes pulse-badge {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+.absolute.-top-4 > div {
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+
+/* Usage Stats Card Hover */
+.bg-white\/10:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Smooth Scroll Behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced Card Borders */
+.border-2 {
+  border-width: 2px;
+  border-style: solid;
+}
+
+/* Backdrop Blur Support */
+.backdrop-blur-sm {
+  backdrop-filter: blur(4px);
+}
+
+/* Group Hover Effects */
+.group\/item:hover .flex-shrink-0 > div {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+/* Feature List Item Transition */
+li {
+  transition: all 0.2s ease;
+}
+
+li:hover {
+  padding-left: 4px;
+}
+
+/* CTA Button Group Effect */
+.group\/btn svg {
+  transition: transform 0.3s ease;
+}
+
+.group\/btn:hover svg {
+  transform: translateX(4px);
+}
+
+/* Comparison Table Zebra Stripes */
+tbody tr:nth-child(even) {
+  background-color: rgba(249, 250, 251, 0.5);
+}
+
+/* Trust Signal Icons */
+.flex.items-center.gap-2 svg {
+  transition: transform 0.3s ease;
+}
+
+.flex.items-center.gap-2:hover svg {
+  transform: scale(1.1);
+}
+
+/* FAQ Card Expand Effect */
+app-ui-card.cursor-pointer:hover {
+  border-color: #af19e1;
+}
+
+/* Sticky Mobile CTA Shadow */
+.fixed.bottom-0 {
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Text Sizing */
+@media (max-width: 640px) {
+  h1 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .fixed,
+  .sticky,
+  button,
+  app-ui-button {
+    display: none !important;
+  }
+
+  app-ui-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+/* Dark Mode Support (if needed) */
+@media (prefers-color-scheme: dark) {
+  /* Add dark mode styles here if required */
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .bg-gradient-to-r {
+    background: #33034f;
+  }
+
+  .text-gray-600 {
+    color: #000;
+  }
+
+  button {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Custom Utilities */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(51, 3, 79, 0.25);
+}
+
+/* Billing Toggle Custom Styling */
+.relative.inline-flex.h-7 {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.relative.inline-flex.h-7:hover {
+  opacity: 0.9;
+}
+
+/* Plan Card Featured Gradient */
+.bg-gradient-to-br.from-white.to-purple-50 {
+  background-image: linear-gradient(to bottom right, #ffffff, #faf5ff);
+}
+
+/* Pricing Amount Gradient */
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Usage Progress Bar Container */
+.rounded-full.h-2 {
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Enterprise Custom Pricing Card */
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}

@@ -1,0 +1,226 @@
+<!-- plan-usage.component.html -->
+<div class="max-w-6xl mx-auto p-6 space-y-6">
+  <!-- Header Section -->
+  <div class="bg-gradient-to-br from-blue-600 via-indigo-600 to-blue-700 rounded-2xl shadow-xl p-8 text-white relative overflow-hidden">
+    <!-- Background decoration -->
+    <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+    <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full -ml-24 -mb-24"></div>
+    
+    <div class="relative z-10">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <div class="bg-white/20 backdrop-blur-sm p-2 rounded-lg">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+              </svg>
+            </div>
+            <h1 class="text-3xl font-bold">{{ planLabel }}</h1>
+          </div>
+          <p class="text-purple-100" *ngIf="renewsOn">Next billing cycle: {{ renewsOn }}</p>
+        </div>
+        
+        <button class="bg-white text-purple-600 px-6 py-3 rounded-xl font-semibold hover:bg-purple-50 transition-all shadow-lg hover:shadow-xl flex items-center gap-2 group"   routerLink="/pricing"
+>
+          <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          Upgrade Plan
+        </button>
+      </div>
+      
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-3 gap-4 mt-8">
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+          <div class="text-purple-200 text-sm mb-1">Features Used</div>
+          <div class="text-2xl font-bold">{{ getUsedFeaturesCount() }} / {{ usageRows.length }}</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+          <div class="text-purple-200 text-sm mb-1">Average Usage</div>
+          <div class="text-2xl font-bold">{{ getAverageUsage() }}%</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+          <div class="text-purple-200 text-sm mb-1">Days Remaining</div>
+          <div class="text-2xl font-bold">{{ getDaysRemaining() }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="bg-white rounded-2xl shadow-lg p-12 text-center">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+    <p class="text-gray-600">Loading your plan usage...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="bg-red-50 border border-red-200 rounded-2xl p-6 flex items-start gap-4">
+    <svg class="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <div>
+      <h3 class="font-semibold text-red-900 mb-1">Unable to Load Usage Data</h3>
+      <p class="text-red-700">{{ error }}</p>
+    </div>
+  </div>
+
+  <!-- Usage Details -->
+  <div *ngIf="!loading && !error" class="space-y-4">
+    <div class="flex items-center justify-between mb-2">
+      <h2 class="text-xl font-bold text-gray-800">Feature Usage</h2>
+      <div class="text-sm text-gray-500">Current billing cycle</div>
+    </div>
+
+    <!-- Usage Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div *ngFor="let row of usageRows; let i = index" 
+           class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border-2 border-gray-100 hover:border-blue-200 group cursor-pointer"
+           [class.ring-2]="isNearLimit(row)"
+           [class.ring-cyan-400]="isNearLimit(row)"
+           (mouseenter)="hoveredFeature = row.key"
+           (mouseleave)="hoveredFeature = null">
+        
+        <div class="flex items-start justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="p-3 rounded-xl transition-all duration-300"
+                 [ngClass]="{
+                   'bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white': i === 0,
+                   'bg-indigo-100 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white': i === 1,
+                   'bg-cyan-100 text-cyan-600 group-hover:bg-cyan-600 group-hover:text-white': i === 2,
+                   'bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white': i === 3,
+                   'bg-indigo-100 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white': i === 4
+                 }">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" [innerHTML]="getIcon(i)"></svg>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">{{ row.label }}</h3>
+              <p class="text-xs text-gray-500 mt-0.5" *ngIf="getFeatureDescription(i)">{{ getFeatureDescription(i) }}</p>
+            </div>
+          </div>
+          
+          <!-- Status Badge -->
+          <div *ngIf="row.limit !== Infinity" class="flex-shrink-0">
+            <span *ngIf="isNearLimit(row)" class="inline-flex items-center gap-1 px-2 py-1 bg-orange-100 text-orange-700 text-xs font-medium rounded-full">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              Low
+            </span>
+            <span *ngIf="!isNearLimit(row) && pct(row) > 0" class="inline-flex items-center px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+              Active
+            </span>
+          </div>
+          <div *ngIf="row.limit === Infinity" class="flex-shrink-0">
+            <span class="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 text-xs font-semibold rounded-full">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+              </svg>
+              Unlimited
+            </span>
+          </div>
+        </div>
+
+        <!-- Usage Stats -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-gray-600">Usage</span>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-gray-900" *ngIf="row.limit !== Infinity">
+                {{ row.used }} <span class="text-gray-400 font-normal">of</span> {{ row.limit }}/ month
+              </span>
+              <span class="font-bold text-emerald-600" *ngIf="row.limit === Infinity">
+                {{ row.used }} used
+              </span>
+              <span *ngIf="row.limit !== Infinity" class="text-xs font-medium px-2 py-0.5 rounded-full"
+                    [ngClass]="{
+                      'bg-red-100 text-red-700': pct(row) >= 90,
+                      'bg-orange-100 text-orange-700': pct(row) >= 70 && pct(row) < 90,
+                      'bg-blue-100 text-blue-700': pct(row) < 70
+                    }">
+                {{ pct(row) }}%
+              </span>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <!-- Replace the progress bar section in your template with this: -->
+
+<!-- Replace the progress bar section in your template with this: -->
+
+<!-- Progress Bar -->
+<div class="relative h-3 w-full rounded-full bg-gray-200 overflow-hidden shadow-inner">
+  <div class="h-full rounded-full transition-all duration-500 ease-out relative overflow-hidden bg-gradient-to-r from-blue-500 to-blue-600"
+       [style.width]="pct(row) + '%'"
+      >
+    <!-- Animated shine effect -->
+    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent" 
+         [class.animate-shimmer]="pct(row) < 100"
+         [class.animate-pulse]="pct(row) === 100"></div>
+  </div>
+</div>
+
+          <!-- Remaining / Warning -->
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-gray-500" *ngIf="row.limit !== Infinity">
+              {{ row.limit - row.used }} remaining
+            </span>
+            <span class="text-gray-500" *ngIf="row.limit === Infinity">
+              No limits
+            </span>
+            <button *ngIf="isNearLimit(row)" class="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1 group/btn">
+              Need more?
+              <svg class="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upgrade CTA Banner -->
+    <div *ngIf="shouldShowUpgradeBanner()" class="bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50 border-2 border-blue-200 rounded-2xl p-6 mt-6">
+      <div class="flex items-start justify-between gap-4">
+        <div class="flex items-start gap-4">
+          <div class="bg-blue-600 p-3 rounded-xl text-white">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 mb-1">Ready to unlock more?</h3>
+            <p class="text-gray-600 mb-3">You're using your current plan effectively. Upgrade to access unlimited features and accelerate your hiring.</p>
+            <div class="flex flex-wrap gap-2">
+              <span class="inline-flex items-center gap-1 px-3 py-1 bg-white rounded-full text-sm text-gray-700 border border-gray-200">
+                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Unlimited job posts
+              </span>
+              <span class="inline-flex items-center gap-1 px-3 py-1 bg-white rounded-full text-sm text-gray-700 border border-gray-200">
+                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Advanced AI tools
+              </span>
+              <span class="inline-flex items-center gap-1 px-3 py-1 bg-white rounded-full text-sm text-gray-700 border border-gray-200">
+                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                Priority support
+              </span>
+            </div>
+          </div>
+        </div>
+        <button class="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl whitespace-nowrap flex items-center gap-2"   routerLink="/pricing"
+>
+          View Plans
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,75 @@
+<nav class="navbar   navbar-dark " style="background-color: rgb(255, 255, 255); ">
+
+  
+  <!-- <div class="collapse navbar-collapse" id="navbarCollapse"> -->
+    <ul class="navbar-nav mr-auto" style="display:contents;">
+      <!-- <div class="logo"> -->
+      <li class="logo1">
+        <a class="btn btn-outline-light font-weight-light ml-3" [routerLinkActive]="['active']" routerLink="/home" ><h1 class="title">HyrNow</h1></a>
+        <!--<span class="sr-only">(current)</span>-->
+      </li>
+      <!-- </div> -->
+      <li class="nav-item my-1">
+        <a class="btn btn-outline-light font-weight-light ml-3" [routerLinkActive]="['active']"
+           routerLink="/job-list/{{' '}}/{{' '}}">Jobs</a>
+      </li>
+
+      <li class="nav-item my-1">
+
+        <a [hidden]="!(user != null && user.role === 'JobSeeker')" class="btn btn-outline-light
+        font-weight-light ml-3"
+           [routerLinkActive]="['active']" routerLink="/profile-seeker" >Profile</a>
+      </li>
+      <li class="nav-item my-1">
+        <a [hidden]="!(user != null && user.role === 'Recruiter')" class="btn btn-outline-light
+        font-weight-light ml-3"
+           [routerLinkActive]="['active']" routerLink="/company/profile" >Profile</a>
+      </li>
+      <li class="nav-item my-1">
+        <a [hidden]="!(user != null && user.role === 'JobSeeker')" class="btn btn-outline-light
+        font-weight-light ml-3"
+           [routerLinkActive]="['active']" routerLink="/dashboard-seeker" >Dashboard</a>
+      </li>
+      <li class="nav-item my-1">
+        <a [hidden]="!(user != null && (user.role === 'Recruiter' || user.role === 'Admin' ))"
+           class="btn btn-outline-light
+        font-weight-light ml-3"
+           [routerLinkActive]="['active']" routerLink="/company/dashboard" >Dashboard</a>
+      </li>
+      <li class="nav-item my-1">
+        <a [hidden]="!(user != null && user.role === 'Admin')" class="btn btn-outline-light
+         font-weight-light ml-3"
+           [routerLinkActive]="['active']" routerLink="/admin" >Admin</a>
+      </li>
+      
+      <li class="nav-item my-1">
+        <h5 [hidden]="user===null"class=" my-1 mx-3"><i [hidden]="user===null" class="fa fa-user "></i>
+          {{user!=null && user.username}}</h5>
+      </li>
+      <div class="buttons">
+      <li class="nav-item my-1">
+        <button [hidden]="user===null" class="btn btn-outline-light btn-main
+       font-weight-light ml-3" (click)="logout()"
+                type="button">Logout</button>
+      </li>
+      <li class="nav-item my-1">
+        <button [hidden]="!(user === null)" class="btn btn-outline-light btn-main 
+       font-weight-light ml-3" routerLink="/login" [routerLinkActive]="['active']"
+                type="button">Login</button>
+      </li>
+
+      <li class="nav-item my-1">
+        <button class="btn btn-primary  
+      font-weight-light ml-3" style="color: white;"  routerLink="/register" [routerLinkActive]="['active']"
+                type="button">Sign Up</button>
+      </li>
+      </div>
+
+    </ul>
+   
+</nav>
+<div class="cont">
+  <router-outlet (activate)="sessionCheck()" ></router-outlet>
+</div>
+
+

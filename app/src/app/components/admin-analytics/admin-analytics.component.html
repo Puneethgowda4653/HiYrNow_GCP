@@ -1,0 +1,27 @@
+<div class="p-4 space-y-4">
+  <div class="grid md:grid-cols-4 gap-4">
+    <div class="border rounded p-4"><div class="text-gray-500">Recruiters</div><div class="text-2xl font-semibold">{{summary?.totalRecruiters || 0}}</div></div>
+    <div class="border rounded p-4"><div class="text-gray-500">Job Seekers</div><div class="text-2xl font-semibold">{{summary?.totalSeekers || 0}}</div></div>
+    <div class="border rounded p-4"><div class="text-gray-500">Jobs</div><div class="text-2xl font-semibold">{{summary?.totalJobs || 0}}</div></div>
+    <div class="border rounded p-4"><div class="text-gray-500">Revenue</div><div class="text-2xl font-semibold">₹{{summary?.revenue || 0}}</div></div>
+  </div>
+
+  <div class="grid md:grid-cols-3 gap-4">
+    <div class="border rounded p-4">
+      <div class="font-semibold mb-2">AI Usage</div>
+      <div>Total AI Results: {{ai?.totalAIResults || 0}}</div>
+      <div>Resume Parses: {{ai?.resumeParses || 0}}</div>
+      <div>AI JD Generations: {{ai?.jdGenerations || 0}}</div>
+    </div>
+    <div class="border rounded p-4">
+      <div class="font-semibold mb-2">Top Companies</div>
+      <div class="text-gray-500">Coming soon</div>
+    </div>
+    <div class="border rounded p-4">
+      <div class="font-semibold mb-2">Trends</div>
+      <div class="text-gray-500">Charts integration (ngx-charts/ApexCharts)</div>
+    </div>
+  </div>
+</div>
+
+

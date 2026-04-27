@@ -1,0 +1,50 @@
+<div class="p-4">
+  <div class="flex flex-wrap items-end gap-2 mb-4">
+    <input class="border rounded px-3 py-2" placeholder="Company" [(ngModel)]="filters.company" />
+    <input class="border rounded px-3 py-2" placeholder="Title" [(ngModel)]="filters.title" />
+    <input class="border rounded px-3 py-2" placeholder="Location" [(ngModel)]="filters.location" />
+    <select class="border rounded px-3 py-2" [(ngModel)]="filters.status">
+      <option value="">Any Status</option>
+      <option>active</option>
+      <option>pending</option>
+      <option>deactivated</option>
+    </select>
+    <button class="bg-blue-600 text-white px-4 py-2 rounded" (click)="load()">Filter</button>
+  </div>
+
+  <div *ngIf="loading" class="text-gray-500">Loading...</div>
+  <div *ngIf="!loading">
+    <div class="overflow-auto border rounded">
+      <table class="min-w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="text-left p-2">Title</th>
+            <th class="text-left p-2">Company</th>
+            <th class="text-left p-2">Location</th>
+            <th class="text-left p-2">Status</th>
+            <th class="text-left p-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let j of jobs" class="border-t">
+            <td class="p-2">{{j.title}}</td>
+            <td class="p-2">{{j.company}}</td>
+            <td class="p-2">{{j.location}}</td>
+            <td class="p-2">{{j.status || 'pending'}}</td>
+            <td class="p-2 space-x-2">
+              <button class="px-3 py-1 rounded bg-green-600 text-white" (click)="setStatus(j,'active')">Approve</button>
+              <button class="px-3 py-1 rounded bg-yellow-600 text-white" (click)="setStatus(j,'deactivated')">Deactivate</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-3 flex items-center gap-2">
+      <button class="px-3 py-1 border rounded" [disabled]="page===1" (click)="page = page-1; load()">Prev</button>
+      <div>Page {{page}}</div>
+      <button class="px-3 py-1 border rounded" [disabled]="(page*pageSize)>=total" (click)="page = page+1; load()">Next</button>
+    </div>
+  </div>
+</div>
+
+

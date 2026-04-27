@@ -1,0 +1,234 @@
+<!-- summit-signup.component.html -->
+<div class="summit-signup-container bg-gradient-to-r from-accent/40 via-primary/40 to-brand-end/40">
+  <!-- Animated background blobs -->
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+  <div class="bg-blob blob-3"></div>
+  
+  <div class="card">
+    <!-- Logo Section with animation -->
+    <div class="logo-section">
+      <div class="logo pulse">
+        <img src="../../../assets/hash.png" alt="logo" class="w-8 h-8">
+      </div>
+      <h2 class="brand-name bg-gradient-to-r from-accent via-primary to-brand-end">HiYrNow</h2>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <div class="badge shimmer">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="sparkle-icon">
+          <path d="M8 0L10.5 5.5L16 8L10.5 10.5L8 16L5.5 10.5L0 8L5.5 5.5L8 0Z" fill="currentColor"/>
+        </svg>
+        Pioneer Pass Exclusive
+      </div>
+      <h1 class="title">Get Started for Free</h1>
+      <p class="subtitle">
+        Join our Pioneer Pass program and unlock premium features worth ₹25,000 at zero cost
+      </p>
+    </div>
+
+    <!-- Value Props with stagger animation -->
+    <!-- <div class="features">
+      <div class="feature-item" style="animation-delay: 0.1s">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M10 0L12.5 7.5L20 10L12.5 12.5L10 20L7.5 12.5L0 10L7.5 7.5L10 0Z" fill="currentColor"/>
+          </svg>
+        </div>
+        <span>Premium Access Worth ₹25,000</span>
+      </div>
+      <div class="feature-item" style="animation-delay: 0.2s">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M6 10L9 13L14 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="check-path"/>
+          </svg>
+        </div>
+        <span>Instant Dashboard Access</span>
+      </div>
+      <div class="feature-item" style="animation-delay: 0.3s">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M7 9L10 12L13 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="check-path"/>
+          </svg>
+        </div>
+        <span>No Credit Card Required</span>
+      </div>
+    </div> -->
+
+    <!-- Form with floating labels -->
+    <form [formGroup]="signupForm" (ngSubmit)="submit()" novalidate class="signup-form">
+      <div class="form-group" [class.focused]="focusedField === 'fullName'" [class.filled]="signupForm.get('fullName')?.value">
+        <input
+          id="fullName"
+          type="text"
+          formControlName="fullName"
+          placeholder=" "
+          class="form-input"
+          (focus)="focusedField = 'fullName'"
+          (blur)="focusedField = null"
+        />
+        <label for="fullName" class="floating-label">Full Name</label>
+        <div class="input-border"></div>
+        <div
+          class="error-message"
+          *ngIf="signupForm.get('fullName')?.touched && signupForm.get('fullName')?.invalid"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M7 4V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="7" cy="10" r="0.5" fill="currentColor"/>
+          </svg>
+          Full name is required
+        </div>
+      </div>
+
+      <div class="form-group" [class.focused]="focusedField === 'companyEmail'" [class.filled]="signupForm.get('companyEmail')?.value">
+        <input
+          id="companyEmail"
+          type="email"
+          formControlName="companyEmail"
+          placeholder=" "
+          class="form-input"
+          (focus)="focusedField = 'companyEmail'"
+          (blur)="focusedField = null"
+        />
+        <label for="companyEmail" class="floating-label">Company Email</label>
+        <div class="input-border"></div>
+        <div
+          class="error-message"
+          *ngIf="signupForm.get('companyEmail')?.touched && signupForm.get('companyEmail')?.invalid"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M7 4V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="7" cy="10" r="0.5" fill="currentColor"/>
+          </svg>
+          Please enter a valid company email
+        </div>
+      </div>
+
+      <div class="form-group" [class.focused]="focusedField === 'companyName'" [class.filled]="signupForm.get('companyName')?.value">
+        <input
+          id="companyName"
+          type="text"
+          formControlName="companyName"
+          placeholder=" "
+          class="form-input"
+          (focus)="focusedField = 'companyName'"
+          (blur)="focusedField = null"
+        />
+        <label for="companyName" class="floating-label">Company Name</label>
+        <div class="input-border"></div>
+        <div
+          class="error-message"
+          *ngIf="signupForm.get('companyName')?.touched && signupForm.get('companyName')?.invalid"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M7 4V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="7" cy="10" r="0.5" fill="currentColor"/>
+          </svg>
+          Company name is required
+        </div>
+      </div>
+
+      <div class="form-group" [class.focused]="focusedField === 'phoneNumber'" [class.filled]="signupForm.get('phoneNumber')?.value">
+        <input
+          id="phoneNumber"
+          type="tel"
+          formControlName="phoneNumber"
+          placeholder=" "
+          class="form-input"
+          (focus)="focusedField = 'phoneNumber'"
+          (blur)="focusedField = null"
+        />
+        <label for="phoneNumber" class="floating-label">Phone Number</label>
+        <div class="input-border"></div>
+        <div
+          class="error-message"
+          *ngIf="signupForm.get('phoneNumber')?.touched && signupForm.get('phoneNumber')?.invalid"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M7 4V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="7" cy="10" r="0.5" fill="currentColor"/>
+          </svg>
+          <span *ngIf="signupForm.get('phoneNumber')?.hasError('required')">Phone number is required</span>
+          <span *ngIf="signupForm.get('phoneNumber')?.hasError('invalidPhone')">Please enter a valid 10-digit Indian phone number</span>
+        </div>
+      </div>
+
+      <div class="form-group" [class.focused]="focusedField === 'password'" [class.filled]="signupForm.get('password')?.value">
+        <div class="password-wrapper">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder=" "
+            class="form-input"
+            (focus)="focusedField = 'password'"
+            (blur)="focusedField = null"
+          />
+          <label for="password" class="floating-label">Password</label>
+          <div class="input-border"></div>
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+            tabindex="-1"
+          >
+            <svg *ngIf="!showPassword" width="20" height="20" viewBox="0 0 20 20" fill="none" class="eye-icon">
+              <path d="M10 4C5 4 2 10 2 10s3 6 8 6 8-6 8-6-3-6-8-6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <svg *ngIf="showPassword" width="20" height="20" viewBox="0 0 20 20" fill="none" class="eye-icon">
+              <path d="M3 3L17 17M10 7a3 3 0 013 3m-3 3a3 3 0 01-3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M6.5 6.5C5 7.5 3.5 9 2 10c0 0 3 6 8 6 1 0 2-.2 2.8-.5M11.5 11.5c.5-.5 1-1.2 1-1.5 0 0-1-2-2.5-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+        <div
+          class="error-message"
+          *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.invalid"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M7 4V7.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="7" cy="10" r="0.5" fill="currentColor"/>
+          </svg>
+          Password must be at least 8 characters
+        </div>
+      </div>
+
+      <button
+        class="submit-btn"
+        type="submit"
+        [disabled]="isLoading || signupForm.invalid"
+        [class.loading]="isLoading"
+      >
+        <span *ngIf="!isLoading" class="btn-content">
+          <span>Claim Your Free Access</span>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="arrow-icon">
+            <path d="M4 10h12m-5-5l5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span *ngIf="isLoading" class="btn-content">
+          <span class="spinner"></span>
+          <span>Creating your account...</span>
+        </span>
+        <div class="btn-shine"></div>
+      </button>
+    </form>
+
+    <!-- Trust Badge -->
+    <div class="trust-badge">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="star-icon">
+        <path d="M8 1L10 6H15L11 9.5L12.5 14.5L8 11L3.5 14.5L5 9.5L1 6H6L8 1Z" fill="currentColor"/>
+      </svg>
+      <span>Trusted by 1000+ companies • Limited spots available</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+/* demo-form.component.css */
+/* Additional custom styles if needed beyond Tailwind */
+input::placeholder, select {
+    color: #6b7280;
+  }
+  
+  input:focus, select:focus {
+    outline: none;
+  }
+  
+  /* Custom styles for dropdown arrow positioning */
+  select {
+    padding-right: 1.5rem;
+  }
+  
+  /* For smaller mobile screens */
+  @media (max-width: 640px) {
+    h1 {
+      font-size: 2.25rem;
+    }
+  }

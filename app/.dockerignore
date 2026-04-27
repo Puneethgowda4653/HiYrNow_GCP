@@ -1,0 +1,15 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+.firebase
+.editorconfig
+docs
+e2e
+*.md
+.angular
+karma.conf.js
+playwright.config.ts
+test.ts
+tsconfig.spec.json
+yarn.lock

@@ -1,0 +1,41 @@
+<!-- Coming Soon Badge -->
+<div class="relative inline-flex items-center">
+    <!-- Main Badge Container -->
+    <div class="relative flex items-center px-4 py-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full group overflow-hidden">
+      <!-- Animated Background Pulse -->
+      <div class="absolute inset-0 bg-gradient-to-r from-violet-600 via-fuchsia-600 to-pink-600 blur-xl opacity-50"
+           [ngClass]="'animate-pulse'">
+      </div>
+      
+      <!-- Animated Dots -->
+      <div class="flex items-center gap-1 mr-2">
+        <span class="w-1.5 h-1.5 bg-white rounded-full"
+              [ngStyle]="{'animation': 'bounce 1s infinite', 'animation-delay': '0ms'}">
+        </span>
+        <span class="w-1.5 h-1.5 bg-white rounded-full"
+              [ngStyle]="{'animation': 'bounce 1s infinite', 'animation-delay': '150ms'}">
+        </span>
+        <span class="w-1.5 h-1.5 bg-white rounded-full"
+              [ngStyle]="{'animation': 'bounce 1s infinite', 'animation-delay': '300ms'}">
+        </span>
+      </div>
+      
+      <!-- Badge Text -->
+      <span class="relative text-sm font-semibold text-white tracking-wide">
+        Coming Soon
+      </span>
+  
+      <!-- Shine Effect -->
+      <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-45"
+           [ngStyle]="{'animation': 'shine 3s infinite'}">
+      </div>
+    </div>
+  
+    <!-- Optional Status Indicator -->
+    <div class="absolute -right-1 -top-1">
+      <span class="flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+      </span>
+    </div>
+  </div>

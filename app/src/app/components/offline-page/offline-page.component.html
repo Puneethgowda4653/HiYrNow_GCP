@@ -1,0 +1,76 @@
+<div class="offline-container">
+  <div class="offline-content">
+    <!-- Cloud with slash icon -->
+    <div class="offline-icon">
+      <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 10C18 8.67392 17.4732 7.40215 16.5355 6.46447C15.5979 5.52678 14.3261 5 13 5C11.6739 5 10.4021 5.52678 9.46447 6.46447C8.52678 7.40215 8 8.67392 8 10" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+        <path d="M6 13C4.89543 13 4 13.8954 4 15C4 16.1046 4.89543 17 6 17H18C19.1046 17 20 16.1046 20 15C20 13.8954 19.1046 13 18 13" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+        <line x1="4" y1="4" x2="20" y2="20" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- Status message -->
+    <div class="offline-message">
+      <h1 class="offline-title">You're Offline</h1>
+      <p class="offline-description">
+        <ng-container *ngIf="!isOnline">
+          No internet connection available. Please check your connection and try again.
+        </ng-container>
+        <ng-container *ngIf="isOnline">
+          Connection restored! Redirecting...
+        </ng-container>
+      </p>
+    </div>
+
+    <!-- Pending sync info -->
+    <div class="offline-sync-info" *ngIf="syncStatus && syncStatus.queueLength > 0">
+      <div class="sync-info-card">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <div>
+          <strong>{{ syncStatus.queueLength }}</strong> pending action(s) will be synced when you're back online
+        </div>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="offline-actions">
+      <button class="btn btn-primary" (click)="retry()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+        </svg>
+        Retry Connection
+      </button>
+      
+      <button class="btn btn-secondary" (click)="goToSavedJobs()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M9 3v18"/>
+          <path d="M14 8l-5 5 5 5"/>
+        </svg>
+        View Cached Jobs
+      </button>
+    </div>
+
+    <!-- Tips -->
+    <div class="offline-tips">
+      <h3>While you're offline, you can:</h3>
+      <ul>
+        <li>Browse previously viewed jobs</li>
+        <li>Prepare job applications (will be submitted when online)</li>
+        <li>View your saved jobs and applications</li>
+        <li>Update your profile (changes will sync later)</li>
+      </ul>
+    </div>
+
+    <!-- Network status indicator -->
+    <div class="network-status" [class.online]="isOnline" [class.offline]="!isOnline">
+      <div class="status-dot"></div>
+      <span>{{ isOnline ? 'Connected' : 'Disconnected' }}</span>
+    </div>
+  </div>
+</div>
+

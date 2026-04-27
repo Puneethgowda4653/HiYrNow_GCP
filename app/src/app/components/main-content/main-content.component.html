@@ -1,0 +1,33 @@
+<div class="main-content">
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!error" class="items-container">
+    <div
+      *ngFor="let item of items"
+      class="item-card"
+      (click)="onItemClick(item)"
+    >
+      <div class="item-image">
+        <img [src]="item.imageUrl" [alt]="item.title" />
+      </div>
+      <div class="item-details">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.description }}</p>
+        <div class="item-meta">
+          <span class="price">{{ item.price | currency }}</span>
+          <span class="date">{{ item.date | date }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="!isLoading && items.length > 0" class="load-more">
+    <button (click)="onLoadMore()">Load More</button>
+  </div>
+</div>

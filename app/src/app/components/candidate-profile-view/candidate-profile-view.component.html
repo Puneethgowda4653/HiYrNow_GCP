@@ -1,0 +1,40 @@
+<!-- 🎨 CANDIDATE PROFILE VIEW - Premium HiYrNow Design -->
+<div class="min-h-screen bg-gradient-to-br from-[#F7F7FD] via-white to-[#EDEBFF]mt-20 mb-20 md:mt-0 md:mb-0">
+  
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex flex-col items-center justify-center min-h-[60vh]">
+    <div class="relative">
+      <div class="animate-spin rounded-full h-20 w-20 border-4 border-[#6254E5] border-t-transparent"></div>
+      <div class="absolute inset-0 flex items-center justify-center">
+        <i class="fas fa-user text-[#6254E5] text-2xl animate-pulse"></i>
+      </div>
+    </div>
+    <p class="text-gray-600 font-semibold mt-4">Loading candidate profile...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="flex flex-col items-center justify-center min-h-[60vh] px-4">
+    <div class="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mb-6">
+      <i class="fas fa-exclamation-triangle text-red-600 text-4xl"></i>
+    </div>
+    <h3 class="text-2xl font-bold text-gray-900 mb-2">Error Loading Profile</h3>
+    <p class="text-gray-600 text-center max-w-md">{{ error }}</p>
+  </div>
+
+  <!-- Profile Content -->
+  <div *ngIf="!loading && !error && user" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    
+    <!-- Header Section -->
+    
+
+    <!-- Profile Content -->
+    <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border border-gray-100 p-6">
+      <app-user-profile-share
+        [feature]="'viewprofile'"
+        [userId]="userId"
+        class="block w-full"
+      ></app-user-profile-share>
+    </div>
+  </div>
+</div>
+

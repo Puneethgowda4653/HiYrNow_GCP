@@ -1,0 +1,728 @@
+<!-- Personal Information Section -->
+<div class="personal-info-container">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+        <div>
+      <h3 class="text-xl font-bold text-text-primary flex items-center gap-2">
+        <i class="fas fa-user text-primary" aria-hidden="true"></i>
+        Personal Information
+      </h3>
+      <p class="text-sm text-text-secondary mt-1">
+        Manage your personal and professional details
+          </p>
+        </div>
+        <!-- <button
+      *ngIf="!editMode"
+      (click)="edit()"
+      class="px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      [attr.aria-label]="'Edit personal information'"
+    >
+      <i class="fas fa-edit" aria-hidden="true"></i>
+      <span class="hidden sm:inline">Edit Profile</span>
+    </button> -->
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="text-center py-12">
+    <div class="inline-block w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+    <p class="text-text-secondary mt-4">Loading your information...</p>
+  </div>
+
+  
+
+  <!-- Edit Mode: Multi-Step Form -->
+  <div class="bg-gradient-to-br from-primary/5 to-transparent rounded-2xl p-6 border-2 border-primary/20 animate-slide-up">
+    <div class="flex items-center justify-between mb-6">
+      <h4 class="text-lg font-bold text-text-primary flex items-center gap-2">
+        <i class="fas fa-edit text-primary" aria-hidden="true"></i>
+        Edit Personal Information
+      </h4>
+      <button
+        (click)="cancel()"
+        class="text-text-secondary hover:text-text-primary transition-colors"
+        [attr.aria-label]="'Cancel'"
+      >
+        <i class="fas fa-times text-xl" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="flex items-center justify-center gap-2 mb-6">
+      <div 
+        *ngFor="let step of [1, 2, 3]; let i = index"
+        class="flex items-center"
+      >
+        <div 
+          class="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-300 cursor-pointer"
+          [ngClass]="currentStep > i + 1 ? 'bg-success text-white' : currentStep === i + 1 ? 'bg-primary text-white' : 'bg-gray-200 text-gray-500'"
+          (click)="goToStep(i + 1)"
+        >
+          <i *ngIf="currentStep > i + 1" class="fas fa-check" aria-hidden="true"></i>
+          <span *ngIf="currentStep <= i + 1">{{ i + 1 }}</span>
+        </div>
+        <div 
+          *ngIf="i < 2"
+          class="w-16 h-1 mx-2 rounded-full transition-all duration-300"
+          [ngClass]="currentStep > i + 1 ? 'bg-success' : 'bg-gray-200'"
+        ></div>
+                </div>
+              </div>
+
+    <div class="text-center mb-6">
+      <p class="text-sm font-semibold text-primary">
+        {{ currentStep === 1 ? 'Essential Information' : currentStep === 2 ? 'Professional Profile' : 'Job Preferences & Settings' }}
+      </p>
+      <p class="text-xs text-text-secondary mt-1">
+        {{ currentStep === 1 ? 'Your basic contact information' : currentStep === 2 ? 'Career details and professional links' : 'Customize your job search preferences' }}
+      </p>
+    </div>
+
+    <form [formGroup]="personalInfoForm" (ngSubmit)="save()" class="space-y-4">
+      <!-- Step 1: Essential Information -->
+      <div *ngIf="currentStep === 1" class="space-y-4">
+        <!-- Info Banner (full width) -->
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 flex items-start gap-3">
+          <i class="fas fa-info-circle text-blue-600 text-lg mt-0.5" aria-hidden="true"></i>
+          <div>
+            <h4 class="text-sm font-semibold text-blue-900 mb-1">Start with the essentials</h4>
+            <p class="text-xs text-blue-700">We'll need your basic contact information to create your profile.</p>
+          </div>
+        </div>
+      
+        <!-- Grid wrapper: 2 columns on sm+ screens, 1 col on xs -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      
+          <!-- First Name -->
+          <div>
+            <label for="firstName" class="block text-sm font-semibold text-text-primary mb-2">
+              First Name <span class="text-error">*</span>
+            </label>
+            <input
+              id="firstName"
+              type="text"
+              formControlName="firstName"
+              placeholder="John"
+              class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              [ngClass]="formErrors['firstName'] ? 'border-error' : 'border-gray-300'"
+            />
+            <p *ngIf="formErrors['firstName']" class="text-error text-xs mt-1">
+              {{ formErrors['firstName'] }}
+            </p>
+          </div>
+      
+          <!-- Last Name -->
+          <div>
+            <label for="lastName" class="block text-sm font-semibold text-text-primary mb-2">
+              Last Name <span class="text-error">*</span>
+            </label>
+            <input
+              id="lastName"
+              type="text"
+              formControlName="lastName"
+              placeholder="Doe"
+              class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              [ngClass]="formErrors['lastName'] ? 'border-error' : 'border-gray-300'"
+            />
+            <p *ngIf="formErrors['lastName']" class="text-error text-xs mt-1">
+              {{ formErrors['lastName'] }}
+            </p>
+          </div>
+      
+          <!-- Username -->
+          <div>
+            <label for="username" class="block text-sm font-semibold text-text-primary mb-2">
+              Username <span class="text-error">*</span>
+            </label>
+            <input
+              id="username"
+              type="text"
+              formControlName="username"
+              placeholder="johndoe123"
+              class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              [ngClass]="formErrors['username'] ? 'border-error' : 'border-gray-300'"
+            />
+            <p *ngIf="formErrors['username']" class="text-error text-xs mt-1 flex items-center gap-1">
+              <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              {{ formErrors['username'] }}
+            </p>
+            <p class="text-xs text-text-secondary mt-1">This will be visible in your profile URL</p>
+          </div>
+      
+          <!-- Email -->
+          <div>
+            <label for="email" class="block text-sm font-semibold text-text-primary mb-2">
+              Email Address <span class="text-error">*</span>
+            </label>
+            <input
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="john.doe@example.com"
+              class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              [ngClass]="formErrors['email'] ? 'border-error' : 'border-gray-300'"
+            />
+            <p *ngIf="formErrors['email']" class="text-error text-xs mt-1 flex items-center gap-1">
+              <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              {{ formErrors['email'] }}
+            </p>
+          </div>
+      
+          <!-- Phone -->
+          <div>
+            <label for="phone" class="block text-sm font-semibold text-text-primary mb-2">
+              Phone Number <span class="text-error">*</span>
+            </label>
+            <input
+              id="phone"
+              type="tel"
+              formControlName="phone"
+              placeholder="9876543210"
+              class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              [ngClass]="formErrors['phone'] ? 'border-error' : 'border-gray-300'"
+            />
+            <p *ngIf="formErrors['phone']" class="text-error text-xs mt-1 flex items-center gap-1">
+              <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              {{ formErrors['phone'] }}
+            </p>
+          </div>
+      
+          <!-- Date of Birth -->
+          <div>
+            <label for="dateOfBirth" class="block text-sm font-semibold text-text-primary mb-2">
+              Date of Birth <span class="text-error">*</span>
+            </label>
+            <input
+              id="dateOfBirth"
+              type="date"
+              formControlName="dateOfBirth"
+              class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              [ngClass]="formErrors['dateOfBirth'] ? 'border-error' : 'border-gray-300'"
+            />
+            <p *ngIf="formErrors['dateOfBirth']" class="text-error text-xs mt-1 flex items-center gap-1">
+              <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              {{ formErrors['dateOfBirth'] }}
+            </p>
+          </div>
+      
+          <!-- Professional Summary / Tagline (full width) -->
+          <div class="sm:col-span-2 col-span-1">
+            <label for="professionalSummary" class="block text-sm font-semibold text-text-primary mb-2">
+              Professional Summary / Tagline
+            </label>
+            <textarea
+              id="professionalSummary"
+              formControlName="professionalSummary"
+              rows="4"
+              placeholder="e.g., Full-stack developer with 5+ years of experience in building scalable web applications..."
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary resize-none"
+            ></textarea>
+            <p class="text-xs text-text-secondary mt-1">Write a brief summary that highlights your expertise</p>
+          </div>
+      
+          <!-- Gender -->
+          <div>
+            <label for="gender" class="block text-sm font-semibold text-text-primary mb-2">
+              Gender <span class="text-error">*</span>
+            </label>
+            <select
+              id="gender"
+              formControlName="gender"
+              class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none bg-white"
+              [ngClass]="formErrors['gender'] ? 'border-error' : 'border-gray-300'"
+            >
+              <option value="">Select Gender</option>
+              <option *ngFor="let option of genderOptions" [value]="option.value">{{ option.label }}</option>
+            </select>
+            <p *ngIf="formErrors['gender']" class="text-error text-xs mt-1">
+              {{ formErrors['gender'] }}
+            </p>
+          </div>
+      
+          <!-- Marital Status -->
+          <div>
+            <label for="maritalStatus" class="block text-sm font-semibold text-text-primary mb-2">
+              Marital Status
+            </label>
+            <select
+              id="maritalStatus"
+              formControlName="maritalStatus"
+              class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none bg-white"
+              [ngClass]="formErrors['maritalStatus'] ? 'border-error' : 'border-gray-300'"
+            >
+              <option value="">Select Status</option>
+              <option *ngFor="let option of maritalStatusOptions" [value]="option.value">{{ option.label }}</option>
+            </select>
+            <p *ngIf="formErrors['maritalStatus']" class="text-error text-xs mt-1">
+              {{ formErrors['maritalStatus'] }}
+            </p>
+          </div>
+      
+          <!-- City -->
+          <div>
+            <!-- AFTER: -->
+<label for="currentCity" class="block text-sm font-semibold text-text-primary mb-2">
+  City <span class="text-red-500">*</span>
+</label>
+            <input
+              id="currentCity"
+              type="text"
+              formControlName="currentCity"
+              placeholder="e.g., Bengaluru"
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            />
+            <!-- ADD THIS: -->
+<p *ngIf="formErrors['currentCity']" class="mt-1 text-sm text-red-500">
+  {{ formErrors['currentCity'] }}
+</p>
+          </div>
+      
+          <!-- State -->
+          <div>
+            <label for="currentState" class="block text-sm font-semibold text-text-primary mb-2">
+              State
+            </label>
+            <input
+              id="currentState"
+              type="text"
+              formControlName="currentState"
+              placeholder="e.g., Karnataka"
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            />
+          </div>
+      
+        </div> <!-- end grid -->
+      </div>
+      
+
+      <!-- Step 2: Professional Profile -->
+      <div *ngIf="currentStep === 2" class="space-y-4">
+        <!-- Info Banner -->
+        <div class="bg-purple-50 border border-purple-200 rounded-xl p-4 flex items-start gap-3">
+          <i class="fas fa-briefcase text-purple-600 text-lg mt-0.5" aria-hidden="true"></i>
+          <div>
+            <h4 class="text-sm font-semibold text-purple-900 mb-1">Build your professional profile</h4>
+            <p class="text-xs text-purple-700">Add your career details and social links to stand out to recruiters.</p>
+          </div>
+        </div>
+      
+        <!-- Grid Layout for Inputs -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Current CTC -->
+          <div>
+            <label for="currentCTC" class="block text-sm font-semibold text-text-primary mb-2">
+              Current CTC (₹)
+            </label>
+            <input
+              id="currentCTC"
+              type="number"
+              formControlName="currentCTC"
+              placeholder="e.g., 800000"
+              min="0"
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            />
+          </div>
+      
+          <!-- Expected CTC -->
+          <div>
+            <label for="preferredCTC" class="block text-sm font-semibold text-text-primary mb-2">
+              Expected CTC (₹)
+            </label>
+            <input
+              id="preferredCTC"
+              type="number"
+              formControlName="preferredCTC"
+              placeholder="e.g., 1200000"
+              min="0"
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            />
+          </div>
+      
+          <!-- Notice Period -->
+          <div>
+            <label for="noticePeriod" class="block text-sm font-semibold text-text-primary mb-2">
+              Notice Period (days)
+            </label>
+            <input
+              id="noticePeriod"
+              type="number"
+              formControlName="noticePeriod"
+              placeholder="e.g., 30"
+              min="0"
+              max="365"
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            />
+          </div>
+      
+          <!-- Total Experience -->
+          <div>
+            <label for="totalExp" class="block text-sm font-semibold text-text-primary mb-2">
+              Total Experience (years)
+            </label>
+            <input
+              id="totalExp"
+              type="number"
+              formControlName="totalExp"
+              placeholder="e.g., 5"
+              min="0"
+              max="50"
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            />
+          </div>
+      
+          <!-- Languages Known (Full Width) -->
+          <div class="sm:col-span-2 col-span-1">
+            <label class="block text-sm font-semibold text-text-primary mb-2">
+              Languages Known
+            </label>
+      
+            <!-- Selected Languages -->
+            <div *ngIf="getSelectedLanguages().length > 0" class="flex flex-wrap gap-2 mb-3">
+              <span
+                *ngFor="let lang of getSelectedLanguages()"
+                class="inline-flex items-center gap-2 px-3 py-2 bg-primary/10 text-primary rounded-xl border-2 border-primary/20 text-sm font-medium"
+              >
+                {{ lang }}
+                <button
+                  type="button"
+                  (click)="removeSelectedLanguage(lang)"
+                  class="hover:text-error transition-colors"
+                  [attr.aria-label]="'Remove ' + lang"
+                >
+                  <i class="fas fa-times text-xs" aria-hidden="true"></i>
+                </button>
+              </span>
+            </div>
+      
+            <!-- Language Search Input -->
+            <div class="relative">
+              <input
+                type="text"
+                [(ngModel)]="languageSearchTerm"
+                [ngModelOptions]="{standalone: true}"
+                (input)="searchLanguages(languageSearchTerm)"
+                (focus)="showLanguageDropdown = true; searchLanguages(languageSearchTerm)"
+                placeholder="Search and add languages..."
+                class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              />
+      
+              <!-- Language Dropdown -->
+              <div
+                *ngIf="showLanguageDropdown && (filteredLanguages.length > 0 || languageSearchTerm.length === 0)"
+                class="absolute z-10 w-full mt-2 bg-white border-2 border-gray-200 rounded-xl shadow-lg max-h-64 overflow-y-auto"
+              >
+                <!-- Popular Languages (default view) -->
+                <div *ngIf="languageSearchTerm.length === 0" class="p-3 border-b border-gray-200">
+                  <p class="text-xs font-semibold text-text-secondary uppercase mb-2">Popular Languages</p>
+                  <div class="space-y-1">
+                    <button
+                      *ngFor="let lang of getPopularLanguages()"
+                      type="button"
+                      (click)="selectLanguageFromDropdown(lang)"
+                      class="w-full text-left px-3 py-2 hover:bg-primary/5 rounded-lg transition-colors text-sm"
+                      [disabled]="getSelectedLanguages().includes(lang)"
+                      [ngClass]="getSelectedLanguages().includes(lang) ? 'opacity-50 cursor-not-allowed' : ''"
+                    >
+                      <i class="fas fa-plus-circle text-primary mr-2" aria-hidden="true"></i>
+                      {{ lang }}
+                      <span *ngIf="getSelectedLanguages().includes(lang)" class="text-xs text-success ml-2">
+                        <i class="fas fa-check" aria-hidden="true"></i> Added
+                      </span>
+                    </button>
+                  </div>
+                </div>
+      
+                <!-- Search Results -->
+                <div *ngIf="languageSearchTerm.length > 0" class="p-2">
+                  <button
+                    *ngFor="let lang of filteredLanguages"
+                    type="button"
+                    (click)="selectLanguageFromDropdown(lang)"
+                    class="w-full text-left px-3 py-2 hover:bg-primary/5 rounded-lg transition-colors text-sm"
+                    [disabled]="getSelectedLanguages().includes(lang)"
+                    [ngClass]="getSelectedLanguages().includes(lang) ? 'opacity-50 cursor-not-allowed' : ''"
+                  >
+                    <i class="fas fa-plus-circle text-primary mr-2" aria-hidden="true"></i>
+                    {{ lang }}
+                    <span *ngIf="getSelectedLanguages().includes(lang)" class="text-xs text-success ml-2">
+                      <i class="fas fa-check" aria-hidden="true"></i> Added
+                    </span>
+                  </button>
+                  <div *ngIf="filteredLanguages.length === 0" class="px-3 py-4 text-center text-sm text-text-secondary">
+                    No languages found
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            <p class="text-xs text-text-secondary mt-2">Click to search and add languages you speak</p>
+          </div>
+      
+          <!-- Social Links Section (Full Width) -->
+          <div class="sm:col-span-2 col-span-1 space-y-4">
+            <p class="text-sm font-semibold text-text-primary flex items-center gap-2 mb-1">
+              <i class="fas fa-link text-primary" aria-hidden="true"></i>
+              Professional Links (Optional)
+            </p>
+      
+            <!-- Social Links Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- LinkedIn -->
+              <div>
+                <label for="linkedin" class="block text-sm font-semibold text-text-primary mb-2">LinkedIn</label>
+                <input
+                  id="linkedin"
+                  type="url"
+                  formControlName="linkedin"
+                  placeholder="https://linkedin.com/in/yourprofile"
+                  class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                  [ngClass]="formErrors['linkedin'] ? 'border-error' : 'border-gray-300'"
+                />
+                <p *ngIf="formErrors['linkedin']" class="text-error text-xs mt-1">{{ formErrors['linkedin'] }}</p>
+              </div>
+      
+              <!-- GitHub -->
+              <div>
+                <label for="github" class="block text-sm font-semibold text-text-primary mb-2">GitHub</label>
+                <input
+                  id="github"
+                  type="url"
+                  formControlName="github"
+                  placeholder="https://github.com/yourusername"
+                  class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                  [ngClass]="formErrors['github'] ? 'border-error' : 'border-gray-300'"
+                />
+                <p *ngIf="formErrors['github']" class="text-error text-xs mt-1">{{ formErrors['github'] }}</p>
+              </div>
+      
+              <!-- Twitter -->
+              <div>
+                <label for="twitter" class="block text-sm font-semibold text-text-primary mb-2">Twitter (X)</label>
+                <input
+                  id="twitter"
+                  type="url"
+                  formControlName="twitter"
+                  placeholder="https://x.com/yourusername"
+                  class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                  [ngClass]="formErrors['twitter'] ? 'border-error' : 'border-gray-300'"
+                />
+                <p *ngIf="formErrors['twitter']" class="text-error text-xs mt-1">{{ formErrors['twitter'] }}</p>
+              </div>
+      
+              <!-- Portfolio -->
+              <div>
+                <label for="portfolio" class="block text-sm font-semibold text-text-primary mb-2">Portfolio Website</label>
+                <input
+                  id="portfolio"
+                  type="url"
+                  formControlName="portfolio"
+                  placeholder="https://yourportfolio.com"
+                  class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+                  [ngClass]="formErrors['portfolio'] ? 'border-error' : 'border-gray-300'"
+                />
+                <p *ngIf="formErrors['portfolio']" class="text-error text-xs mt-1">{{ formErrors['portfolio'] }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+      <!-- Step 3: Job Preferences & Settings -->
+      <div *ngIf="currentStep === 3" class="space-y-4">
+        <!-- Info Banner -->
+        <div class="bg-green-50 border border-green-200 rounded-xl p-4 flex items-start gap-3">
+          <i class="fas fa-sliders-h text-green-600 text-lg mt-0.5" aria-hidden="true"></i>
+          <div>
+            <h4 class="text-sm font-semibold text-green-900 mb-1">Customize your job search</h4>
+            <p class="text-xs text-green-700">Set your preferences to get better-matched opportunities.</p>
+          </div>
+        </div>
+      
+        <!-- Main grid wrapper -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      
+          <!-- Job Type Preferences (full width) -->
+          <div class="sm:col-span-2 col-span-1">
+            <label class="block text-sm font-semibold text-text-primary mb-3">Job Type Preferences</label>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3"> 
+              <!-- Using 3 columns on sm+ so items flow nicely; will wrap on mobile -->
+              <label
+                class="flex items-start gap-3 p-3 border-2 rounded-xl cursor-pointer transition-all hover:border-primary"
+                [ngClass]="personalInfoForm.get('preferFullTime')?.value ? 'border-primary bg-primary/5' : 'border-gray-300'">
+                <input type="checkbox" formControlName="preferFullTime"
+                       class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer mt-1" />
+                <div>
+                  <p class="text-sm font-semibold text-text-primary">Full Time</p>
+                  <p class="text-xs text-text-secondary">Traditional 9-5 employment</p>
+                </div>
+              </label>
+      
+              <label
+                class="flex items-start gap-3 p-3 border-2 rounded-xl cursor-pointer transition-all hover:border-primary"
+                [ngClass]="personalInfoForm.get('preferPartTime')?.value ? 'border-primary bg-primary/5' : 'border-gray-300'">
+                <input type="checkbox" formControlName="preferPartTime"
+                       class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer mt-1" />
+                <div>
+                  <p class="text-sm font-semibold text-text-primary">Part Time</p>
+                  <p class="text-xs text-text-secondary">Flexible hours</p>
+                </div>
+              </label>
+      
+              <label
+                class="flex items-start gap-3 p-3 border-2 rounded-xl cursor-pointer transition-all hover:border-primary"
+                [ngClass]="personalInfoForm.get('preferContract')?.value ? 'border-primary bg-primary/5' : 'border-gray-300'">
+                <input type="checkbox" formControlName="preferContract"
+                       class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer mt-1" />
+                <div>
+                  <p class="text-sm font-semibold text-text-primary">Contract</p>
+                  <p class="text-xs text-text-secondary">Project-based work</p>
+                </div>
+              </label>
+            </div>
+          </div>
+      
+          <!-- Work Mode Preferences (full width) -->
+          <div class="sm:col-span-2 col-span-1">
+            <label class="block text-sm font-semibold text-text-primary mb-3">Work Mode Preferences</label>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <label
+                class="flex items-start gap-3 p-3 border-2 rounded-xl cursor-pointer transition-all hover:border-primary"
+                [ngClass]="personalInfoForm.get('preferRemote')?.value ? 'border-primary bg-primary/5' : 'border-gray-300'">
+                <input type="checkbox" formControlName="preferRemote"
+                       class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer mt-1" />
+                <div>
+                  <p class="text-sm font-semibold text-text-primary">Remote</p>
+                  <p class="text-xs text-text-secondary">Work from anywhere</p>
+                </div>
+              </label>
+      
+              <label
+                class="flex items-start gap-3 p-3 border-2 rounded-xl cursor-pointer transition-all hover:border-primary"
+                [ngClass]="personalInfoForm.get('preferHybrid')?.value ? 'border-primary bg-primary/5' : 'border-gray-300'">
+                <input type="checkbox" formControlName="preferHybrid"
+                       class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer mt-1" />
+                <div>
+                  <p class="text-sm font-semibold text-text-primary">Hybrid</p>
+                  <p class="text-xs text-text-secondary">Mix of remote and office</p>
+                </div>
+              </label>
+      
+              <label
+                class="flex items-start gap-3 p-3 border-2 rounded-xl cursor-pointer transition-all hover:border-primary"
+                [ngClass]="personalInfoForm.get('preferOnSite')?.value ? 'border-primary bg-primary/5' : 'border-gray-300'">
+                <input type="checkbox" formControlName="preferOnSite"
+                       class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer mt-1" />
+                <div>
+                  <p class="text-sm font-semibold text-text-primary">On-Site</p>
+                  <p class="text-xs text-text-secondary">Work from office</p>
+                </div>
+              </label>
+            </div>
+          </div>
+      
+          <!-- Salary Range (two columns) -->
+          <div>
+            <label for="minSalary" class="block text-sm font-semibold text-text-primary mb-2">Minimum Salary (₹)</label>
+            <input id="minSalary" type="number" formControlName="minSalary" placeholder="Minimum expected" min="0"
+                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" />
+          </div>
+      
+          <div>
+            <label for="maxSalary" class="block text-sm font-semibold text-text-primary mb-2">Maximum Salary (₹)</label>
+            <input id="maxSalary" type="number" formControlName="maxSalary" placeholder="Maximum expected" min="0"
+                   class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary" />
+          </div>
+      
+          <!-- AI Matching Intensity (full width) -->
+          <div class="sm:col-span-2 col-span-1">
+            <label for="aiMatchingIntensity" class="block text-sm font-semibold text-text-primary mb-2">
+              AI Matching Intensity <span class="text-error">*</span>
+            </label>
+            <select id="aiMatchingIntensity" formControlName="aiMatchingIntensity"
+                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none bg-white">
+              <option *ngFor="let option of aiMatchingIntensityOptions" [value]="option.value">
+                {{ option.label }} - {{ option.description }}
+              </option>
+            </select>
+          </div>
+      
+          <!-- Settings Toggles (full width, two-column inside) -->
+          <div class="sm:col-span-2 col-span-1 space-y-3">
+            <label class="block text-sm font-semibold text-text-primary mb-2">Settings</label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <label class="flex items-center justify-between p-3 border-2 border-gray-300 rounded-xl cursor-pointer">
+                <div>
+                  <p class="text-sm font-semibold text-text-primary">Profile Visibility</p>
+                  <p class="text-xs text-text-secondary">Make your profile visible to recruiters</p>
+                </div>
+                <input type="checkbox" formControlName="profileVisible"
+                       class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer" />
+              </label>
+      
+              <label class="flex items-center justify-between p-3 border-2 border-gray-300 rounded-xl cursor-pointer">
+                <div>
+                  <p class="text-sm font-semibold text-text-primary">AI Recommendations</p>
+                  <p class="text-xs text-text-secondary">Receive AI-powered job recommendations</p>
+                </div>
+                <input type="checkbox" formControlName="allowAIRecommendations"
+                       class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer" />
+              </label>
+      
+              <label class="flex items-center justify-between p-3 border-2 border-gray-300 rounded-xl cursor-pointer">
+                <div>
+                  <p class="text-sm font-semibold text-text-primary">Email Notifications</p>
+                  <p class="text-xs text-text-secondary">Get notified about new opportunities</p>
+                </div>
+                <input type="checkbox" formControlName="allowEmailNotifications"
+                       class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer" />
+              </label>
+      
+              <label class="flex items-center justify-between p-3 border-2 border-gray-300 rounded-xl cursor-pointer">
+                <div>
+                  <p class="text-sm font-semibold text-text-primary">Open to Relocate</p>
+                  <p class="text-xs text-text-secondary">Show interest in relocation</p>
+                </div>
+                <input type="checkbox" formControlName="openToRelocate"
+                       class="w-5 h-5 text-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer" />
+              </label>
+            </div>
+          </div>
+      
+        </div> <!-- end main grid -->
+      </div>
+      
+      <!-- Form Navigation -->
+      <div class="flex gap-3 pt-6 border-t-2 border-gray-100">
+            <button
+          *ngIf="currentStep > 1"
+              type="button"
+              (click)="previousStep()"
+          class="flex-1 px-6 py-3 border-2 border-gray-300 text-text-primary rounded-xl font-semibold hover:bg-gray-50 transition-all focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+        >
+          <i class="fas fa-arrow-left mr-2" aria-hidden="true"></i>
+              Previous
+            </button>
+
+              <button
+          *ngIf="currentStep < 3"
+                type="button"
+                (click)="nextStep()"
+          class="flex-1 px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+              >
+                Next
+          <i class="fas fa-arrow-right ml-2" aria-hidden="true"></i>
+              </button>
+
+              <button
+                *ngIf="currentStep === 3"
+          type="submit"
+                [disabled]="isSaving"
+          class="flex-1 px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        >
+          <i class="fas fa-save mr-2" aria-hidden="true"></i>
+          {{ isSaving ? 'Saving...' : 'Save Changes' }}
+              </button>
+          </div>
+        </form>
+  </div>
+</div>

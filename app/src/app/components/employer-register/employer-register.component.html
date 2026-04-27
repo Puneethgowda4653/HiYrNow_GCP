@@ -1,0 +1,892 @@
+<div
+  class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden"
+>
+  <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-6xl">
+      <div
+        class="grid grid-cols-1 lg:grid-cols-2 bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden"
+      >
+        <!-- Left Side - Branding/Benefits (copied from register page) -->
+        <div
+          class="hidden lg:flex flex-col justify-center p-8 xl:p-12 bg-gradient-to-br from-teal-500 to-teal-800 text-white relative overflow-hidden"
+        >
+          <!-- Background Elements -->
+          <div class="absolute inset-0 opacity-10">
+            <div
+              class="absolute top-10 left-10 w-32 h-32 border border-white/20 rounded-full"
+            ></div>
+            <div
+              class="absolute bottom-20 right-10 w-48 h-48 border border-white/10 rounded-full"
+            ></div>
+            <div
+              class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 border border-white/5 rounded-full"
+            ></div>
+          </div>
+
+          <div class="relative z-10">
+            <!-- Logo -->
+            <div class="mb-8">
+              <div
+                class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-lg transform hover:scale-105 transition-all duration-300"
+              >
+                <img
+                  src="../../../assets/hash.png"
+                  alt="HiYrNow AI hiring and recruitment platform logo"
+                  routerLink="/home"
+                  class="w-10 h-10 group-hover:scale-110 transition-transform duration-300"
+                />
+              </div>
+              <h1 class="text-3xl xl:text-4xl font-bold mb-2">HiYrNow</h1>
+              <p class="text-lg text-blue-200">
+                AI-Powered Recruiting & Talent Acquisition
+              </p>
+            </div>
+
+            <!-- Value Proposition -->
+            <div class="space-y-6">
+              <h2 class="text-2xl xl:text-3xl font-semibold mb-4 leading-snug">
+                Find Top Talent Faster. Streamline Your Hiring.
+              </h2>
+
+              <!-- Features -->
+              <div class="space-y-4 pt-6">
+                <div class="flex items-center space-x-3">
+                  <div
+                    class="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0"
+                  ></div>
+                  <span class="text-slate-300 text-sm xl:text-base"
+                    >Access talent across 40+ Cities</span
+                  >
+                </div>
+                <div class="flex items-center space-x-3">
+                  <div
+                    class="w-2 h-2 bg-indigo-400 rounded-full flex-shrink-0"
+                  ></div>
+                  <span class="text-slate-300 text-sm xl:text-base"
+                    >AI-powered candidate-job matching</span
+                  >
+                </div>
+                <div class="flex items-center space-x-3">
+                  <div
+                    class="w-2 h-2 bg-purple-400 rounded-full flex-shrink-0"
+                  ></div>
+                  <span class="text-slate-300 text-sm xl:text-base"
+                    >Enterprise-grade data privacy & security</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats -->
+            <div
+              class="grid grid-cols-2 gap-6 xl:gap-8 pt-6 xl:pt-8 mt-6 xl:mt-8 border-t border-white/10"
+            >
+              <div>
+                <div class="text-xl xl:text-2xl font-bold text-blue-400">
+                  1.2M+
+                </div>
+                <div class="text-xs xl:text-sm text-slate-400">
+                  Skilled Professionals Registered
+                </div>
+              </div>
+              <div>
+                <div class="text-xl xl:text-2xl font-bold text-indigo-400">
+                  800+
+                </div>
+                <div class="text-xs xl:text-sm text-slate-400">
+                  Trusted Recruiting Companies
+                </div>
+              </div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="mt-8 space-y-4">
+              <h3 class="text-xl font-semibold">Employer FAQs</h3>
+
+              <div>
+                <p class="font-medium">
+                  ✨ How does HiYrNow help me hire faster?
+                </p>
+                <p class="text-slate-300 text-sm">
+                  Our AI-powered recruitment system instantly matches your job
+                  postings with pre-vetted candidates, reducing time-to-hire and
+                  improving candidate quality.
+                </p>
+              </div>
+
+              <div>
+                <p class="font-medium">
+                  🌍 Can I find candidates from different locations?
+                </p>
+                <p class="text-slate-300 text-sm">
+                  Yes! HiYrNow gives you access to a large talent pool in 40+
+                  Cities in India, allowing you to hire top talent regardless of
+                  location.
+                </p>
+              </div>
+
+              <div>
+                <p class="font-medium">🔒 Is my company data secure?</p>
+                <p class="text-slate-300 text-sm">
+                  Absolutely. We use enterprise-grade encryption and follow
+                  strict data privacy standards to keep your recruitment
+                  information safe.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Side - Employer Registration Form -->
+        <div class="p-8 lg:p-12">
+          <div class="mb-8">
+            <h3 class="text-2xl font-semibold text-slate-800 mb-2">
+              Create Your Employer Account
+            </h3>
+            <p class="text-slate-600">
+              Join our platform and start finding top talent
+            </p>
+          </div>
+          <!-- Tabs navigation -->
+          <div class="flex border-b border-gray-200 mb-4 overflow-x-auto pb-1">
+            <div *ngFor="let tab of tabs" class="mr-3">
+              <button
+                (click)="selectTab(tab.id)"
+                class="py-2 px-1 relative whitespace-nowrap text-sm"
+                [class.text-blue-600]="activeTab === tab.id"
+                [class.text-gray-500]="activeTab !== tab.id"
+              >
+                <div class="flex items-center">
+                  <span class="mr-2">
+                    <svg
+                      *ngIf="tab.icon === 'building'"
+                      class="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                      />
+                    </svg>
+                    <svg
+                      *ngIf="tab.icon === 'mail'"
+                      class="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                    <svg
+                      *ngIf="tab.icon === 'lock'"
+                      class="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                      />
+                    </svg>
+                  </span>
+                  {{ tab.label }}
+                </div>
+                <div
+                  *ngIf="activeTab === tab.id"
+                  class="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-t"
+                ></div>
+              </button>
+            </div>
+          </div>
+          <!-- Employer Registration Form (all tabs/fields as before) -->
+          <form
+            [formGroup]="registerForm"
+            (ngSubmit)="onSubmit()"
+            class="space-y-6"
+          >
+            <!-- Company Tab Content -->
+            <div *ngIf="activeTab === 'company'" @fadeIn class="space-y-4">
+              <!-- Company Name -->
+              <div class="space-y-2">
+                <label
+                  for="companyName"
+                  class="block text-sm font-semibold text-slate-700"
+                  >Company Name <span class="text-red-500">*</span></label
+                >
+                <input
+                  id="companyName"
+                  type="text"
+                  formControlName="companyName"
+                  class="w-full px-3 py-2 bg-white border-2 border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all duration-300"
+                  [ngClass]="{
+                    'border-red-300 focus:ring-red-500 focus:border-red-500':
+                      isCompanyNameInvalid()
+                  }"
+                  placeholder="Enter your company's legal name"
+                />
+                <div
+                  *ngIf="isCompanyNameInvalid()"
+                  class="text-xs text-red-500 mt-1"
+                >
+                  Company name is required
+                </div>
+              </div>
+
+              <!-- GST Number -->
+              <div class="space-y-2">
+                <label
+                  for="gstNumber"
+                  class="block text-sm font-semibold text-slate-700"
+                  >GST Number
+                  <span class="text-xs text-gray-500 font-normal"
+                    >(Optional)</span
+                  >
+                </label>
+                <input
+                  id="gstNumber"
+                  type="text"
+                  formControlName="gstNumber"
+                  class="w-full px-3 py-2 bg-white border-2 border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all duration-300"
+                  [ngClass]="{
+                    'border-red-300 focus:ring-red-500 focus:border-red-500':
+                      isGstNumberInvalid(),
+                    'border-green-300 focus:ring-green-500 focus:border-green-500':
+                      gstNumber?.value && gstNumber?.valid
+                  }"
+                  placeholder="22AAAAA0000A1Z5"
+                  maxlength="15"
+                  (input)="formatGstNumber($event)"
+                />
+                <div
+                  *ngIf="isGstNumberInvalid()"
+                  class="text-xs text-red-500 mt-1"
+                >
+                  Please enter a valid GST number (15 characters)
+                </div>
+                <div
+                  *ngIf="gstNumber?.value && gstNumber?.valid"
+                  class="text-xs text-green-600 mt-1 flex items-center"
+                >
+                  <svg
+                    class="w-3 h-3 mr-1"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  Valid GST format
+                </div>
+                <!-- GST Verification Notice -->
+                <div
+                  class="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-2"
+                >
+                  <div class="flex items-start">
+                    <svg
+                      class="w-4 h-4 text-blue-500 mt-0.5 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                    <div class="text-xs text-blue-700">
+                      <strong>Verification Benefits:</strong> Providing your GST
+                      number helps verify your business authenticity and unlocks
+                      premium features like priority candidate matching,
+                      advanced analytics, and verified employer badge.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Company Type -->
+              <div class="space-y-2">
+                <label
+                  for="companyType"
+                  class="block text-sm font-semibold text-slate-700"
+                  >Company Type <span class="text-red-500">*</span></label
+                >
+                <select
+                  id="companyType"
+                  formControlName="companyType"
+                  class="w-full px-3 py-2 bg-white border-2 border-slate-200 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all duration-300"
+                  [ngClass]="{
+                    'border-red-300 focus:ring-red-500 focus:border-red-500':
+                      companyType?.invalid && companyType?.touched
+                  }"
+                >
+                  <option value="">Select company type</option>
+                  <option value="Startup">Startup</option>
+                  <option value="SME">SME</option>
+                  <option value="Enterprise">Enterprise</option>
+                  <option value="Agency">Agency</option>
+                </select>
+                <div
+                  *ngIf="companyType?.invalid && companyType?.touched"
+                  class="text-xs text-red-500 mt-1"
+                >
+                  Please select a company type
+                </div>
+              </div>
+              <!-- Industry -->
+              <div class="space-y-2">
+                <label
+                  for="industry"
+                  class="block text-sm font-semibold text-slate-700"
+                  >Industry <span class="text-red-500">*</span></label
+                >
+                <select
+                  id="industry"
+                  formControlName="industry"
+                  class="w-full px-3 py-2 bg-white border-2 border-slate-200 rounded-xl text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all duration-300"
+                  [ngClass]="{
+                    'border-red-300 focus:ring-red-500 focus:border-red-500':
+                      industry?.invalid && industry?.touched
+                  }"
+                >
+                  <option value="">Select industry</option>
+                  <option value="Technology">Technology</option>
+                  <option value="Finance">Finance</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Education">Education</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Other">Other</option>
+                </select>
+                <div
+                  *ngIf="industry?.invalid && industry?.touched"
+                  class="text-xs text-red-500 mt-1"
+                >
+                  Please select an industry
+                </div>
+              </div>
+            </div>
+            <!-- Contact Tab Content -->
+            <div *ngIf="activeTab === 'contact'" @fadeIn class="space-y-4">
+              <!-- Email -->
+              <div class="space-y-2">
+                <label
+                  for="email"
+                  class="block text-sm font-semibold text-slate-700"
+                  >Email Address <span class="text-red-500">*</span></label
+                >
+                <input
+                  id="email"
+                  type="email"
+                  formControlName="email"
+                  class="w-full px-3 py-2 bg-white border-2 border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all duration-300"
+                  [ngClass]="{
+                    'border-red-300 focus:ring-red-500 focus:border-red-500':
+                      isEmailInvalid()
+                  }"
+                  placeholder="company@example.com"
+                />
+                <div *ngIf="isEmailInvalid()" class="text-xs text-red-500 mt-1">
+                  Please enter a valid email address
+                </div>
+              </div>
+              <!-- Phone -->
+              <div class="space-y-2">
+                <label
+                  for="phone"
+                  class="block text-sm font-semibold text-slate-700"
+                  >Phone Number <span class="text-red-500">*</span></label
+                >
+                <div class="flex">
+                  <span
+                    class="inline-flex items-center px-3 text-sm text-gray-500 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md"
+                    >+91</span
+                  >
+                  <input
+                    id="phone"
+                    type="tel"
+                    formControlName="phone"
+                    class="w-full px-3 py-2 rounded-l-none border-2 border-slate-200 rounded-r-xl text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all duration-300"
+                    [ngClass]="{
+                      'border-red-300 focus:ring-red-500 focus:border-red-500':
+                        isPhoneInvalid()
+                    }"
+                    placeholder="9876543210"
+                  />
+                </div>
+                <div *ngIf="isPhoneInvalid()" class="text-xs text-red-500 mt-1">
+                  Please enter a valid 10-digit phone number
+                </div>
+              </div>
+              <!-- Website -->
+              <div class="space-y-2">
+                <label
+                  for="website"
+                  class="block text-sm font-semibold text-slate-700"
+                  >Company Website <span class="text-red-500">*</span>
+                </label>
+                <div class="flex">
+                  <span
+                    class="inline-flex items-center px-3 text-sm text-gray-500 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md"
+                    >https://</span
+                  >
+                  <input
+                    id="website"
+                    type="text"
+                    formControlName="website"
+                    class="w-full px-3 py-2 rounded-l-none border-2 border-slate-200 rounded-r-xl text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all duration-300"
+                    placeholder="yourcompany.com"
+                  />
+                </div>
+                <div class="text-xs text-gray-400 mt-1">
+                  Help candidates learn more about your company
+                </div>
+              </div>
+
+              <!-- Referral Code -->
+              <div class="space-y-2">
+                <label
+                  for="referralCode"
+                  class="block text-sm font-semibold text-slate-700"
+                  >Referral Code (Optional)
+                </label>
+                <div class="relative">
+                  <input
+                    id="referralCode"
+                    type="text"
+                    formControlName="referralCode"
+                    class="w-full px-3 py-2 bg-white border-2 border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all duration-300"
+                    placeholder="Enter referral code if you have one"
+                    (blur)="validateReferralCode()"
+                  />
+                  <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                    <i class="fas fa-gift text-slate-400"></i>
+                  </div>
+                </div>
+                <div class="text-xs text-gray-400 mt-1">
+                  Get special offers and benefits with a valid referral code
+                </div>
+                <div *ngIf="referralValidationMessage" class="text-xs mt-1" 
+                     [class.text-green-600]="referralValidationMessage.includes('✅')"
+                     [class.text-red-500]="referralValidationMessage.includes('❌')">
+                  {{ referralValidationMessage }}
+                </div>
+              </div>
+            </div>
+            <!-- Account Tab Content -->
+            <div *ngIf="activeTab === 'account'" @fadeIn class="space-y-4">
+              <!-- Password -->
+              <div class="space-y-2">
+                <label
+                  for="password"
+                  class="block text-sm font-semibold text-slate-700"
+                  >Password <span class="text-red-500">*</span></label
+                >
+                <div class="relative">
+                  <input
+                    id="password"
+                    [type]="showPassword ? 'text' : 'password'"
+                    formControlName="password"
+                    class="w-full px-3 py-2 bg-white border-2 border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all duration-300"
+                    [ngClass]="{
+                      'border-red-300 focus:ring-red-500 focus:border-red-500':
+                        isPasswordInvalid()
+                    }"
+                    placeholder="Create a secure password"
+                  />
+                  <button
+                    type="button"
+                    (click)="togglePasswordVisibility()"
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                  >
+                    <svg
+                      *ngIf="!showPassword"
+                      class="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M2.458 12C3.732 7.943 7.523 5 12 5s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7s-8.268-2.943-9.542-7z"
+                      />
+                    </svg>
+                    <svg
+                      *ngIf="showPassword"
+                      class="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M3 3l18 18"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div
+                  *ngIf="isPasswordInvalid()"
+                  class="text-xs text-red-500 mt-1"
+                >
+                  Password must be at least 8 characters and include uppercase,
+                  lowercase, number & symbol
+                </div>
+              </div>
+              <!-- Password Strength Indicator -->
+              <div *ngIf="password?.value && !isPasswordInvalid()" class="mt-2">
+                <div class="flex gap-1">
+                  <div
+                    class="h-1.5 flex-1 rounded-full transition-all duration-300"
+                    [ngClass]="
+                      passwordStrength >= 1 ? 'bg-red-400' : 'bg-gray-200'
+                    "
+                  ></div>
+                  <div
+                    class="h-1.5 flex-1 rounded-full transition-all duration-300"
+                    [ngClass]="
+                      passwordStrength >= 2 ? 'bg-orange-400' : 'bg-gray-200'
+                    "
+                  ></div>
+                  <div
+                    class="h-1.5 flex-1 rounded-full transition-all duration-300"
+                    [ngClass]="
+                      passwordStrength >= 3 ? 'bg-yellow-400' : 'bg-gray-200'
+                    "
+                  ></div>
+                  <div
+                    class="h-1.5 flex-1 rounded-full transition-all duration-300"
+                    [ngClass]="
+                      passwordStrength >= 4 ? 'bg-green-400' : 'bg-gray-200'
+                    "
+                  ></div>
+                </div>
+                <p class="text-xs mt-1 text-gray-500">
+                  {{ passwordStrengthText }}
+                </p>
+              </div>
+              <!-- Confirm Password -->
+              <div class="space-y-2">
+                <label
+                  for="confirmPassword"
+                  class="block text-sm font-semibold text-slate-700"
+                  >Confirm Password <span class="text-red-500">*</span></label
+                >
+                <input
+                  id="confirmPassword"
+                  [type]="showPassword ? 'text' : 'password'"
+                  formControlName="confirmPassword"
+                  class="w-full px-3 py-2 bg-white border-2 border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all duration-300"
+                  [ngClass]="{
+                    'border-red-300 focus:ring-red-500 focus:border-red-500':
+                      isConfirmPasswordInvalid()
+                  }"
+                  placeholder="Confirm your password"
+                />
+                <div
+                  *ngIf="isConfirmPasswordInvalid()"
+                  class="text-xs text-red-500 mt-1"
+                >
+                  Passwords do not match
+                </div>
+              </div>
+              <!-- Terms and Conditions -->
+              <div class="flex items-center mt-4">
+                <input
+                  id="terms"
+                  type="checkbox"
+                  formControlName="acceptTerms"
+                  class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 cursor-pointer"
+                />
+                <label
+                  for="terms"
+                  class="ml-2 text-sm font-medium text-slate-700 cursor-pointer"
+                >
+                  I agree to the
+                  <a
+                    href="#"
+                    class="text-blue-600 hover:text-blue-800 transition-colors"
+                    >Terms of Service</a
+                  >
+                  and
+                  <a
+                    href="#"
+                    class="text-blue-600 hover:text-blue-800 transition-colors"
+                    >Privacy Policy</a
+                  >
+                </label>
+              </div>
+            </div>
+            <!-- Button Container -->
+            <div
+              class="mt-6 flex flex-col sm:flex-row justify-between items-center gap-3"
+            >
+              <button
+                type="button"
+                (click)="
+                  selectTab(
+                    activeTab === 'company'
+                      ? 'company'
+                      : activeTab === 'contact'
+                      ? 'company'
+                      : 'contact'
+                  )
+                "
+                *ngIf="activeTab !== 'company'"
+                class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                <span class="flex items-center justify-center">
+                  <svg
+                    class="w-4 h-4 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 19l-7-7 7-7"
+                    />
+                  </svg>
+                  Back
+                </span>
+              </button>
+              <button
+                type="button"
+                (click)="
+                  selectTab(
+                    activeTab === 'company'
+                      ? 'contact'
+                      : activeTab === 'contact'
+                      ? 'account'
+                      : 'account'
+                  )
+                "
+                *ngIf="activeTab !== 'account'"
+                class="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-sm"
+              >
+                <span class="flex items-center justify-center">
+                  Continue
+                  <svg
+                    class="w-4 h-4 ml-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <button
+                type="submit"
+                *ngIf="activeTab === 'account'"
+                [disabled]="
+                  registerForm.invalid || submitting || !acceptTerms?.value
+                "
+                class="w-full sm:w-auto px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span
+                  *ngIf="!submitting"
+                  class="flex items-center justify-center"
+                >
+                  Create Account
+                  <svg
+                    class="w-4 h-4 ml-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </span>
+                <span
+                  *ngIf="submitting"
+                  class="flex items-center justify-center"
+                >
+                  <svg
+                    class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      class="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    ></circle>
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                  Creating...
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- Footer -->
+      <div class="text-center mt-8 text-sm text-slate-600">
+        <p>© 2025 hiyrnow ai pvt ltd. Trusted by companies worldwide.</p>
+      </div>
+    </div>
+  </div>
+  <!-- OTP Modal (keep as before, but visually consistent) -->
+  <div
+    *ngIf="showOTPForm"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm p-4"
+    aria-labelledby="modal-title"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div
+      class="relative bg-white rounded-xl shadow-2xl w-full max-w-md p-6 sm:p-8 transition-all transform scale-100"
+    >
+      <button
+        class="absolute top-4 right-4 text-gray-400 hover:text-gray-300 focus:outline-none"
+        (click)="closeOTPModal()"
+      >
+        <svg
+          class="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+      <div class="text-center">
+        <div
+          class="mx-auto flex items-center justify-center h-14 w-14 rounded-full bg-blue-100"
+        >
+          <svg
+            class="h-8 w-8 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            />
+          </svg>
+        </div>
+        <h2 class="mt-6 text-2xl font-bold text-gray-900">Verify Your Email</h2>
+        <p class="mt-2 text-gray-300 text-sm">
+          We've sent a 6-digit code to <strong>{{ email?.value }}</strong
+          >. Please enter it below.
+        </p>
+      </div>
+      <div class="mt-6 grid grid-cols-6 gap-2">
+        <input
+          *ngFor="let i of [0, 1, 2, 3, 4, 5]"
+          type="text"
+          maxlength="1"
+          pattern="[0-9]*"
+          inputmode="numeric"
+          class="h-14 w-full text-center text-xl font-semibold border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+          (keyup)="onOTPDigitInput($event, i)"
+          (keyup.backspace)="onOTPDigitBackspace($event, i)"
+          (input)="updateOTPValue()"
+          (focus)="selectInput($event)"
+          (click)="selectInput($event)"
+          [value]="otp[i] || ''"
+          [attr.data-index]="i"
+        />
+      </div>
+      <div *ngIf="otpTimer > 0" class="text-center mt-4">
+        <p class="text-sm text-gray-500">Time remaining: {{ timerDisplay }}</p>
+      </div>
+      <div *ngIf="otpError" class="text-center text-red-500 text-sm mt-2">
+        {{ otpError }}
+      </div>
+      <div class="mt-6 flex flex-col sm:flex-row-reverse gap-3">
+        <button
+          type="button"
+          class="inline-flex justify-center items-center rounded-lg bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold px-6 py-3 w-full sm:w-auto hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          (click)="verifyOTP()"
+          [disabled]="loading || !isOTPComplete()"
+        >
+          <span *ngIf="!loading">Verify OTP</span>
+          <span *ngIf="loading" class="flex items-center">
+            <svg
+              class="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              />
+            </svg>
+            Verifying...
+          </span>
+        </button>
+        <button
+          type="button"
+          class="inline-flex justify-center items-center rounded-lg border border-gray-300 bg-white text-gray-700 font-semibold px-6 py-3 w-full sm:w-auto hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+          (click)="closeOTPModal()"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

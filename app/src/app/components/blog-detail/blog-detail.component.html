@@ -1,0 +1,93 @@
+<div class="container mt-12 mx-auto px-4 py-12 min-h-screen">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex justify-center items-center h-64">
+    <div
+      class="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"
+    ></div>
+  </div>
+
+  <!-- Blog Content -->
+  <div
+    *ngIf="!loading && blog"
+    class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden"
+  >
+    <!-- Header Section -->
+    <div class="flex justify-between items-center mb-8 p-4">
+      <img
+        src="../../../assets/hiyrnow_logo1.png"
+        alt="HiyRNow Logo"
+        class="h-12"
+      />
+      <button
+        routerLink="/blog"
+        class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+      >
+        Back to Blog List
+      </button>
+    </div>
+    <div class="p-8">
+      <h1 class="text-4xl font-bold mb-4 dark-text leading-tight">
+        {{ blog.title }}
+      </h1>
+
+      <div class="flex flex-wrap items-center mb-6 secondary-text gap-4">
+        <span class="flex items-center">
+          <i class="far fa-calendar-alt mr-2"></i>
+          {{ blog.createdAt | date : "mediumDate" }}
+        </span>
+        <span class="flex items-center">
+          <i class="far fa-user mr-2"></i>
+          {{ blog.user.username }}
+        </span>
+        <span class="flex items-center">
+          <i class="far fa-clock mr-2"></i>
+          {{ blog.status }}
+        </span>
+      </div>
+
+      <!-- Tags Section -->
+      <div class="flex flex-wrap gap-2 mb-6">
+        <span
+          *ngFor="let tag of blog.tags[0].split(',')"
+          class="px-3 py-1 bg-gray-100 text-sm text-gray-700 rounded-full hover:bg-gray-200 transition-colors"
+        >
+          {{ tag }}
+        </span>
+      </div>
+
+      <!-- Excerpt -->
+      <p class="text-gray-600 mb-6 italic">{{ blog.excerpt }}</p>
+    </div>
+
+    <!-- Featured Image -->
+    <div *ngIf="blog.image" class="relative w-full h-96 mb-8">
+      <img
+        [src]="blog.image"
+        [alt]="blog.title"
+        class="w-full h-full object-cover"
+      />
+    </div>
+
+    <!-- Content Section -->
+    <div class="p-8">
+      <div class="prose prose-lg max-w-none">
+        <div [innerHTML]="sanitizedContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!loading && !blog" class="text-center py-16">
+    <div class="text-gray-600">
+      <i class="fas fa-file-alt text-5xl mb-4"></i>
+      <p class="text-xl">Blog post not found</p>
+      <button
+        routerLink="/blog"
+        class="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+      >
+        Back to Blog List
+      </button>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

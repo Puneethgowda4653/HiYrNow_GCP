@@ -1,0 +1,213 @@
+<section
+  class="py-20 bg-gradient-to-br from-slate-50 via-blue-50 to-white relative overflow-hidden"
+  aria-labelledby="about-heading"
+>
+  <!-- Background Elements -->
+  <div class="absolute inset-0 opacity-20 pointer-events-none">
+    <div class="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full filter blur-3xl"></div>
+    <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-200 rounded-full filter blur-3xl"></div>
+  </div>
+
+  <div class="container mx-auto px-6 lg:px-20 relative z-10">
+    <!-- Header Section -->
+    <div class="text-center mb-16">
+      <div class="inline-flex items-center bg-blue-100 border border-blue-200 rounded-full px-6 py-2 mb-6">
+        <!-- Robot SVG -->
+        <svg class="w-5 h-5 text-blue-600 mr-3" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="3" y="7" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
+          <path d="M8 7V5a4 4 0 018 0v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+          <circle cx="8.5" cy="12" r="0.8" fill="currentColor"></circle>
+          <circle cx="15.5" cy="12" r="0.8" fill="currentColor"></circle>
+        </svg>
+        <span class="text-blue-700 text-sm font-medium">AI-Powered Recruitment Platform</span>
+      </div>
+
+      <h1 id="about-heading" class="text-5xl lg:text-6xl font-bold text-slate-800 mb-6">
+        About <span class="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">HiYrNow</span>
+      </h1>
+
+      <p class="max-w-4xl mx-auto text-xl text-slate-600 leading-relaxed">
+        HiYrNow is India’s AI-first recruitment ecosystem — turning messy hiring signals into precise matches, faster decisions, and transparent outcomes. We combine explainable ML, recruiter workflows and verified talent to help teams hire with confidence.
+      </p>
+    </div>
+
+    <!-- CTA Row -->
+    <!-- <div class="max-w-3xl mx-auto flex flex-col sm:flex-row gap-3 justify-center mb-12">
+      <button (click)="navigateToDashboard()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold shadow">Launch Workspace</button>
+      <a href="#ai-suite" class="px-6 py-3 rounded-xl bg-white border border-slate-200 text-slate-800 text-center">See AI Capabilities</a>
+      <a href="/assets/hiyrnow-brief.pdf" download class="px-6 py-3 rounded-xl bg-white/10 border border-white/10 text-slate-800 text-center">Download Brief</a>
+    </div> -->
+
+    <!-- Stats Bar -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+      <div class="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200 shadow-lg">
+        <div class="text-3xl font-bold text-blue-600 mb-2">1.2M+</div>
+        <div class="text-slate-600 text-sm">Verified candidates</div>
+      </div>
+
+      <div class="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200 shadow-lg">
+        <div class="text-3xl font-bold text-cyan-600 mb-2">40+</div>
+        <div class="text-slate-600 text-sm">Cities covered</div>
+      </div>
+
+      <div class="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200 shadow-lg">
+        <div class="text-3xl font-bold text-purple-600 mb-2">95%</div>
+        <div class="text-slate-600 text-sm">Match accuracy (pilot)</div>
+      </div>
+
+      <div class="text-center bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-200 shadow-lg">
+        <div class="text-3xl font-bold text-green-600 mb-2">24/7</div>
+        <div class="text-slate-600 text-sm">AI-assisted support</div>
+      </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid lg:grid-cols-2 gap-16 items-start mb-16">
+      <!-- Left: Mission & Features -->
+      <div class="space-y-8">
+        <div class="glass-card p-8 rounded-2xl">
+          <div class="flex items-center mb-6">
+            <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mr-4">
+              <!-- Target SVG -->
+              <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5"></circle>
+                <path d="M12 8v4l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+              </svg>
+            </div>
+            <h2 class="text-3xl font-bold text-slate-800">Our mission</h2>
+          </div>
+
+          <p class="text-slate-600 leading-relaxed mb-4 text-lg">
+            Make hiring intelligent, fast and fair. We build recruiter-first AI that amplifies human judgement — reducing repetitive work, surfacing transfer-ready talent, and making every hiring decision explainable.
+          </p>
+
+          <p class="text-slate-600 leading-relaxed text-lg">
+            HiYrNow is engineered for India — optimized for local talent signals, diverse career paths, and large-scale hiring needs across startups and enterprises.
+          </p>
+        </div>
+
+        <!-- Feature highlights -->
+        <div class="grid sm:grid-cols-2 gap-6">
+          <div class="p-6 rounded-2xl bg-white/80 border border-slate-100">
+            <h3 class="font-semibold text-slate-800 mb-2">JD Generator</h3>
+            <p class="text-sm text-slate-600">Create bias-aware, outcome-focused JDs and interview plans in seconds.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-white/80 border border-slate-100">
+            <h3 class="font-semibold text-slate-800 mb-2">Profile Analysis</h3>
+            <p class="text-sm text-slate-600">Skill maps, gap analysis and resume polish suggestions for candidates.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-white/80 border border-slate-100">
+            <h3 class="font-semibold text-slate-800 mb-2">Job Matcher</h3>
+            <p class="text-sm text-slate-600">Signal-fusion matching with explainable reasons and ranked shortlists.</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-white/80 border border-slate-100">
+            <h3 class="font-semibold text-slate-800 mb-2">Do I Qualify?</h3>
+            <p class="text-sm text-slate-600">Instant fit score + top missing skills and actionable next steps for applicants.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Why leaders choose us -->
+      <div class="space-y-8">
+        <div class="glass-card p-8 rounded-2xl">
+          <div class="flex items-center mb-6">
+            <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mr-4">
+              <!-- Brain SVG -->
+              <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3c1.7 0 3 1 4 2.5" stroke="currentColor" stroke-width="1.5"></path>
+                <path d="M4 12c0-4 3-8 8-8" stroke="currentColor" stroke-width="1.5"></path>
+                <path d="M20 12c0 4-3 8-8 8" stroke="currentColor" stroke-width="1.5"></path>
+              </svg>
+            </div>
+            <h2 class="text-3xl font-bold text-slate-800">Why industry leaders choose us</h2>
+          </div>
+
+          <div class="grid gap-4">
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-blue-600 rounded-full mr-4 mt-2"></div>
+              <div class="text-slate-700">Access to <strong class="text-slate-800">1.2M+ AI-verified professionals</strong> across India</div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-cyan-600 rounded-full mr-4 mt-2"></div>
+              <div class="text-slate-700"><strong class="text-slate-800">Neural matching</strong> with high precision and explainability</div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-purple-600 rounded-full mr-4 mt-2"></div>
+              <div class="text-slate-700">Comprehensive coverage across <strong class="text-slate-800">40+ cities</strong></div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-green-600 rounded-full mr-4 mt-2"></div>
+              <div class="text-slate-700"><strong class="text-slate-800">Accelerated hiring cycles</strong> — from months to days</div>
+            </div>
+
+            <div class="flex items-start">
+              <div class="w-2 h-2 bg-pink-600 rounded-full mr-4 mt-2"></div>
+              <div class="text-slate-700"><strong class="text-slate-800">Real-time analytics</strong> for funnel health and candidate insights</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vision card -->
+        <div class="text-center bg-gradient-to-r from-blue-100 to-purple-100 backdrop-blur-sm rounded-3xl p-8 border border-blue-200 shadow-xl">
+          <div class="flex items-center justify-center mb-4">
+            <div class="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full flex items-center justify-center mr-4">
+              <!-- Eye SVG -->
+              <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" stroke="currentColor" stroke-width="1.5"></path>
+                <circle cx="12" cy="12" r="2" fill="currentColor"></circle>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-800">Our vision</h3>
+          </div>
+
+          <p class="max-w-3xl mx-auto text-slate-600 leading-relaxed">
+            To be India’s trusted AI talent partner — helping organisations of every size find, assess and hire the right people faster, fairly and with confidence.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Technology Highlights -->
+    <div class="mt-16 grid lg:grid-cols-3 gap-8">
+      <div class="glass-card p-6 rounded-2xl text-center">
+        <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
+          <!-- Chip SVG -->
+          <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="6" y="6" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-slate-800 mb-3">Advanced AI Engine</h3>
+        <p class="text-slate-600">Continuous learning models that improve matching precision through feedback and outcome signals.</p>
+      </div>
+
+      <div class="glass-card p-6 rounded-2xl text-center">
+        <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+          <!-- Shield SVG -->
+          <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2l7 4v6c0 5-4 9-7 10-3-1-7-5-7-10V6l7-4z" stroke="currentColor" stroke-width="1.5"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-slate-800 mb-3">Verified Talent Network</h3>
+        <p class="text-slate-600">Multi-layer verification ensuring authentic profiles with validated skills and credentials.</p>
+      </div>
+
+      <div class="glass-card p-6 rounded-2xl text-center">
+        <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
+          <!-- Rocket SVG -->
+          <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2c2.5 0 4.5 2 4.5 4.5S14.5 11 12 11s-4.5-4.5-4.5-4.5S9.5 2 12 2z" stroke="currentColor" stroke-width="1.2"></path>
+            <path d="M3 21s3-1 6-4 5-6 6-8 4-6 4-6" stroke="currentColor" stroke-width="1.2"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-bold text-slate-800 mb-3">Rapid Deployment</h3>
+        <p class="text-slate-600">Enterprise-ready integrations and quick onboarding for immediate access to the talent ecosystem.</p>
+      </div>
+    </div>
+  </div>
+</section>

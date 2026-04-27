@@ -1,0 +1,242 @@
+<div class="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-5xl mx-auto">
+    <div class="bg-white rounded-xl shadow-2xl overflow-hidden">
+      <!-- Header -->
+      <div class="px-8 py-6 bg-indigo-700 text-white">
+        <div class="flex justify-between items-center">
+          <h1 class="text-3xl font-bold">Edit Job Posting</h1>
+          <!-- <img [src]="jobForm.get('company_logo')?.value" alt="Company Logo" class="h-12"> -->
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="bg-gray-50 px-8 py-4 border-b border-gray-200">
+        <div class="flex items-center">
+          <div class="w-1/3 text-center">
+            <div class="w-10 h-10 mx-auto rounded-full text-lg text-white flex items-center justify-center" [ngClass]="{'bg-indigo-600': currentStep >= 1, 'bg-gray-300': currentStep < 1}">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <div class="text-xs mt-1">Job Details</div>
+          </div>
+          <div class="w-1/3 text-center">
+            <div class="w-10 h-10 mx-auto rounded-full text-lg text-white flex items-center justify-center" [ngClass]="{'bg-indigo-600': currentStep >= 2, 'bg-gray-300': currentStep < 2}">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="text-xs mt-1">Description</div>
+          </div>
+          <div class="w-1/3 text-center">
+            <div class="w-10 h-10 mx-auto rounded-full text-lg text-white flex items-center justify-center" [ngClass]="{'bg-indigo-600': currentStep >= 3, 'bg-gray-300': currentStep < 3}">
+              <i class="fas fa-cogs"></i>
+            </div>
+            <div class="text-xs mt-1">Skills</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="jobForm" (ngSubmit)="onSubmit()" class="p-8 space-y-8">
+        <!-- Step 1: Job Details -->
+        <div *ngIf="currentStep === 1" class="space-y-6">
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <label for="title" class="block text-sm font-medium text-gray-700">Job Title</label>
+              <input id="title" formControlName="title" class="mt-1  px-3 py-2 border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            </div>
+            <div>
+              <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+              <mat-form-field class="w-full">
+                <input
+                  type="text"
+                  placeholder="Select location"
+                  matInput
+                  class="custom-mat-input mt-1 px-3 py-2"
+                  #locationInput
+                  [formControl]="locationControl"
+                  [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onLocationSelect($event)">
+                  <mat-option *ngFor="let city of filteredCities | async" [value]="city">
+                    {{city}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <div class="mt-2">
+                <span *ngFor="let location of selectedLocations" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mr-2 mb-2">
+                  {{location}}
+                  <button type="button" class="ml-1 inline-flex text-blue-400 hover:text-blue-500 focus:outline-none" (click)="removeLocation(location)">
+                    <span class="sr-only">Remove location</span>
+                    <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <label for="type" class="block text-sm font-medium text-gray-700">Job Type</label>
+              <select id="type" formControlName="type" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="">Select a job type</option>
+                <option value="Full Time">Full Time</option>
+                <option value="Part Time">Part Time</option>
+                <option value="Contract">Contract</option>
+                <option value="Internship">Internship</option>
+              </select>
+            </div>
+            <div>
+              <label for="minQualification" class="block text-sm font-medium text-gray-700">Minimum Qualifications</label>
+              <select id="minQualification" formControlName="minQualification" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <option value="">Select minimum qualification</option>
+                <option value="12th Grade">12th Grade</option>
+                <option value="High School Diploma">High School Diploma</option>
+                <option value="Associate's Degree">Associate's Degree</option>
+                <option value="Bachelor's Degree">Bachelor's Degree</option>
+                <option value="Master's Degree">Master's Degree</option>
+                <option value="Doctorate">Doctorate</option>
+                <option value="Professional Certification">Professional Certification</option>
+                <option value="No Formal Education Required">No Formal Education Required</option>
+              </select>
+            </div>
+
+          </div>
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <label for="minSalary" class="block text-sm font-medium text-gray-700">Minimum Salary</label>
+              <div class="mt-1 relative rounded-md shadow-sm">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <!-- <span class="text-gray-500 sm:text-sm">$</span> -->
+                </div>
+                <input type="number" id="minSalary" formControlName="minSalary" class="mt-1  px-3 py-2 border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="0.00">
+              </div>
+            </div>
+            <div>
+              <label for="maxSalary" class="block text-sm font-medium text-gray-700">Maximum Salary</label>
+              <div class="mt-1 relative rounded-md shadow-sm">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <!-- <span class="text-gray-500 sm:text-sm">$</span> -->
+                </div>
+                <input type="number" id="maxSalary" formControlName="maxSalary" class="mt-1  px-3 py-2 border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="0.00">
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <label for="minExp" class="block text-sm font-medium text-gray-700">Minimum Experience (years)</label>
+              <input type="number" id="minExp" formControlName="minExp" class="mt-1  px-3 py-2 border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            </div>
+            <div>
+              <label for="maxExp" class="block text-sm font-medium text-gray-700">Maximum Experience (years)</label>
+              <input type="number" id="maxExp" formControlName="maxExp" class="mt-1  px-3 py-2 border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Posting As</label>
+            <div class="mt-2">
+              <button type="button" (click)="setPostingAsClient(false)" [class.bg-indigo-600]="!postingAsClient" [class.text-white]="!postingAsClient" class="mr-2 px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              {{companyName}} </button>
+              <button type="button" (click)="setPostingAsClient(true)" [class.bg-indigo-600]="postingAsClient" [class.text-white]="postingAsClient" class="px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Post For Client
+              </button>
+            </div>
+          </div>
+        
+          <div *ngIf="postingAsClient">
+            <div>
+              <label for="company" class="block text-sm font-medium text-gray-700">Company</label>
+              <input id="company" formControlName="company" class="mt-1 px-3 py-2 border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            </div>
+            <div>
+              <label for="company_url" class="block text-sm font-medium text-gray-700">Company Website</label>
+              <input id="company_url" formControlName="company_url" class="mt-1 px-3 py-2 border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            </div>
+            <div>
+              <label for="company_logo" class="block text-sm font-medium text-gray-700">Company logo</label>
+              <input id="company_logo" formControlName="company_logo" class="mt-1 px-3 py-2 border border-gray-300 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Description -->
+        <div *ngIf="currentStep === 2" class="space-y-6">
+          <div>
+            <label for="description" class="block text-sm font-medium text-gray-700">Job Description</label>
+            <div class="mt-1">
+              <quill-editor
+                formControlName="description"
+                [modules]="quillModules"
+                placeholder="Enter job description..."
+                class="h-64 w-full"
+              ></quill-editor>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Skills -->
+        <div *ngIf="currentStep === 3" class="space-y-6">
+          <h2 class="text-2xl font-bold text-gray-900">Skills</h2>
+          <p class="text-gray-600">Add skills for this job position. At least 3 of skills must be marked as "Must Have".</p>
+          
+          <div formArrayName="coreSkills">
+            <div *ngFor="let skill of skillsFormArray.controls; let i = index" [formGroupName]="i" class="bg-gray-50 p-4 rounded-lg shadow-sm mb-4">
+              <div class="flex items-center space-x-4">
+                <div class="flex-grow">
+                  <input type="text" formControlName="name" class="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" [placeholder]="'Skill ' + (i + 1) + ' Name'">
+                </div>
+                <div class="flex items-center space-x-2">
+                  <input type="checkbox" formControlName="mustHave" class="rounded text-indigo-600 focus:ring-indigo-500">
+                  <label class="text-sm text-gray-700">Must Have</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <input type="checkbox" formControlName="niceToHave" class="rounded text-indigo-600 focus:ring-indigo-500">
+                  <label class="text-sm text-gray-700">Nice to Have</label>
+                </div>
+                <button type="button" (click)="removeSkill(i)" class="text-red-600 hover:text-red-800">
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <button type="button" (click)="addSkill()" class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Add Skill
+          </button>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between mt-8">
+          <button 
+            type="button" 
+            (click)="prevStep()"
+            [disabled]="currentStep === 1"
+            class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Previous
+          </button>
+          <button 
+          type="submit"
+          routerLink="/company/dashboard" 
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        >
+         Cancle edit 
+        </button>
+          <button 
+            *ngIf="currentStep < 3" 
+            type="button" 
+            (click)="nextStep()"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+          
+            Next
+          </button>
+          <button 
+            *ngIf="currentStep === 3" 
+            type="submit"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Update Job Posting
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,532 @@
+<div class="min-h-screen bg-gradient-to-br from-[#F7F7FD] via-white to-[#EDEBFF]">
+  <ng-container *ngIf="userData; else loadingState">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-6">
+      <div #pdfContent>
+        <div #profileContent class="space-y-6">
+          <!-- Hero Card -->
+          <div
+            class="relative overflow-hidden rounded-3xl border border-white/60 bg-white/80 backdrop-blur-xl shadow-[0_25px_60px_rgba(98,84,229,0.12)] p-6 md:p-8"
+          >
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-[#6254E5]/20 via-[#8B73FF]/15 to-[#4D3CD3]/20 opacity-70"
+            ></div>
+            <div class="relative flex flex-col lg:flex-row gap-8">
+              <div class="flex flex-1 gap-6 items-center">
+                <div class="relative">
+                  <div
+                    class="w-28 h-28 rounded-3xl border-4 border-white bg-white shadow-2xl overflow-hidden"
+                  >
+                    <ng-container *ngIf="profilePicExist; else avatarInitials">
+                      <img
+                        [src]="profilePicUrl"
+                        [alt]="userData.user.firstName"
+                        class="w-full h-full object-cover"
+                      />
+                    </ng-container>
+                    <ng-template #avatarInitials>
+                      <div
+                        class="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#6254E5] to-[#8B73FF]"
+                      >
+                        <span class="text-3xl font-bold text-white">
+                          {{ userData.user.firstName?.charAt(0) }}{{ userData.user.lastName?.charAt(0) }}
+                        </span>
+                      </div>
+                    </ng-template>
+                  </div>
+                  <span
+                    class="absolute -bottom-2 -right-2 w-6 h-6 rounded-full border-4 border-white bg-emerald-400"
+                  ></span>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex items-center gap-3 flex-wrap">
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900">
+                      {{ userData.user.firstName }} {{ userData.user.lastName }}
+                    </h1>
+                    <span
+                      class="inline-flex items-center gap-1 rounded-full bg-[#EDEBFF] px-3 py-1 text-xs font-semibold text-[#4D3CD3]"
+                      *ngIf="userData.user.currentLocation"
+                    >
+                      <i class="fas fa-location-dot text-[10px]"></i>
+                      {{ userData.user.currentLocation }}
+                    </span>
+                  </div>
+                  <p class="text-base text-gray-600 max-w-2xl">
+                    {{
+                      userData.user.about ||
+                        userData.user.tagline ||
+                        'Building thoughtful products with data informed decisions.'
+                    }}
+                  </p>
+                  <div class="flex flex-wrap gap-4 text-sm text-gray-500">
+                    <div class="flex items-center gap-2" *ngIf="userData.user.email">
+                      <i class="fas fa-envelope text-[#6254E5]"></i>
+                      <span>{{ userData.user.email }}</span>
+                    </div>
+                    <div class="flex items-center gap-2" *ngIf="userData.user.phone">
+                      <i class="fas fa-phone text-[#6254E5]"></i>
+                      <span>{{ userData.user.phone }}</span>
+                    </div>
+                    <div class="flex items-center gap-2" *ngIf="userData.user.totalExp">
+                      <i class="fas fa-briefcase text-[#6254E5]"></i>
+                      <span>{{ userData.user.totalExp }} yrs experience</span>
+                    </div>
+                  </div>
+                  <div class="flex gap-2" *ngIf="userData.user.socialContact?.length">
+                    <a
+                      *ngFor="let social of userData.user.socialContact"
+                      [href]="social.url"
+                      target="_blank"
+                      class="w-9 h-9 rounded-xl bg-white text-[#6254E5] shadow hover:shadow-lg hover:-translate-y-0.5 transition-all flex items-center justify-center"
+                    >
+                      <i [class]="'fab fa-' + social.socialtype"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-col sm:flex-row lg:flex-col gap-3 min-w-[250px]">
+                <button
+                  (click)="openContactDialog()"
+                  class="w-full inline-flex items-center justify-center gap-2 rounded-2xl  bg-gradient-to-br from-primary to-accent px-5 py-3 text-white font-semibold shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all"
+                >
+                  <i class="fas fa-message"></i>
+                  Contact Talent
+                </button>
+                <button
+                  (click)="exportProfileAsPDF()"
+                  [disabled]="isExporting"
+                  class="w-full inline-flex items-center justify-center gap-2 rounded-2xl border border-[#6254E5]/40 bg-white px-5 py-3 font-semibold text-[#4D3CD3] shadow hover:border-[#6254E5] hover:text-[#6254E5]"
+                >
+                  <i class="fas fa-file-export"></i>
+                  {{ isExporting ? 'Preparing PDF...' : 'Export Profile' }}
+                </button>
+                <button
+                  *ngIf="resume?.length"
+                  (click)="downloadPdf(resume[0].filename, resume[0].contentType)"
+                  class="w-full inline-flex items-center justify-center gap-2 rounded-2xl border border-gray-200 bg-white px-5 py-3 font-semibold text-gray-700 hover:text-[#6254E5] hover:border-[#6254E5]/50 transition"
+                >
+                  <i class="fas fa-download"></i>
+                  Download Resume
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Metrics -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div
+              class="rounded-2xl border border-white/70 bg-white/80 backdrop-blur-xl p-4 shadow-sm"
+            >
+              <p class="text-xs uppercase tracking-widest text-gray-500">
+                Experience
+              </p>
+              <p class="mt-2 text-2xl font-bold text-gray-900">
+                {{ userData.user.totalExp || userData.user.yearsOfExperience || 0 }} yrs
+              </p>
+              <span class="text-xs text-gray-500">Industry Expertise</span>
+            </div>
+            <div
+              class="rounded-2xl border border-white/70 bg-white/80 backdrop-blur-xl p-4 shadow-sm"
+            >
+              <p class="text-xs uppercase tracking-widest text-gray-500">
+                Projects
+              </p>
+              <p class="mt-2 text-2xl font-bold text-gray-900">
+                {{ userData.project?.length || 0 }}
+              </p>
+              <span class="text-xs text-gray-500">Showcased builds</span>
+            </div>
+            <div
+              class="rounded-2xl border border-white/70 bg-white/80 backdrop-blur-xl p-4 shadow-sm"
+            >
+              <p class="text-xs uppercase tracking-widest text-gray-500">
+                Skills
+              </p>
+              <p class="mt-2 text-2xl font-bold text-gray-900">
+                {{ userData.skill?.length || 0 }}
+              </p>
+              <span class="text-xs text-gray-500">Core strengths</span>
+            </div>
+            <div
+              class="rounded-2xl border border-white/70 bg-white/80 backdrop-blur-xl p-4 shadow-sm"
+            >
+              <p class="text-xs uppercase tracking-widest text-gray-500">
+                Certifications
+              </p>
+              <p class="mt-2 text-2xl font-bold text-gray-900">
+                {{ userData.certifications?.length || 0 }}
+              </p>
+              <span class="text-xs text-gray-500">Verified proof</span>
+            </div>
+          </div>
+
+          <div class="grid gap-6 lg:grid-cols-12">
+            <div class="space-y-6 lg:col-span-8">
+              <!-- Summary -->
+              <section
+                class="rounded-3xl border border-white/70 bg-white/90 backdrop-blur-xl p-6 shadow-sm"
+              >
+                <div class="flex items-center gap-3 mb-4">
+                  <div
+                    class="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#EDEBFF]"
+                  >
+                    <i class="fas fa-user text-[#6254E5]"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                      Summary
+                    </p>
+                    <h2 class="text-xl font-semibold text-gray-900">
+                      Professional Narrative
+                    </h2>
+                  </div>
+                </div>
+                <div class="space-y-4">
+                  <p class="text-gray-600 leading-relaxed">
+                    {{
+                      userData.user.about ||
+                        userData.user.tagline ||
+                        'A passion-driven professional blending design thinking, deep technical expertise, and collaborative leadership to ship delightful customer experiences.'
+                    }}
+                  </p>
+                  <div
+                    class="grid gap-3 sm:grid-cols-3 text-sm text-gray-600 pt-3 border-t border-dashed border-gray-200"
+                  >
+                    <div class="flex items-center gap-2">
+                      <i class="fas fa-map-marker-alt text-[#6254E5]"></i>
+                      <span>{{ userData.user.currentLocation || 'Remote ready' }}</span>
+                    </div>
+                    <div class="flex items-center gap-2" *ngIf="userData.user.availability">
+                      <i class="fas fa-clock text-[#6254E5]"></i>
+                      <span>{{ userData.user.availability }}</span>
+                    </div>
+                    <div class="flex items-center gap-2" *ngIf="userData.user.noticePeriod">
+                      <i class="fas fa-calendar-check text-[#6254E5]"></i>
+                      <span>{{ userData.user.noticePeriod }} notice</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Experience -->
+              <section
+                class="rounded-3xl border border-white/70 bg-white/90 backdrop-blur-xl p-6 shadow-sm"
+              >
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#EDEBFF]"
+                    >
+                      <i class="fas fa-briefcase text-[#4D3CD3]"></i>
+                    </div>
+                    <div>
+                      <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        Journey
+                      </p>
+                      <h2 class="text-xl font-semibold text-gray-900">
+                        Key Experience
+                      </h2>
+                    </div>
+                  </div>
+                  <span class="rounded-full bg-[#EDEBFF] px-3 py-1 text-xs font-semibold text-[#4D3CD3]">
+                    {{ userData.experiences?.length || 0 }} roles
+                  </span>
+                </div>
+                <div class="space-y-6" *ngIf="userData.experiences?.length; else experienceEmpty">
+                  <div
+                    *ngFor="let exp of userData.experiences"
+                    class="relative rounded-2xl border border-gray-100 bg-gradient-to-r from-white to-[#F7F7FD] p-5 shadow-sm hover:border-[#EDEBFF]"
+                  >
+                    <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                      <div>
+                        <h3 class="text-lg font-semibold text-gray-900">
+                          {{ exp.title }}
+                        </h3>
+                        <p class="text-sm font-semibold text-[#6254E5]">
+                          {{ exp.company }}
+                        </p>
+                        <p class="text-xs text-gray-500 mt-1">
+                          {{ exp.startDate.month }} {{ exp.startDate.year }} -
+                          {{
+                            exp.ongoingStatus === 'true'
+                              ? 'Present'
+                              : exp.endDate.month + ' ' + exp.endDate.year
+                          }}
+                        </p>
+                      </div>
+                      <span
+                        class="self-start rounded-full bg-white px-4 py-1 text-xs font-semibold text-[#4D3CD3] shadow"
+                      >
+                        {{ calculateDuration(exp) }}
+                      </span>
+                    </div>
+                    <div class="mt-4 text-sm text-gray-600 leading-relaxed" [innerHTML]="exp.description"></div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                      <span
+                        *ngFor="let stack of exp.stacks"
+                        class="rounded-full bg-white px-3 py-1 text-xs font-medium text-[#6254E5] shadow border border-[#EDEBFF]"
+                      >
+                        {{ stack }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #experienceEmpty>
+                  <div class="rounded-2xl bg-white border border-dashed border-gray-200 p-6 text-center text-sm text-gray-500">
+                    Experience details will appear here once the candidate shares them.
+                  </div>
+                </ng-template>
+              </section>
+
+              <!-- Projects -->
+              <section
+                class="rounded-3xl border border-white/70 bg-white/90 backdrop-blur-xl p-6 shadow-sm"
+              >
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#EDEBFF]">
+                    <i class="fas fa-rocket text-[#6254E5]"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                      Highlights
+                    </p>
+                    <h2 class="text-xl font-semibold text-gray-900">
+                      Featured Projects
+                    </h2>
+                  </div>
+                </div>
+                <div class="grid gap-4 md:grid-cols-2" *ngIf="userData.project?.length; else projectsEmpty">
+                  <article
+                    *ngFor="let project of userData.project"
+                    class="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm hover:border-[#EDEBFF] transition"
+                  >
+                    <div class="flex items-start justify-between gap-3">
+                      <div>
+                        <h3 class="text-lg font-semibold text-gray-900">
+                          {{ project.projectName }}
+                        </h3>
+                        <p class="text-xs uppercase tracking-wide text-gray-500">
+                          {{ project.projectType || 'Product' }}
+                        </p>
+                      </div>
+                      <button class="text-gray-400 hover:text-[#6254E5]">
+                        <i class="fas fa-external-link-alt"></i>
+                      </button>
+                    </div>
+                    <div class="mt-3 text-sm leading-relaxed text-gray-600" [innerHTML]="project.description"></div>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                      <span
+                        *ngFor="let tech of getProjectTechnologies(project)"
+                        class="rounded-full bg-[#F7F7FD] px-3 py-1 text-xs font-medium text-[#4D3CD3]"
+                      >
+                        {{ tech }}
+                      </span>
+                    </div>
+                  </article>
+                </div>
+                <ng-template #projectsEmpty>
+                  <div class="rounded-2xl bg-white border border-dashed border-gray-200 p-6 text-center text-sm text-gray-500">
+                    Project case studies will appear here once provided.
+                  </div>
+                </ng-template>
+              </section>
+
+              <!-- Education -->
+              <section
+                class="rounded-3xl border border-white/70 bg-white/90 backdrop-blur-xl p-6 shadow-sm"
+              >
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#EDEBFF]">
+                    <i class="fas fa-graduation-cap text-[#6254E5]"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                      Credentials
+                    </p>
+                    <h2 class="text-xl font-semibold text-gray-900">
+                      Education
+                    </h2>
+                  </div>
+                </div>
+                <div class="space-y-4" *ngIf="userData.education?.length; else educationEmpty">
+                  <div
+                    *ngFor="let edu of userData.education"
+                    class="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm"
+                  >
+                    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                      <div>
+                        <h3 class="text-lg font-semibold text-gray-900">
+                          {{ edu.institute }}
+                        </h3>
+                        <p class="text-sm text-[#6254E5]">
+                          {{ edu.degree }} · {{ edu.fieldOfStudy }}
+                        </p>
+                        <p class="text-xs text-gray-500 mt-1" *ngIf="edu.startDate?.year !== 'Year'">
+                          {{ edu.startDate.month }} {{ edu.startDate.year }} -
+                          {{
+                            edu.ongoingStatus === 'true'
+                              ? 'Present'
+                              : edu.endDate.month + ' ' + edu.endDate.year
+                          }}
+                        </p>
+                      </div>
+                      <span
+                        *ngIf="edu.grade"
+                        class="self-start rounded-full bg-[#F7F7FD] px-4 py-1 text-xs font-semibold text-[#4D3CD3]"
+                      >
+                        Grade {{ edu.grade }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #educationEmpty>
+                  <div class="rounded-2xl bg-white border border-dashed border-gray-200 p-6 text-center text-sm text-gray-500">
+                    Education history will appear here once provided.
+                  </div>
+                </ng-template>
+              </section>
+            </div>
+
+            <!-- Side Column -->
+            <div class="space-y-6 lg:col-span-4">
+              <!-- Snapshot -->
+              <section class="rounded-3xl border border-white/70 bg-white/90 backdrop-blur-xl p-6 shadow-sm">
+                <h3 class="text-sm font-semibold uppercase tracking-wide text-gray-500">
+                  Talent Snapshot
+                </h3>
+                <div class="mt-4 space-y-4 text-sm text-gray-600">
+                  <div class="flex items-start gap-3">
+                    <div class="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#EDEBFF] text-[#6254E5]">
+                      <i class="fas fa-medal"></i>
+                    </div>
+                    <div>
+                      <p class="text-xs uppercase text-gray-400">Core Strength</p>
+                      <p class="font-semibold text-gray-900">
+                        {{ getTopSkills()[0]?.skillName || 'Product Leadership' }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <div class="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#EDEBFF] text-[#6254E5]">
+                      <i class="fas fa-language"></i>
+                    </div>
+                    <div>
+                      <p class="text-xs uppercase text-gray-400">Preferred Languages</p>
+                      <p class="font-semibold text-gray-900">
+                        {{ userData.user.languages || 'English' }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3">
+                    <div class="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#EDEBFF] text-[#6254E5]">
+                      <i class="fas fa-location-dot"></i>
+                    </div>
+                    <div>
+                      <p class="text-xs uppercase text-gray-400">Preferred Location</p>
+                      <p class="font-semibold text-gray-900">
+                        {{ userData.user.preferredLocation || userData.user.currentLocation || 'Remote' }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Top Skills Chips -->
+              <section class="rounded-3xl border border-white/70 bg-white/90 backdrop-blur-xl p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                  <h3 class="text-base font-semibold text-gray-900">Top Skills</h3>
+                  <span class="text-xs font-semibold text-[#4D3CD3]">
+                    {{ getTopSkills().length }} focus areas
+                  </span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    *ngFor="let skill of getTopSkills()"
+                    class="rounded-full border border-[#EDEBFF] bg-[#F7F7FD] px-3 py-1 text-xs font-medium text-[#4D3CD3]"
+                  >
+                    {{ skill.skillName }}
+                  </span>
+                </div>
+              </section>
+
+              <!-- Certifications -->
+              <section
+                *ngIf="userData.certifications?.length"
+                class="rounded-3xl border border-white/70 bg-white/90 backdrop-blur-xl p-6 shadow-sm"
+              >
+                <div class="flex items-center gap-3 mb-4">
+                  <div class="flex h-9 w-9 items-center justify-center rounded-2xl bg-[#FFF4E5] text-[#F59E0B]">
+                    <i class="fas fa-award"></i>
+                  </div>
+                  <div>
+                    <p class="text-xs uppercase text-gray-400">Achievements</p>
+                    <h3 class="text-base font-semibold text-gray-900">Certifications</h3>
+                  </div>
+                </div>
+                <div class="space-y-3">
+                  <div
+                    *ngFor="let cert of userData.certifications"
+                    class="rounded-2xl border border-[#FFF4E5] bg-gradient-to-r from-white to-[#FFFBF2] p-4"
+                  >
+                    <h4 class="font-semibold text-gray-900">{{ cert.name }}</h4>
+                    <p class="text-xs uppercase text-gray-500">{{ cert.issuer }}</p>
+                    <p class="text-xs text-gray-400 mt-1">
+                      Issued {{ cert.issueDate | date }}
+                    </p>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #loadingState>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-6">
+    <div class="h-40 rounded-3xl bg-white/70 shadow animate-pulse"></div>
+    <div class="grid gap-4 md:grid-cols-2">
+      <div class="h-60 rounded-3xl bg-white/70 shadow animate-pulse"></div>
+      <div class="h-60 rounded-3xl bg-white/70 shadow animate-pulse"></div>
+    </div>
+    <div *ngIf="errorMessage" class="text-center text-sm text-red-500">
+      {{ errorMessage }}
+    </div>
+  </div>
+</ng-template>
+
+<!-- Mobile action bar -->
+<div
+  class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-white/60 p-2 sm:hidden"
+>
+  <div class="flex gap-2">
+    <button
+      class="flex-1 rounded-2xl border border-gray-200 bg-white py-2 text-xs font-semibold text-gray-600"
+    >
+      Share
+    </button>
+    <button
+      (click)="exportProfileAsPDF()"
+      class="flex-1 rounded-2xl border border-gray-200 bg-white py-2 text-xs font-semibold text-gray-600"
+    >
+      Export
+    </button>
+    <button
+      (click)="openContactDialog()"
+      class="flex-1 rounded-2xl  bg-gradient-to-br from-primary to-accent py-2 text-xs font-semibold text-white"
+    >
+      Contact
+    </button>
+  </div>
+</div>
+
+<button
+  class="fixed bottom-16 right-5 hidden h-11 w-11 items-center justify-center rounded-full  bg-gradient-to-br from-primary to-accent text-white shadow-lg hover:scale-105 transition sm:flex"
+  onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+>
+  <i class="fas fa-arrow-up text-sm"></i>
+</button>
+
+<app-contact-dialog></app-contact-dialog>
+

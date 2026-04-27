@@ -1,0 +1,34 @@
+<div class="pwa-install-banner" *ngIf="showPrompt" role="dialog" aria-labelledby="install-title" aria-describedby="install-description">
+  <div class="pwa-install-content">
+    <div class="pwa-install-icon">
+      <img src="assets/icons/icon-96x96.png" alt="HiYrNow App Icon" width="48" height="48" />
+    </div>
+    <div class="pwa-install-text">
+      <h3 id="install-title" class="pwa-install-title">Install HiYrNow</h3>
+      <p id="install-description" class="pwa-install-description">
+        Install our app for a faster, offline-capable experience
+      </p>
+    </div>
+    <div class="pwa-install-actions">
+      <button 
+        class="pwa-install-btn pwa-install-btn-primary" 
+        (click)="install()"
+        aria-label="Install HiYrNow app">
+        Install
+      </button>
+      <button 
+        class="pwa-install-btn pwa-install-btn-dismiss" 
+        (click)="dismiss()"
+        aria-label="Dismiss install prompt">
+        Not Now
+      </button>
+    </div>
+  </div>
+  <button class="pwa-install-close" (click)="dismiss()" aria-label="Close install prompt">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+</div>
+

@@ -1,0 +1,285 @@
+<!-- Skills Section -->
+<div class="skills-container">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div>
+     
+      <p class="text-sm text-text-secondary mt-1">
+        {{ skills.length }} of {{ maxSkills }} skills added
+        <span *ngIf="skillsRemaining > 0" class="text-primary font-medium">
+          ({{ skillsRemaining }} remaining)
+        </span>
+      </p>
+    </div>
+    <button
+      *ngIf="!addMode && !isEditMode && canAddSkill"
+      (click)="add()"
+      class="px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      [attr.aria-label]="'Add new skill'"
+    >
+      <i class="fas fa-plus" aria-hidden="true"></i>
+      <span class="hidden sm:inline">Add Skill</span>
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading && skills.length === 0" class="text-center py-12">
+    <div class="inline-block w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+    <p class="text-text-secondary mt-4">Loading skills...</p>
+  </div>
+
+  <!-- Add/Edit Form -->
+  <div *ngIf="addMode || isEditMode" [@fadeInOut] class="bg-gradient-to-br from-primary/5 to-transparent rounded-2xl p-6 border-2 border-primary/20 mb-6">
+    <div class="flex items-center justify-between mb-6">
+      <h4 class="text-lg font-bold text-text-primary flex items-center gap-2">
+        <i class="fas fa-{{ isEditMode ? 'edit' : 'plus-circle' }} text-primary" aria-hidden="true"></i>
+        {{ isEditMode ? 'Edit' : 'Add New' }} Skill
+      </h4>
+      <button
+        (click)="isEditMode ? cancelEdit() : cancelAdd()"
+        class="text-text-secondary hover:text-text-primary transition-colors"
+        [attr.aria-label]="'Cancel'"
+      >
+        <i class="fas fa-times text-xl" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <form [formGroup]="skillForm" (ngSubmit)="isEditMode ? update() : create()" class="space-y-4">
+      <!-- Skill Name with Autocomplete -->
+      <div class="relative">
+        <label for="skillName" class="block text-sm font-semibold text-text-primary mb-2">
+          Skill Name <span class="text-error">*</span>
+        </label>
+        <div class="relative">
+          <input
+            id="skillName"
+            type="text"
+            formControlName="skillName"
+            placeholder="e.g., JavaScript, Python, React"
+            class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            [ngClass]="formControls['skillName'].invalid && formControls['skillName'].touched ? 'border-error' : 'border-gray-300'"
+          />
+          <i class="fas fa-search absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400" aria-hidden="true"></i>
+        </div>
+        
+        <!-- Skill Suggestions Dropdown -->
+        <div *ngIf="showSuggestions && filteredSkills.length > 0" 
+             class="absolute z-10 w-full mt-1 bg-white border-2 border-primary/20 rounded-xl shadow-xl max-h-48 overflow-y-auto">
+          <button
+            *ngFor="let skill of filteredSkills"
+            type="button"
+            (click)="selectSkill(skill)"
+            class="w-full px-4 py-3 text-left hover:bg-primary/5 transition-colors text-sm border-b border-gray-100 last:border-0 flex items-center gap-2"
+          >
+            <i class="fas fa-lightbulb text-primary text-xs" aria-hidden="true"></i>
+            {{ skill }}
+          </button>
+        </div>
+
+        <p *ngIf="formControls['skillName'].invalid && formControls['skillName'].touched" 
+           class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          <span *ngIf="formControls['skillName'].errors?.['required']">Skill name is required</span>
+          <span *ngIf="formControls['skillName'].errors?.['minlength']">Skill name must be at least 2 characters</span>
+        </p>
+      </div>
+
+      <!-- Skill Level Slider -->
+      <div>
+        <label for="skillLevel" class="block text-sm font-semibold text-text-primary mb-2">
+          Proficiency Level <span class="text-error">*</span>
+          <span class="text-primary font-normal ml-2">
+            {{ formControls['skillLevel'].value ? '(' + getSkillLevelDescription(formControls['skillLevel'].value) + ')' : '' }}
+          </span>
+        </label>
+        
+        <!-- Skill Level Slider -->
+        <div class="relative pt-1">
+          <input
+            id="skillLevel"
+            type="range"
+            formControlName="skillLevel"
+            min="1"
+            max="10"
+            class="w-full h-3 bg-gray-200 rounded-full appearance-none cursor-pointer slider"
+            style="accent-color: #0066FF;"
+          />
+          <div class="flex justify-between text-xs text-text-secondary mt-2">
+            <span>Beginner</span>
+            <span>Intermediate</span>
+            <span>Expert</span>
+            <span>Master</span>
+          </div>
+          
+          <!-- Visual Level Indicators -->
+          <div class="flex justify-between mt-3">
+            <div *ngFor="let star of getStars(formControls['skillLevel'].value || 0); let i = index"
+                 class="flex gap-1">
+              <i class="fas fa-star text-lg" 
+                 [ngClass]="star ? 'text-warning' : 'text-gray-300'" 
+                 aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+
+        <p *ngIf="formControls['skillLevel'].invalid && formControls['skillLevel'].touched" 
+           class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          Skill level is required
+        </p>
+      </div>
+
+      <!-- Category Selection -->
+      <div>
+        <label for="category" class="block text-sm font-semibold text-text-primary mb-2">
+          Category
+        </label>
+        <select
+          id="category"
+          formControlName="category"
+          class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none bg-white"
+        >
+          <option *ngFor="let cat of skillCategories" [value]="cat">{{ cat }}</option>
+        </select>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="flex gap-3 pt-4">
+        <button
+          type="button"
+          (click)="isEditMode ? cancelEdit() : cancelAdd()"
+          class="flex-1 px-6 py-3 border-2 border-gray-300 text-text-primary rounded-xl font-semibold hover:bg-gray-50 transition-all focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          [disabled]="skillForm.invalid || loading"
+          class="flex-1 px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        >
+          <i class="fas fa-{{ isEditMode ? 'save' : 'plus' }} mr-2" aria-hidden="true"></i>
+          {{ isEditMode ? 'Update' : 'Add' }} Skill
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && skills.length === 0 && !addMode && !isEditMode" class="text-center py-12">
+    <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+      <i class="fas fa-code text-primary text-4xl" aria-hidden="true"></i>
+    </div>
+    <h4 class="text-lg font-semibold text-text-primary mb-2">No skills added yet</h4>
+    <p class="text-text-secondary mb-6">Start building your skill profile to attract better opportunities</p>
+    <button
+      (click)="add()"
+      class="px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 inline-flex items-center gap-2"
+    >
+      <i class="fas fa-plus" aria-hidden="true"></i>
+      Add Your First Skill
+    </button>
+  </div>
+
+  <!-- Skills List by Category -->
+  <div *ngIf="skills.length > 0 && !addMode && !isEditMode" class="space-y-6">
+    <!-- Search Bar -->
+    <div class="relative">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        placeholder="Search skills..."
+        class="w-full px-4 py-3 pl-11 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+      />
+      <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" aria-hidden="true"></i>
+    </div>
+
+    <!-- Skills Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div
+      *ngFor="let skill of filterBySearch(skills)"
+      [@fadeInOut]
+      class="bg-white rounded-2xl p-5 border border-gray-100 hover:shadow-lg transition-all duration-300 group relative overflow-hidden
+             flex flex-col justify-between min-h-[170px] pb-4"
+    >
+      <!-- Decorative Element -->
+      <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/10 to-transparent rounded-bl-full transform translate-x-8 -translate-y-8 pointer-events-none"></div>
+    
+      <!-- Top content (header + level) -->
+      <div class="relative z-10">
+        <!-- Skill Header -->
+        <div class="flex items-start justify-between mb-3">
+          <div class="flex items-center gap-3 flex-1 min-w-0 pr-2">
+            <div class="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+              <i class="fas fa-code text-white text-lg" aria-hidden="true"></i>
+            </div>
+            <div class="min-w-0 flex-1">
+              <h4 class="text-base font-bold text-text-primary truncate">{{ skill.skillName }}</h4>
+              <p class="text-xs text-text-secondary">{{ skill.category || 'Other' }}</p>
+            </div>
+          </div>
+          <!-- keep right-side blank (we moved actions to footer) -->
+          <div class="w-2 flex-shrink-0"></div>
+        </div>
+    
+        <!-- Skill Level -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-text-secondary">Proficiency</span>
+            <span class="text-primary font-semibold">{{ getSkillLevelDescription(skill.skillLevel) }}</span>
+          </div>
+    
+          <!-- Progress Bar -->
+          <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+            <div
+              class="bg-gradient-to-r from-primary to-accent h-full rounded-full transition-all duration-500"
+              [style.width.%]="skill.skillLevel * 10"
+            ></div>
+          </div>
+    
+          <!-- Stars -->
+          <div class="flex gap-1 justify-center">
+            <i *ngFor="let star of getStars(skill.skillLevel)"
+               class="fas fa-star text-sm"
+               [ngClass]="star ? 'text-warning' : 'text-gray-300'"
+               aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+    
+      <!-- Footer actions (always at bottom) -->
+      <div class="relative z-10 mt-4">
+        <div class="flex items-center gap-2 justify-end sm:justify-end">
+          <button
+            (click)="edit(skill, skill._id)"
+            class="w-10 h-10 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-95"
+            [attr.aria-label]="'Edit ' + skill.skillName"
+            title="Edit skill"
+          >
+            <i class="fas fa-edit" aria-hidden="true"></i>
+          </button>
+    
+          <button
+            (click)="delete(skill._id)"
+            [disabled]="loading"
+            class="w-10 h-10 bg-error/10 text-error rounded-lg hover:bg-error hover:text-white transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
+            [attr.aria-label]="'Delete ' + skill.skillName"
+            title="Delete skill"
+          >
+            <i class="fas fa-trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    </div>
+
+    <!-- Max Skills Warning -->
+    <div *ngIf="!canAddSkill" class="bg-warning/10 border-2 border-warning/30 rounded-xl p-4 flex items-center gap-3">
+      <i class="fas fa-info-circle text-warning text-xl" aria-hidden="true"></i>
+      <div>
+        <p class="text-sm font-semibold text-text-primary">Maximum skills limit reached</p>
+        <p class="text-xs text-text-secondary">You've added the maximum of {{ maxSkills }} skills. Remove some to add new ones.</p>
+      </div>
+    </div>
+  </div>
+</div>

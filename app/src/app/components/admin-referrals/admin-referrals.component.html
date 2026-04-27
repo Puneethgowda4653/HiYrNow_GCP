@@ -1,0 +1,345 @@
+<div class="min-h-screen bg-gray-50 py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="mb-8">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-3xl font-bold text-gray-900">Referral Management</h1>
+          <p class="mt-2 text-gray-600">Manage partner referral codes and track their performance</p>
+        </div>
+        <button 
+          (click)="openCreateModal()"
+          class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-lg hover:shadow-xl">
+          <i class="fas fa-plus mr-2"></i>
+          Create Referral
+        </button>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div *ngIf="error || success" class="mb-6">
+      <div *ngIf="error" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+        <div class="flex justify-between items-center">
+          <span>{{ error }}</span>
+          <button (click)="clearMessages()" class="text-red-500 hover:text-red-700">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      <div *ngIf="success" class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4">
+        <div class="flex justify-between items-center">
+          <span>{{ success }}</span>
+          <button (click)="clearMessages()" class="text-green-500 hover:text-green-700">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analytics Cards -->
+    <div *ngIf="analytics" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-link text-blue-600"></i>
+            </div>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-500">Active Referrals</p>
+            <p class="text-2xl font-bold text-gray-900">{{ analytics.totalActiveReferrals }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-check-circle text-green-600"></i>
+            </div>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-500">Total Redemptions</p>
+            <p class="text-2xl font-bold text-gray-900">{{ analytics.totalRedemptions }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+              <i class="fas fa-trophy text-purple-600"></i>
+            </div>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm font-medium text-gray-500">Top Partner</p>
+            <p class="text-lg font-bold text-gray-900">
+              {{ analytics.topPartners[0]?.partnerName || 'N/A' }}
+            </p>
+            <p class="text-sm text-gray-500">
+              {{ analytics.topPartners[0]?.usageCount || 0 }} uses
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Referrals Table -->
+    <div class="bg-white rounded-lg shadow-md border border-gray-200">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900">All Referral Codes</h2>
+      </div>
+
+      <div *ngIf="loading" class="flex justify-center items-center py-12">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+        <span class="ml-2 text-gray-600">Loading...</span>
+      </div>
+
+      <div *ngIf="!loading" class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Partner</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Offer Type</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usage</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let referral of referrals" class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div>
+                  <div class="text-sm font-medium text-gray-900">{{ referral.partnerName }}</div>
+                  <div *ngIf="referral.email" class="text-sm text-gray-500">{{ referral.email }}</div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                  {{ referral.code }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="text-sm text-gray-900">{{ getOfferTypeLabel(referral.offerType) }}</span>
+                <div *ngIf="referral.offerType === 'freePlan'" class="text-xs text-gray-500">
+                  {{ referral.offerDetails.freePlan }} ({{ referral.offerDetails.durationDays }} days)
+                </div>
+                <div *ngIf="referral.offerType === 'discount'" class="text-xs text-gray-500">
+                  {{ referral.offerDetails.discountPercent }}% off
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">{{ referral.usageCount }} / {{ referral.maxUses }}</div>
+                <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                  <div 
+                    class="bg-purple-600 h-2 rounded-full" 
+                    [style.width.%]="getUtilizationRate(referral.usageCount, referral.maxUses)">
+                  </div>
+                </div>
+                <div class="text-xs text-gray-500 mt-1">
+                  {{ getUtilizationRate(referral.usageCount, referral.maxUses) }}% utilized
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span 
+                  class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border"
+                  [class]="getStatusBadgeClass(referral.isActive)">
+                  {{ referral.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                {{ referral.createdAt | date:'MMM dd, yyyy' }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex space-x-2">
+                  <button 
+                    (click)="openEditModal(referral)"
+                    class="text-blue-600 hover:text-blue-900">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button 
+                    (click)="toggleReferralStatus(referral)"
+                    [class]="referral.isActive ? 'text-yellow-600 hover:text-yellow-900' : 'text-green-600 hover:text-green-900'">
+                    <i [class]="referral.isActive ? 'fas fa-pause' : 'fas fa-play'"></i>
+                  </button>
+                  <button 
+                    (click)="deleteReferral(referral)"
+                    class="text-red-600 hover:text-red-900">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Top Partners -->
+    <div *ngIf="analytics && analytics.topPartners.length > 0" class="mt-8 bg-white rounded-lg shadow-md border border-gray-200">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900">Top Performing Partners</h2>
+      </div>
+      <div class="p-6">
+        <div class="space-y-4">
+          <div *ngFor="let partner of analytics.topPartners.slice(0, 5)" class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+            <div>
+              <h3 class="font-medium text-gray-900">{{ partner.partnerName }}</h3>
+              <p class="text-sm text-gray-500">{{ partner.code }}</p>
+            </div>
+            <div class="text-right">
+              <p class="font-semibold text-gray-900">{{ partner.usageCount }} uses</p>
+              <p class="text-sm text-gray-500">{{ partner.utilizationRate }}% utilized</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create/Edit Modal -->
+  <div *ngIf="showCreateModal || showEditModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+    <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-2/3 lg:w-1/2 shadow-lg rounded-md bg-white">
+      <div class="mt-3">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-medium text-gray-900">
+            {{ showCreateModal ? 'Create New Referral' : 'Edit Referral' }}
+          </h3>
+          <button (click)="closeModals()" class="text-gray-400 hover:text-gray-600">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <form (ngSubmit)="showCreateModal ? createReferral() : updateReferral()">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Code -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Referral Code *</label>
+              <input 
+                type="text" 
+                [(ngModel)]="formData.code" 
+                name="code"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="e.g., PARTNER2024"
+                required>
+            </div>
+
+            <!-- Partner Name -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Partner Name *</label>
+              <input 
+                type="text" 
+                [(ngModel)]="formData.partnerName" 
+                name="partnerName"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="e.g., TechCorp Solutions"
+                required>
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input 
+                type="email" 
+                [(ngModel)]="formData.email" 
+                name="email"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="partner@company.com">
+            </div>
+
+            <!-- Offer Type -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Offer Type</label>
+              <select 
+                [(ngModel)]="formData.offerType" 
+                name="offerType"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <option value="freePlan">Free Plan</option>
+                <option value="discount">Discount</option>
+                <option value="customFeatures">Custom Features</option>
+              </select>
+            </div>
+
+            <!-- Free Plan Details -->
+            <div *ngIf="formData.offerType === 'freePlan'">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Plan</label>
+              <select 
+                [(ngModel)]="formData.offerDetails.freePlan" 
+                name="freePlan"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <option value="starter">Starter</option>
+                <option value="growth">Growth</option>
+                <option value="elite">Elite</option>
+              </select>
+            </div>
+
+            <!-- Duration -->
+            <div *ngIf="formData.offerType === 'freePlan'">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Duration (Days)</label>
+              <input 
+                type="number" 
+                [(ngModel)]="formData.offerDetails.durationDays" 
+                name="durationDays"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                min="1"
+                max="365">
+            </div>
+
+            <!-- Discount Percent -->
+            <div *ngIf="formData.offerType === 'discount'">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Discount %</label>
+              <input 
+                type="number" 
+                [(ngModel)]="formData.offerDetails.discountPercent" 
+                name="discountPercent"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                min="1"
+                max="100">
+            </div>
+
+            <!-- Max Uses -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Max Uses</label>
+              <input 
+                type="number" 
+                [(ngModel)]="formData.maxUses" 
+                name="maxUses"
+                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                min="1"
+                max="10000">
+            </div>
+
+            <!-- Active Status -->
+            <div class="flex items-center">
+              <input 
+                type="checkbox" 
+                [(ngModel)]="formData.isActive" 
+                name="isActive"
+                class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+              <label class="ml-2 block text-sm text-gray-700">Active</label>
+            </div>
+          </div>
+
+          <div class="flex justify-end space-x-3 mt-6">
+            <button 
+              type="button" 
+              (click)="closeModals()"
+              class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md">
+              Cancel
+            </button>
+            <button 
+              type="submit"
+              [disabled]="loading"
+              class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-md disabled:opacity-50">
+              {{ loading ? 'Saving...' : (showCreateModal ? 'Create' : 'Update') }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

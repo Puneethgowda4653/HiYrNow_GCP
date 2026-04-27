@@ -1,0 +1,284 @@
+<div
+  class="signup-container bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 relative w-full min-h-screen"
+>
+  <!-- Animated background pattern -->
+  <div class="absolute inset-0 opacity-[0.03] pointer-events-none">
+    <div
+      class="absolute inset-0"
+      style="
+        background-image: radial-gradient(
+          circle at 25px 25px,
+          #3b82f6 2px,
+          transparent 0
+        );
+        background-size: 50px 50px;
+      "
+    ></div>
+  </div>
+
+  <!-- Main content container -->
+  <div class="relative z-10 flex min-h-screen">
+    <!-- Role Selection Cards -->
+    <div
+      *ngIf="!roleSelected"
+      [@fadeInUp]
+      class="w-full justify-center max-w-4xl m-4 p-4 mx-auto"
+    >
+      <!-- Enhanced Header -->
+      <div class="text-center mb-8 sm:mb-12">
+        <div
+          class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-white mb-4 shadow-xl border border-gray-100"
+        >
+          <img
+            src="../../../assets/hash.png"
+            alt="logo"
+            class="w-8 h-8 sm:w-10 sm:h-10 group-hover:scale-110 transition-transform duration-300"
+          />
+        </div>
+        <div class="space-y-2">
+          <h1
+            class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight"
+          >
+            Choose Your Journey
+          </h1>
+          <p
+            class="text-base sm:text-lg text-gray-600 font-medium max-w-md mx-auto"
+          >
+            Join millions of professionals worldwide
+          </p>
+        </div>
+      </div>
+
+      <!-- Role Cards Grid - Responsive -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-8">
+        <div
+          *ngFor="let role of roles; let i = index"
+          class="group relative overflow-hidden bg-white rounded-2xl sm:rounded-3xl shadow-lg border border-gray-100 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer active:scale-[0.98]"
+          [class.ring-2]="selectedRole === role.id"
+          [class.ring-blue-500]="selectedRole === role.id"
+          [class.border-blue-200]="selectedRole === role.id"
+          [class.bg-gradient-to-br]="selectedRole === role.id"
+          [class.from-blue-50]="selectedRole === role.id"
+          [class.to-indigo-50]="selectedRole === role.id"
+          [attr.aria-selected]="selectedRole === role.id"
+          [attr.title]="role.tooltip"
+          role="button"
+          tabindex="0"
+          (click)="selectRole(role.id)"
+          (keydown)="handleKeyDown($event, role.id)"
+        >
+          <!-- Animated gradient overlay -->
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          ></div>
+
+          <!-- Selection indicator bar -->
+          <div
+            *ngIf="selectedRole === role.id"
+            class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500"
+          ></div>
+
+          <div class="relative p-4 sm:p-6">
+            <!-- Header with icon and selection state -->
+            <div class="flex justify-between items-start mb-4 sm:mb-6">
+              <!-- Enhanced icon with animation -->
+              <div class="relative">
+                <div
+                  class="inline-flex items-center bg-gray-200 justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-2xl transition-all duration-300 group-hover:scale-110"
+                  [class.bg-gradient-to-br]="selectedRole !== role.id"
+                  [class.from-blue-500]="selectedRole !== role.id"
+                  [class.to-indigo-600]="selectedRole !== role.id"
+                  [class.bg-gradient-to-br]="selectedRole === role.id"
+                  [class.from-blue-600]="selectedRole === role.id"
+                  [class.to-indigo-700]="selectedRole === role.id"
+                  [class.shadow-lg]="selectedRole === role.id"
+                >
+                  <i class="fas fa-{{ role.icon }} text-lg sm:text-xl "></i>
+                </div>
+                <!-- Pulse animation for selected state -->
+                <div
+                  *ngIf="selectedRole === role.id"
+                  class="absolute inset-0 rounded-2xl bg-blue-500 opacity-25 animate-ping"
+                ></div>
+              </div>
+
+              <!-- Modern selection indicator -->
+              <div
+                class="w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center transition-all duration-300 border-2"
+                [class.border-gray-300]="selectedRole !== role.id"
+                [class.bg-gradient-to-br]="selectedRole === role.id"
+                [class.from-blue-500]="selectedRole === role.id"
+                [class.to-indigo-600]="selectedRole === role.id"
+                [class.border-transparent]="selectedRole === role.id"
+                [class.shadow-lg]="selectedRole === role.id"
+              >
+                <i
+                  *ngIf="selectedRole === role.id"
+                  class="fas fa-check text-white text-xs sm:text-sm"
+                ></i>
+              </div>
+            </div>
+
+            <!-- Content -->
+            <div class="space-y-4">
+              <div>
+                <h3
+                  class="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300"
+                >
+                  {{ role.title }}
+                </h3>
+                <p class="text-gray-600 text-sm sm:text-base leading-relaxed">
+                  {{ role.description }}
+                </p>
+              </div>
+
+              <!-- Enhanced feature list -->
+              <div class="hidden md:block space-y-2 sm:space-y-3">
+                <div
+                  *ngFor="let feature of role.features; let j = index"
+                  class="flex items-center text-sm sm:text-base text-gray-700"
+                  [style.animation-delay]="j * 100 + 'ms'"
+                >
+                  <span
+                    class="inline-flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6 rounded-full mr-3 transition-all duration-300 flex-shrink-0"
+                    [class.bg-gray-200]="selectedRole !== role.id"
+                    [class.bg-gradient-to-br]="selectedRole === role.id"
+                    [class.from-blue-500]="selectedRole === role.id"
+                    [class.to-indigo-600]="selectedRole === role.id"
+                  >
+                    <i
+                      class="fas fa-check text-xs"
+                      [class.text-gray-600]="selectedRole !== role.id"
+                      [class.text-white]="selectedRole === role.id"
+                    ></i>
+                  </span>
+                  <span class="font-medium">{{ feature }}</span>
+                </div>
+              </div>
+
+              <!-- Role-specific metrics - Mobile optimized -->
+              <div class="pt-4 border-t border-gray-100">
+                <div
+                  class="flex items-center justify-between text-xs sm:text-sm text-gray-500 flex-wrap gap-2"
+                >
+                  <span class="flex items-center whitespace-nowrap">
+                    <i class="fas fa-clock mr-1 text-blue-500"></i>
+                    2-min setup
+                  </span>
+                  <span class="flex items-center whitespace-nowrap">
+                    <i class="fas fa-star mr-1 text-yellow-500"></i>
+                    4.9/5 rating
+                  </span>
+                  <span class="flex items-center whitespace-nowrap">
+                    <i class="fas fa-lock mr-1 text-green-500"></i>
+                    Secure
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hover effect bottom bar -->
+          <div
+            class="h-1 w-0 group-hover:w-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-500 ease-out"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Enhanced action section - Mobile optimized -->
+      <div class="text-center space-y-4 sm:space-y-6">
+        <app-ui-button [disabled]="!selectedRole || isLoading" (click)="continueToSignup()">
+          <!-- Animated shimmer effect -->
+          <span
+            class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"
+          ></span>
+
+          <span class="relative flex items-center justify-center">
+            <span *ngIf="!isLoading" class="flex items-center">
+              Get Started Now
+              <i
+                class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform duration-300"
+              ></i>
+            </span>
+
+            <div *ngIf="isLoading" class="flex items-center">
+              <svg
+                class="animate-spin mr-2 h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              <span class="hidden sm:inline">Setting up your account...</span>
+              <span class="sm:hidden">Setting up...</span>
+            </div>
+          </span>
+        </app-ui-button>
+
+        <!-- Trust indicators - Mobile friendly -->
+        <div
+          class="flex items-center justify-center flex-wrap gap-4 sm:gap-6 text-xs sm:text-sm text-gray-500"
+        >
+          <span class="flex items-center whitespace-nowrap">
+            <i class="fas fa-shield-check mr-1 sm:mr-2 text-green-500"></i>
+            <span class="hidden sm:inline">SSL Encrypted</span>
+            <span class="sm:hidden">Encrypted</span>
+          </span>
+          <span class="flex items-center whitespace-nowrap">
+            <i class="fas fa-user-shield mr-1 sm:mr-2 text-blue-500"></i>
+            <span class="hidden sm:inline">GDPR Compliant</span>
+            <span class="sm:hidden">GDPR</span>
+          </span>
+          <span class="flex items-center whitespace-nowrap">
+            <i class="fas fa-clock mr-1 sm:mr-2 text-purple-500"></i>
+            <span class="hidden sm:inline">Free Forever</span>
+            <span class="sm:hidden">Free</span>
+          </span>
+        </div>
+
+        <!-- Additional mobile-friendly elements -->
+        <div class="pt-4 border-t border-gray-100 sm:hidden">
+          <p class="text-xs text-gray-400 px-4">
+            By continuing, you agree to our Terms of Service and Privacy Policy
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signup Form Section placeholder -->
+
+    <div *ngIf="roleSelected" [@fadeInUp] class="w-full">
+      <!-- Back button -->
+      <!-- <button
+    class="mb-4 inline-flex items-center text-sm secondary-text hover:primary-text transition-colors duration-300"
+    (click)="goBack()"
+  >
+    <i class="fas fa-arrow-left mr-2"></i>
+    Back to selection
+  </button> -->
+
+      <div class="white-bg">
+        <div *ngIf="selectedRole === 'jobseeker'" [@fadeIn]>
+          <app-register></app-register>
+        </div>
+
+        <div *ngIf="selectedRole === 'employer'" [@fadeIn]>
+          <app-employer-register></app-employer-register>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

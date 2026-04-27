@@ -1,0 +1,63 @@
+<div class="container mx-auto px-4">
+    <h2 class="text-3xl font-semibold text-center text-gray-900 mb-8">PVC List Users</h2>
+    <div *ngIf="pvcListUsers && pvcListUsers.length > 0">
+      <div *ngFor="let user of pvcListUsers" class="bg-white shadow-md w-full max-w-4xl mx-auto flex flex-col md:flex-row gap-6 items-center justify-between p-6 rounded-2xl mb-6">
+        <!-- User details display similar to job applications -->
+        <div class="flex flex-col md:flex-row items-center w-full">
+            <div class="w-16 h-16 bg-gray-100 rounded-full overflow-hidden flex-shrink-0">
+              <img [src]="user.userName.profilePictureUrl" alt="User Profile Picture" class="w-full h-full object-cover">
+            </div>
+            <div class="md:ml-6 mt-4 md:mt-0 flex-grow">
+              <div class="flex justify-between items-center">
+                <div>
+                  <h3 class="font-bold text-2xl text-gray-800">{{ user.userName.username }}</h3>
+                  <div class="flex items-center gap-2 mt-2 text-sm text-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {{ user.userName.email }}
+                  </div>
+                  <div class="flex items-center gap-2 mt-2 text-sm text-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {{ user.userName.firstName }} {{ user.userName.lastName }}
+                  </div>
+                  <div class="flex items-center gap-2 mt-2 text-sm text-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h4l1.5-1.5a1 1 0 011.5 0L12 10h4m-5 5h4l1.5-1.5a1 1 0 011.5 0L17 15h4m-5 5h4l1.5-1.5a1 1 0 011.5 0L22 20h4" />
+                    </svg>
+                    {{ user.userName.phone }}
+                  </div>
+                  <div class="mt-4">
+                    <ul class="flex flex-wrap gap-2">
+                      <li *ngFor="let contact of user.userName.socialContact" class="flex items-center">
+                        <a href="{{ contact.url }}" target="_blank" class="text-indigo-600 hover:text-indigo-400 transition-colors">
+                          <i class="fab fa-{{ contact.socialtype }} fa-sm mr-1"></i>
+                          {{ contact.socialtype }}
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 md:mt-0">
+            <button [routerLink]="['/profile-seeker', user.userName._id]" target="_blank" class="bg-indigo-600 text-white font-medium px-4 py-2 rounded-lg flex items-center gap-1 hover:bg-indigo-500 transition-colors">
+              View Profile
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </button>
+           
+          </div>
+        
+      </div>
+    </div>
+    <div *ngIf="!pvcListUsers || pvcListUsers.length === 0">
+      <p class="text-center text-gray-500">No users in the PVC list.</p>
+    </div>
+  </div>
+  

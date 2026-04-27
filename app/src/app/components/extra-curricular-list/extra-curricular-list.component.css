@@ -1,0 +1,124 @@
+.card {
+    /* border: 1px solid #0e0e0e;
+    border-radius: 10px; */
+    /* box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); */
+    background-color: #fcfcfc;
+    color: #333;
+    /* height: min-content; */
+  }
+  
+  .card-header {
+    background-color: #edf0f3;
+    color: rgb(12, 12, 12);
+    /* border-top-left-radius: 10px;
+    border-top-right-radius: 10px; */
+    /* padding: 15px; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .card-header h3 {
+    margin: 0;
+  }
+  
+  .card-header button {
+    background-color: transparent;
+    border: none;
+    color: rgb(12, 12, 12);
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .card-header button:hover {
+    transform: scale(1.1);
+  }
+  
+  .list-group-item {
+    border: none;
+    /* border-radius: 5px; */
+    background-color: #ffffff;
+    padding: 15px;
+    margin-bottom: 10px;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+    transition: box-shadow 0.2s ease;
+  }
+  
+  .list-group-item:hover {
+    /* box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); */
+  }
+  
+  .btn-outline-primary {
+    border: 2px solid #101010;
+    color: #1c1d1d;
+    background-color: transparent;
+    border-radius: 25px;
+    padding: 8px 16px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-weight: bold;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border-radius: 25px;
+    padding: 8px 16px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-weight: bold;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #555e66;
+  }
+  
+  .btn-outline-danger {
+    border: 2px solid #dc3545;
+    color: #dc3545;
+    background-color: transparent;
+    border-radius: 25px;
+    padding: 8px 16px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-weight: bold;
+  }
+  
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .col-form-label {
+    font-weight: bold;
+  }
+  
+  .form-control {
+    border: 2px solid #747474;
+    border-radius: 5px;
+    padding: 10px;
+    transition: border-color 0.2s ease;
+  }
+  
+  .form-control:focus {
+    border-color: #cee0f2;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
+  /* Content Alignment */
+  .card-header {
+    align-items: center;
+  }
+  
+  ul.list-group {
+    margin: 0;
+    padding: 0;
+  }
+  

@@ -1,0 +1,69 @@
+<div class="w-full space-y-4">
+  <!-- Progress Bar -->
+  <div class="relative">
+    <div class="h-2 bg-slate-200 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 ease-out rounded-full"
+        [style.width.%]="progressPercentage"
+      ></div>
+    </div>
+  </div>
+
+  <!-- Steps -->
+  <div class="flex items-center justify-between">
+    <div
+      *ngFor="let step of [].constructor(totalSteps); let i = index"
+      class="flex flex-col items-center flex-1"
+    >
+      <!-- Step Circle -->
+      <div
+        class="relative flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 transition-all duration-300 mb-2"
+        [ngClass]="{
+          'bg-primary border-primary text-white': getStepStatus(i + 1) === 'completed' || getStepStatus(i + 1) === 'current',
+          'bg-white border-slate-300 text-slate-400': getStepStatus(i + 1) === 'upcoming'
+        }"
+      >
+        <!-- Checkmark for completed -->
+        <svg
+          *ngIf="getStepStatus(i + 1) === 'completed'"
+          class="w-6 h-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+        </svg>
+        <!-- Step number for current/upcoming -->
+        <span
+          *ngIf="getStepStatus(i + 1) !== 'completed'"
+          class="text-sm sm:text-base font-semibold"
+        >
+          {{ i + 1 }}
+        </span>
+      </div>
+
+      <!-- Step Label -->
+      <span
+        *ngIf="steps[i]"
+        class="text-xs sm:text-sm font-medium text-center max-w-[80px] sm:max-w-none"
+        [ngClass]="{
+          'text-primary': getStepStatus(i + 1) === 'current',
+          'text-slate-600': getStepStatus(i + 1) === 'completed',
+          'text-slate-400': getStepStatus(i + 1) === 'upcoming'
+        }"
+      >
+        {{ steps[i] }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Progress Text -->
+  <div class="text-center">
+    <p class="text-sm text-slate-600">
+      Step <span class="font-semibold text-primary">{{ currentStep }}</span> of
+      <span class="font-semibold">{{ totalSteps }}</span>
+      <span class="text-slate-500"> ({{ Math.round(progressPercentage) }}% complete)</span>
+    </p>
+  </div>
+</div>
+

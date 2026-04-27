@@ -1,0 +1,357 @@
+<!-- Projects Section -->
+<div class="project-container">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-6">
+    <div>
+     
+      <p class="text-sm text-text-secondary mt-1">
+        {{ projects.length }} project{{ projects.length !== 1 ? 's' : '' }} added
+      </p>
+    </div>
+    <button
+      *ngIf="!addMode && !editMode"
+      (click)="add()"
+      class="px-4 py-2 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+      [attr.aria-label]="'Add project'"
+    >
+      <i class="fas fa-plus" aria-hidden="true"></i>
+      <span class="hidden sm:inline">Add Project</span>
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading && projects.length === 0" class="text-center py-12">
+    <div class="inline-block w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+    <p class="text-text-secondary mt-4">Loading projects...</p>
+  </div>
+
+  <!-- Add/Edit Form -->
+  <div *ngIf="addMode || editMode" class="bg-gradient-to-br from-primary/5 to-transparent rounded-2xl p-6 border-2 border-primary/20 mb-6 animate-slide-up">
+    <div class="flex items-center justify-between mb-6">
+      <h4 class="text-lg font-bold text-text-primary flex items-center gap-2">
+        <i class="fas fa-{{ editMode ? 'edit' : 'plus-circle' }} text-primary" aria-hidden="true"></i>
+        {{ editMode ? 'Edit' : 'Add New' }} Project
+      </h4>
+      <button
+        (click)="editMode ? cancelEdit() : cancelAdd()"
+        class="text-text-secondary hover:text-text-primary transition-colors"
+        [attr.aria-label]="'Cancel'"
+      >
+        <i class="fas fa-times text-xl" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <form [formGroup]="projectForm" (ngSubmit)="editMode ? update() : create()" class="space-y-4">
+      <!-- Project Name -->
+      <div>
+        <label for="projectName" class="block text-sm font-semibold text-text-primary mb-2">
+          Project Name <span class="text-error">*</span>
+        </label>
+        <input
+          id="projectName"
+          type="text"
+          formControlName="projectName"
+          placeholder="e.g., E-Commerce Platform"
+          class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          [ngClass]="projectForm.get('projectName')?.invalid && projectForm.get('projectName')?.touched ? 'border-error' : 'border-gray-300'"
+        />
+        <p *ngIf="projectForm.get('projectName')?.invalid && projectForm.get('projectName')?.touched" 
+           class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          {{ getErrorMessage('projectName') }}
+        </p>
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label for="description" class="block text-sm font-semibold text-text-primary mb-2">
+          Description <span class="text-error">*</span>
+        </label>
+        <quill-editor
+          id="description"
+          formControlName="description"
+          [modules]="editorConfig"
+          placeholder="Describe your project, its goals, challenges, and outcomes..."
+          class="bg-white rounded-xl border-2 transition-all focus-within:ring-2 focus-within:ring-primary focus-within:border-primary"
+          [ngClass]="projectForm.get('description')?.invalid && projectForm.get('description')?.touched ? 'border-error' : 'border-gray-300'"
+        ></quill-editor>
+        <p *ngIf="projectForm.get('description')?.invalid && projectForm.get('description')?.touched" 
+           class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          {{ getErrorMessage('description') }}
+        </p>
+      </div>
+
+      <!-- Associated With -->
+      <div>
+        <label for="associatedWith" class="block text-sm font-semibold text-text-primary mb-2">
+          Associated With <span class="text-error">*</span>
+        </label>
+        <input
+          id="associatedWith"
+          type="text"
+          formControlName="associatedWith"
+          placeholder="e.g., Company Name or Personal Project"
+          class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          [ngClass]="projectForm.get('associatedWith')?.invalid && projectForm.get('associatedWith')?.touched ? 'border-error' : 'border-gray-300'"
+        />
+        <p *ngIf="projectForm.get('associatedWith')?.invalid && projectForm.get('associatedWith')?.touched" 
+           class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          {{ getErrorMessage('associatedWith') }}
+        </p>
+      </div>
+
+      <!-- Skills Used -->
+      <div>
+        <label for="skillsUsed" class="block text-sm font-semibold text-text-primary mb-2">
+          Skills Used <span class="text-error">*</span>
+        </label>
+        <input
+          id="skillsUsed"
+          type="text"
+          formControlName="skillsUsed"
+          placeholder="e.g., React, Node.js, MongoDB, AWS"
+          class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          [ngClass]="projectForm.get('skillsUsed')?.invalid && projectForm.get('skillsUsed')?.touched ? 'border-error' : 'border-gray-300'"
+        />
+        <p class="text-text-secondary text-xs mt-1">Enter skills separated by commas</p>
+        <p *ngIf="projectForm.get('skillsUsed')?.invalid && projectForm.get('skillsUsed')?.touched" 
+           class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          {{ getErrorMessage('skillsUsed') }}
+        </p>
+      </div>
+
+      <!-- Collaborators -->
+      <div>
+        <label for="collaborators" class="block text-sm font-semibold text-text-primary mb-2">
+          Collaborators <span class="text-error">*</span>
+        </label>
+        <input
+          id="collaborators"
+          type="text"
+          formControlName="collaborators"
+          placeholder="e.g., John Doe, Jane Smith, Solo Project"
+          class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          [ngClass]="projectForm.get('collaborators')?.invalid && projectForm.get('collaborators')?.touched ? 'border-error' : 'border-gray-300'"
+        />
+        <p class="text-text-secondary text-xs mt-1">Enter collaborator names separated by commas</p>
+        <p *ngIf="projectForm.get('collaborators')?.invalid && projectForm.get('collaborators')?.touched" 
+           class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          {{ getErrorMessage('collaborators') }}
+        </p>
+      </div>
+
+      <!-- Project URL -->
+      <div>
+        <label for="url" class="block text-sm font-semibold text-text-primary mb-2">
+          Project URL (Optional)
+        </label>
+        <input
+          id="url"
+          type="url"
+          formControlName="url"
+          placeholder="https://..."
+          class="w-full px-4 py-3 border-2 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+          [ngClass]="projectForm.get('url')?.invalid && projectForm.get('url')?.touched ? 'border-error' : 'border-gray-300'"
+        />
+        <p *ngIf="projectForm.get('url')?.invalid && projectForm.get('url')?.touched" 
+           class="text-error text-xs mt-1 flex items-center gap-1">
+          <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+          {{ getErrorMessage('url') }}
+        </p>
+      </div>
+
+      <!-- Project Status -->
+      <div>
+        <label for="ongoingStatus" class="block text-sm font-semibold text-text-primary mb-2">
+          Project Status <span class="text-error">*</span>
+        </label>
+        <select
+          id="ongoingStatus"
+          formControlName="ongoingStatus"
+          class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none bg-white"
+        >
+          <option value="true">Ongoing / Active</option>
+          <option value="false">Completed</option>
+        </select>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="flex gap-3 pt-4">
+        <button
+          type="button"
+          (click)="editMode ? cancelEdit() : cancelAdd()"
+          class="flex-1 px-6 py-3 border-2 border-gray-300 text-text-primary rounded-xl font-semibold hover:bg-gray-50 transition-all focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          [disabled]="projectForm.invalid || isLoading"
+          class="flex-1 px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        >
+          <i class="fas fa-{{ editMode ? 'save' : 'plus' }} mr-2" aria-hidden="true"></i>
+          {{ editMode ? 'Update' : 'Add' }} Project
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && projects.length === 0 && !addMode && !editMode" class="text-center py-12">
+    <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+      <i class="fas fa-project-diagram text-primary text-4xl" aria-hidden="true"></i>
+    </div>
+    <h4 class="text-lg font-semibold text-text-primary mb-2">No projects added yet</h4>
+    <p class="text-text-secondary mb-6">Showcase your work by adding projects to your portfolio</p>
+    <button
+      (click)="add()"
+      class="px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300 inline-flex items-center gap-2"
+    >
+      <i class="fas fa-plus" aria-hidden="true"></i>
+      Add Your First Project
+    </button>
+  </div>
+
+  <!-- Projects Grid -->
+  <div *ngIf="projects.length > 0 && !addMode && !editMode" class="space-y-4">
+    <div
+      *ngFor="let project of projects"
+      class="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-all duration-300 group relative overflow-hidden"
+    >
+      <!-- Project Header -->
+      <div class="flex items-start justify-between mb-4">
+        <div class="flex items-start gap-4 flex-1">
+          <!-- Project Initial Icon -->
+          <div class="w-14 h-14 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center flex-shrink-0 shadow-md">
+            <span class="text-white text-2xl font-bold">{{ project.projectName.charAt(0) }}</span>
+          </div>
+          
+          <!-- Content -->
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xl font-bold text-text-primary mb-1">{{ project.projectName }}</h4>
+            <p class="text-base font-semibold text-primary mb-1">{{ project.associatedWith }}</p>
+            <div class="flex items-center gap-2 mt-2">
+              <span 
+                *ngIf="project.ongoingStatus === 'true'"
+                class="px-3 py-1 bg-success text-white text-xs font-bold rounded-full shadow-md flex items-center gap-1"
+              >
+                <i class="fas fa-circle-notch fa-spin" aria-hidden="true"></i>
+                Active
+              </span>
+              <span 
+                *ngIf="project.ongoingStatus === 'false'"
+                class="px-3 py-1 bg-blue-500 text-white text-xs font-bold rounded-full shadow-md flex items-center gap-1"
+              >
+                <i class="fas fa-check-circle" aria-hidden="true"></i>
+                Completed
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-2">
+          <button
+            (click)="edit(project)"
+            class="w-9 h-9 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            [attr.aria-label]="'Edit project'"
+            title="Edit project"
+          >
+            <i class="fas fa-edit" aria-hidden="true"></i>
+          </button>
+          <button
+            (click)="delete(project._id)"
+            [disabled]="isLoading"
+            class="w-9 h-9 bg-error/10 text-error rounded-lg hover:bg-error hover:text-white transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2 disabled:opacity-50"
+            [attr.aria-label]="'Delete project'"
+            title="Delete project"
+          >
+            <i class="fas fa-trash" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Project Details -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+        <!-- Collaborators -->
+        <div class="flex items-center gap-3 p-3 bg-purple-50 rounded-xl">
+          <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-users text-purple-600" aria-hidden="true"></i>
+          </div>
+          <div class="min-w-0">
+            <p class="text-xs font-medium text-purple-600 uppercase">Team</p>
+            <p class="text-sm font-semibold text-text-primary truncate">
+              {{ project.collaborators.length }} Collaborator{{ project.collaborators.length !== 1 ? 's' : '' }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Skills Count -->
+        <div class="flex items-center gap-3 p-3 bg-blue-50 rounded-xl">
+          <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-code text-blue-600" aria-hidden="true"></i>
+          </div>
+          <div class="min-w-0">
+            <p class="text-xs font-medium text-blue-600 uppercase">Technologies</p>
+            <p class="text-sm font-semibold text-text-primary truncate">
+              {{ project.skillsUsed.length }} Skill{{ project.skillsUsed.length !== 1 ? 's' : '' }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills Used -->
+      <div *ngIf="project.skillsUsed && project.skillsUsed.length > 0" class="mb-4">
+        <p class="text-xs font-medium text-text-secondary uppercase mb-2">Technologies Used</p>
+        <div class="flex flex-wrap gap-2">
+          <span
+            *ngFor="let skill of project.skillsUsed"
+            class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
+          >
+            {{ skill }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-4">
+        <p class="text-xs font-medium text-text-secondary uppercase mb-2">Description</p>
+        <div class="prose max-w-none text-sm text-text-secondary" [innerHTML]="project.description"></div>
+      </div>
+
+      <!-- Collaborators List -->
+      <div *ngIf="project.collaborators && project.collaborators.length > 0" class="mb-4">
+        <p class="text-xs font-medium text-text-secondary uppercase mb-2">Collaborators</p>
+        <div class="flex flex-wrap gap-2">
+          <span
+            *ngFor="let collab of project.collaborators"
+            class="inline-flex items-center gap-2 px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm font-medium"
+          >
+            <i class="fas fa-user-circle" aria-hidden="true"></i>
+            {{ collab }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Project URL -->
+      <div *ngIf="project.url" class="mb-4">
+        <a
+          [href]="project.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 text-sm text-primary hover:text-primary-hover font-semibold transition-colors"
+        >
+          <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+          View Live Project
+        </a>
+      </div>
+
+      <!-- Decorative Element -->
+      <div class="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-primary/5 to-transparent rounded-tl-full"></div>
+    </div>
+  </div>
+</div>

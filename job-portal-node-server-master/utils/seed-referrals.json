@@ -1,0 +1,126 @@
+[
+  {
+    "code": "PARTNER2024",
+    "partnerName": "TechCorp Solutions",
+    "email": "partnerships@techcorp.com",
+    "offerType": "freePlan",
+    "offerDetails": {
+      "freePlan": "growth",
+      "durationDays": 30,
+      "discountPercent": 0,
+      "customFeatures": {}
+    },
+    "usageCount": 0,
+    "maxUses": 50,
+    "isActive": true
+  },
+  {
+    "code": "STARTUP50",
+    "partnerName": "StartupHub India",
+    "email": "referrals@startuphub.in",
+    "offerType": "freePlan",
+    "offerDetails": {
+      "freePlan": "elite",
+      "durationDays": 15,
+      "discountPercent": 0,
+      "customFeatures": {}
+    },
+    "usageCount": 0,
+    "maxUses": 25,
+    "isActive": true
+  },
+  {
+    "code": "GROWTH30",
+    "partnerName": "Growth Partners",
+    "email": "team@growthpartners.com",
+    "offerType": "freePlan",
+    "offerDetails": {
+      "freePlan": "growth",
+      "durationDays": 30,
+      "discountPercent": 0,
+      "customFeatures": {}
+    },
+    "usageCount": 0,
+    "maxUses": 100,
+    "isActive": true
+  },
+  {
+    "code": "ELITE15",
+    "partnerName": "Elite Recruiters",
+    "email": "admin@eliterecruiters.com",
+    "offerType": "freePlan",
+    "offerDetails": {
+      "freePlan": "elite",
+      "durationDays": 15,
+      "discountPercent": 0,
+      "customFeatures": {}
+    },
+    "usageCount": 0,
+    "maxUses": 20,
+    "isActive": true
+  },
+  {
+    "code": "STARTER60",
+    "partnerName": "HR Solutions Pro",
+    "email": "partnerships@hrsolutionspro.com",
+    "offerType": "freePlan",
+    "offerDetails": {
+      "freePlan": "starter",
+      "durationDays": 60,
+      "discountPercent": 0,
+      "customFeatures": {}
+    },
+    "usageCount": 0,
+    "maxUses": 200,
+    "isActive": true
+  },
+  {
+    "code": "DISCOUNT20",
+    "partnerName": "Recruitment Plus",
+    "email": "referrals@recruitmentplus.com",
+    "offerType": "discount",
+    "offerDetails": {
+      "freePlan": "growth",
+      "durationDays": 0,
+      "discountPercent": 20,
+      "customFeatures": {}
+    },
+    "usageCount": 0,
+    "maxUses": 75,
+    "isActive": true
+  },
+  {
+    "code": "CUSTOMFEAT",
+    "partnerName": "Custom Solutions Inc",
+    "email": "admin@customsolutions.com",
+    "offerType": "customFeatures",
+    "offerDetails": {
+      "freePlan": "growth",
+      "durationDays": 30,
+      "discountPercent": 0,
+      "customFeatures": {
+        "extraJobBoosts": 10,
+        "prioritySupport": true,
+        "advancedAnalytics": true
+      }
+    },
+    "usageCount": 0,
+    "maxUses": 15,
+    "isActive": true
+  },
+  {
+    "code": "TESTCODE",
+    "partnerName": "Test Partner",
+    "email": "test@test.com",
+    "offerType": "freePlan",
+    "offerDetails": {
+      "freePlan": "growth",
+      "durationDays": 7,
+      "discountPercent": 0,
+      "customFeatures": {}
+    },
+    "usageCount": 0,
+    "maxUses": 5,
+    "isActive": true
+  }
+]

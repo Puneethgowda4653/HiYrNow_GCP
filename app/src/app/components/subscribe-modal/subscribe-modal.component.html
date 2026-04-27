@@ -1,0 +1,49 @@
+<app-ui-modal [title]="'Subscribe to ' + data.plan.name" subtitle="Choose billing cycle and payment method" (close)="close()">
+  <div>
+
+  <div class="space-y-2 mb-4 text-sm text-gray-600">
+    <div class="flex justify-between">
+      <span>Monthly</span>
+      <span class="font-medium">₹{{ data.plan.monthlyPrice | number }}</span>
+    </div>
+    <div class="flex justify-between">
+      <span>Yearly</span>
+      <span class="font-medium">₹{{ data.plan.yearlyPrice | number }}</span>
+    </div>
+  </div>
+
+  <div class="flex gap-3 mb-6">
+    <button class="px-4 py-2 rounded-2xl border border-gray-200 hover:border-primary hover:bg-primary/5 transition" [class.bg-primary]="billingCycle==='monthly'" [class.text-white]="billingCycle==='monthly'" (click)="billingCycle='monthly'">Monthly</button>
+    <button class="px-4 py-2 rounded-2xl border border-gray-200 hover:border-primary hover:bg-primary/5 transition" [class.bg-primary]="billingCycle==='yearly'" [class.text-white]="billingCycle==='yearly'" (click)="billingCycle='yearly'">Yearly</button>
+  </div>
+
+  <div class="mb-4">
+    <label class="block text-sm font-medium mb-2">Payment method</label>
+    <div class="flex items-center gap-4">
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input type="radio" name="method" value="upi" [(ngModel)]="paymentMethod" />
+        <span>UPI</span>
+      </label>
+      <label class="flex items-center gap-2 cursor-pointer">
+        <input type="radio" name="method" value="dummy" [(ngModel)]="paymentMethod" />
+        <span> Card Payment</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="mb-6" *ngIf="paymentMethod==='upi'">
+    <label class="block text-sm font-medium mb-2">UPI ID</label>
+    <input class="w-full border rounded px-3 py-2" placeholder="name@upi" [(ngModel)]="upiId" />
+  </div>
+
+    <div modal-actions>
+      <app-ui-button variant="ghost" (click)="close()">Cancel</app-ui-button>
+      <app-ui-button variant="primary" [disabled]="isPaying" (click)="pay()">
+        <span *ngIf="!isPaying">Pay Now</span>
+        <span *ngIf="isPaying">Processing...</span>
+      </app-ui-button>
+    </div>
+  </div>
+</app-ui-modal>
+
+

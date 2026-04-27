@@ -1,0 +1,128 @@
+# ============================================
+# Google Cloud Build - Full Stack Deployment
+# ============================================
+# Deploys both backend (Cloud Run) and frontend (Cloud Run)
+#
+# Required substitution variables (set in Cloud Build trigger):
+#   _AR_HOSTNAME       - Artifact Registry hostname (e.g., europe-west1-docker.pkg.dev)
+#   _AR_PROJECT_ID     - GCP project ID
+#   _AR_REPOSITORY     - Artifact Registry repository name
+#   _DEPLOY_REGION     - Cloud Run deployment region (e.g., europe-west1)
+#   _BACKEND_SERVICE   - Backend Cloud Run service name (e.g., hiyrnow-v1)
+#   _FRONTEND_SERVICE  - Frontend Cloud Run service name (e.g., hiyrnow-frontend)
+
+steps:
+  # ---- Step 1: Build Backend Docker Image ----
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-backend'
+    args:
+      - 'build'
+      - '-t'
+      - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_BACKEND_SERVICE:$COMMIT_SHA'
+      - '-t'
+      - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_BACKEND_SERVICE:latest'
+      - '-f'
+      - 'job-portal-node-server-master/Dockerfile'
+      - 'job-portal-node-server-master'
+
+  # ---- Step 2: Build Frontend Docker Image ----
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'build-frontend'
+    args:
+      - 'build'
+      - '-t'
+      - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_FRONTEND_SERVICE:$COMMIT_SHA'
+      - '-t'
+      - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_FRONTEND_SERVICE:latest'
+      - '-f'
+      - 'app/Dockerfile'
+      - 'app'
+
+  # ---- Step 3: Push Backend Image ----
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-backend'
+    waitFor: ['build-backend']
+    args:
+      - 'push'
+      - '--all-tags'
+      - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_BACKEND_SERVICE'
+
+  # ---- Step 4: Push Frontend Image ----
+  - name: 'gcr.io/cloud-builders/docker'
+    id: 'push-frontend'
+    waitFor: ['build-frontend']
+    args:
+      - 'push'
+      - '--all-tags'
+      - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_FRONTEND_SERVICE'
+
+  # ---- Step 5: Deploy Backend to Cloud Run ----
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'deploy-backend'
+    waitFor: ['push-backend']
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - '$_BACKEND_SERVICE'
+      - '--platform'
+      - 'managed'
+      - '--image'
+      - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_BACKEND_SERVICE:$COMMIT_SHA'
+      - '--region'
+      - '$_DEPLOY_REGION'
+      - '--allow-unauthenticated'
+      - '--port'
+      - '8080'
+      - '--memory'
+      - '512Mi'
+      - '--cpu'
+      - '1'
+      - '--min-instances'
+      - '0'
+      - '--max-instances'
+      - '10'
+      - '--set-env-vars'
+      - 'NODE_ENV=production'
+      - '--quiet'
+
+  # ---- Step 6: Deploy Frontend to Cloud Run ----
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    id: 'deploy-frontend'
+    waitFor: ['push-frontend']
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - '$_FRONTEND_SERVICE'
+      - '--platform'
+      - 'managed'
+      - '--image'
+      - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_FRONTEND_SERVICE:$COMMIT_SHA'
+      - '--region'
+      - '$_DEPLOY_REGION'
+      - '--allow-unauthenticated'
+      - '--port'
+      - '8080'
+      - '--memory'
+      - '256Mi'
+      - '--cpu'
+      - '1'
+      - '--min-instances'
+      - '0'
+      - '--max-instances'
+      - '5'
+      - '--quiet'
+
+images:
+  - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_BACKEND_SERVICE:$COMMIT_SHA'
+  - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_BACKEND_SERVICE:latest'
+  - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_FRONTEND_SERVICE:$COMMIT_SHA'
+  - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_FRONTEND_SERVICE:latest'
+
+options:
+  substitutionOption: ALLOW_LOOSE
+  logging: CLOUD_LOGGING_ONLY
+  machineType: 'E2_HIGHCPU_8'
+
+timeout: '1200s'
