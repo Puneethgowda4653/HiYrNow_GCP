@@ -9,7 +9,7 @@ export class AdminService {
   constructor(private http: HttpClient) {
     let baseurl;
     if (!location.toString().includes('localhost')) {
-      baseurl = 'https://hiyrnow-v1-721026586154.europe-west1.run.app';
+      baseurl = 'https://hiyrnow-backend-786443796056.europe-west1.run.app';
     } else {
       baseurl = environment.apiUrl;
     }
@@ -18,7 +18,7 @@ export class AdminService {
 
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.base}/login`, { email, password }, { withCredentials: true });
-    }
+  }
 
   logout(): Observable<any> { return this.http.post(`${this.base}/logout`, {}, { withCredentials: true }); }
 

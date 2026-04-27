@@ -6,25 +6,25 @@ import { Component, Input, OnInit } from '@angular/core';
   templateUrl: './pvc-list.component.html',
   styleUrls: ['./pvc-list.component.css']
 })
-export class PVCListComponent  {
- 
+export class PVCListComponent {
+
   pvcListUsers: any;
   url: string;
 
 
-  constructor( private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     let base;
     if (!location.toString().includes('localhost')) {
-      base = 'https://hiyrnow-v1-721026586154.europe-west1.run.app';
+      base = 'https://hiyrnow-backend-786443796056.europe-west1.run.app';
     } else {
       base = environment.apiUrl;
     }
     this.url = base;
   }
-  
+
   ngOnInit() {
- 
-  this.getPVCListUsers()
+
+    this.getPVCListUsers()
   }
   getPVCListUsers() {
     this.http.get(`${this.url}/api/pvcList`).subscribe((users: any) => {
@@ -34,5 +34,5 @@ export class PVCListComponent  {
       console.error('Error fetching PVC list users', error);
     });
   }
-  
+
 }

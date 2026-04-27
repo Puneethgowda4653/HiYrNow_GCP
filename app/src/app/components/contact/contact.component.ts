@@ -13,13 +13,13 @@ export class ContactComponent {
   submitted = false;
   serverError: string | null = null;
   successMessage: string | null = null;
-  baseUrl: string='';
+  baseUrl: string = '';
 
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     // Determine base URL based on environment
     if (!location.toString().includes('localhost')) {
-      this.baseUrl = 'https://hiyrnow-v1-721026586154.europe-west1.run.app';
+      this.baseUrl = 'https://hiyrnow-backend-786443796056.europe-west1.run.app';
     } else {
       this.baseUrl = environment.apiUrl;
     }

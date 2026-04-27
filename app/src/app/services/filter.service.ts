@@ -11,25 +11,25 @@ export class FilterService {
   url: string;
   constructor(private http: HttpClient) {
 
-  let base;
-  if (!location.toString().includes('localhost')) {
-    base = 'https://hiyrnow-v1-721026586154.europe-west1.run.app';
-  } else {
-    base = environment.apiUrl;
+    let base;
+    if (!location.toString().includes('localhost')) {
+      base = 'https://hiyrnow-backend-786443796056.europe-west1.run.app';
+    } else {
+      base = environment.apiUrl;
+    }
+    this.url = base + '/api/filter';
   }
-  this.url = base + '/api/filter';
-}
 
 
   createFilter(filter: any): Observable<any> {
-    return this.http.post(`${this.url}`, filter,{ withCredentials: true});
+    return this.http.post(`${this.url}`, filter, { withCredentials: true });
   }
 
   getFilters(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.url}`,{ withCredentials: true});
+    return this.http.get<any[]>(`${this.url}`, { withCredentials: true });
   }
 
   deleteFilter(filterId: string): Observable<void> {
-    return this.http.delete<void>(`${this.url}/${filterId}`,{ withCredentials: true});
+    return this.http.delete<void>(`${this.url}/${filterId}`, { withCredentials: true });
   }
 }

@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class JobListingService {
 
-  private jobPortalBaseUrl = 'https://hiyrnow-v1-721026586154.europe-west1.run.app';
+  private jobPortalBaseUrl = 'https://hiyrnow-backend-786443796056.europe-west1.run.app';
 
   constructor(private http: HttpClient) { }
 

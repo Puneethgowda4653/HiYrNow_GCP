@@ -309,7 +309,7 @@ export class ProfileRecruiterComponent implements OnInit, OnDestroy {
             this.loadProfilePic(user._id);
             this.loadSpecificCompanyData(userId);
             if (user.coverPhotoUrl) {
-              const base = location.hostname === 'localhost' ? 'https://hiyrnow-v1-721026586154.europe-west1.run.app' : '';
+              const base = location.hostname === 'localhost' ? 'https://hiyrnow-backend-786443796056.europe-west1.run.app' : '';
               this.coverPhotoUrl = user.coverPhotoUrl.startsWith('http') ? user.coverPhotoUrl : base + user.coverPhotoUrl;
             }
           }
@@ -338,7 +338,7 @@ export class ProfileRecruiterComponent implements OnInit, OnDestroy {
           this.loadCompanyData();
           // ✅ ADD THESE 4 LINES
           if (user.coverPhotoUrl) {
-            const base = location.hostname === 'localhost' ? 'https://hiyrnow-v1-721026586154.europe-west1.run.app' : '';
+            const base = location.hostname === 'localhost' ? 'https://hiyrnow-backend-786443796056.europe-west1.run.app' : '';
             this.coverPhotoUrl = user.coverPhotoUrl.startsWith('http') ? user.coverPhotoUrl : base + user.coverPhotoUrl;
           }
         }
@@ -1121,7 +1121,7 @@ export class ProfileRecruiterComponent implements OnInit, OnDestroy {
     this.userService.uploadCoverPhoto(formData).subscribe({
       next: (response: any) => {
         if (response.file_uploaded || response.success) {
-          const base = location.hostname === 'localhost' ? 'https://hiyrnow-v1-721026586154.europe-west1.run.app' : '';
+          const base = location.hostname === 'localhost' ? 'https://hiyrnow-backend-786443796056.europe-west1.run.app' : '';
           const rawUrl = response.coverPhotoUrl || response.url || '';
           this.coverPhotoUrl = rawUrl.startsWith('http') ? rawUrl : base + rawUrl;
           this.toastr.success('Cover photo updated successfully');

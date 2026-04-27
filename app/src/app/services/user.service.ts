@@ -73,8 +73,8 @@ export class UserService {
     // Determine base URL based on platform and environment
     // if (isPlatformBrowser(this.platformId)) {
     //   this.base = !location.toString().includes('localhost')
-    //   ? 'https://hiyrnow-v1-721026586154.europe-west1.run.app'
-    //   : 'https://hiyrnow-v1-721026586154.europe-west1.run.app';
+    //   ? 'https://hiyrnow-backend-786443796056.europe-west1.run.app'
+    //   : 'https://hiyrnow-backend-786443796056.europe-west1.run.app';
     // } else {
     //   // Server-side default URL
     //   this.base = environment.apiUrl;
@@ -82,10 +82,10 @@ export class UserService {
 
     if (isPlatformBrowser(this.platformId)) {
       this.base = !location.toString().includes('localhost')
-        ? 'https://hiyrnow-v1-721026586154.europe-west1.run.app'
+        ? environment.apiUrl
         : '';
     } else {
-      this.base = '';
+      this.base = environment.apiUrl;
     }
 
     // Initialize all URLs using the base

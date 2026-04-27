@@ -14,7 +14,7 @@ export class JobPostingService {
   constructor(private http: HttpClient) {
     let base;
     if (!location.toString().includes('localhost')) {
-      base = 'https://hiyrnow-v1-721026586154.europe-west1.run.app';
+      base = 'https://hiyrnow-backend-786443796056.europe-west1.run.app';
     } else {
       base = environment.apiUrl;
     }
@@ -63,7 +63,7 @@ export class JobPostingService {
     return this.http.put(
       `${this.appliedjobsurl}/api/job-applications/${applicationId}/status`,
       { status },
-       { withCredentials: true } 
+      { withCredentials: true }
     );
   }
   getJobApplicationByJobIdAndUserId(

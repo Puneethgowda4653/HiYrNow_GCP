@@ -31,7 +31,7 @@ export class PaymentService {
   constructor(private http: HttpClient) {
     let base;
     if (!location.toString().includes('localhost')) {
-      base = 'https://hiyrnow-v1-721026586154.europe-west1.run.app';
+      base = 'https://hiyrnow-backend-786443796056.europe-west1.run.app';
     } else {
       base = environment.apiUrl;
     }

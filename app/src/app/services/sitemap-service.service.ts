@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class SitemapService {
-  private sitemapUrl = 'https://hiyrnow-v1-721026586154.europe-west1.run.app/sitemap.xml'; // Your sitemap endpoint
+  private sitemapUrl = 'https://hiyrnow-backend-786443796056.europe-west1.run.app/sitemap.xml'; // Your sitemap endpoint
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getSitemap(): Observable<string> {
     return this.http.get(this.sitemapUrl, { responseType: 'text' });

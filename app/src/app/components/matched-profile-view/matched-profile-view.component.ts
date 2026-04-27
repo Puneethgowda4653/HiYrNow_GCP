@@ -36,7 +36,7 @@ export class MatchedProfileViewComponent implements OnInit {
   ) {
     this.jobId = this.route.snapshot.paramMap.get('jobId');
     this.userId = this.route.snapshot.paramMap.get('userId') ?? '';
-    
+
     this.url = environment.apiUrl;
   }
 
@@ -118,7 +118,7 @@ export class MatchedProfileViewComponent implements OnInit {
     this.loading = true;
     let base;
     if (!location.toString().includes('localhost')) {
-      base = 'https://hiyrnow-v1-721026586154.europe-west1.run.app';
+      base = 'https://hiyrnow-backend-786443796056.europe-west1.run.app';
       // environment.apiUrl
     } else {
       base = environment.apiUrl;

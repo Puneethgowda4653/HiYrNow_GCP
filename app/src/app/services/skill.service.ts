@@ -11,7 +11,7 @@ export class SkillService {
   constructor() {
     let base;
     if (!location.toString().includes('localhost')) {
-      base = 'https://hiyrnow-v1-721026586154.europe-west1.run.app';
+      base = 'https://hiyrnow-backend-786443796056.europe-west1.run.app';
     } else {
       base = environment.apiUrl;
     }
@@ -42,7 +42,7 @@ export class SkillService {
     });
   }
 
-  createSkill(skill: {skillName:any; skillLevel:any;}) {
+  createSkill(skill: { skillName: any; skillLevel: any; }) {
     return fetch(this.url, {
       method: 'POST',
       body: JSON.stringify(skill),
@@ -55,7 +55,7 @@ export class SkillService {
     });
   }
 
-  updateSkill(skillId: string, skill: {skillName:any; skillLevel:any;}) {
+  updateSkill(skillId: string, skill: { skillName: any; skillLevel: any; }) {
     return fetch(this.url + '/' + skillId, {
       method: 'PUT',
       body: JSON.stringify(skill),

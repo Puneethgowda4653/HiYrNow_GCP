@@ -21,14 +21,14 @@ interface PricingRequest {
 export class PricingService {
   // private apiUrl = environment.apiUrl;
   url: string;
-  constructor(private http: HttpClient){
+  constructor(private http: HttpClient) {
     let base;
     if (!location.toString().includes('localhost')) {
-      base = 'https://hiyrnow-v1-721026586154.europe-west1.run.app';
+      base = 'https://hiyrnow-backend-786443796056.europe-west1.run.app';
     } else {
       base = environment.apiUrl;
     }
-    this.url = base ;
+    this.url = base;
   }
 
   submitRequest(requestData: PricingRequest): Observable<any> {

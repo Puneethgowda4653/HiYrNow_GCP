@@ -12,7 +12,7 @@ export class BlogService {
   constructor(private http: HttpClient) {
     let base;
     if (!location.toString().includes('localhost')) {
-      base = 'https://hiyrnow-v1-721026586154.europe-west1.run.app';
+      base = 'https://hiyrnow-backend-786443796056.europe-west1.run.app';
     } else {
       base = environment.apiUrl;
     }
@@ -26,7 +26,7 @@ export class BlogService {
   getBlogById(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`, { withCredentials: true });
   }
- 
+
 
   createBlog(blogData: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, blogData, { withCredentials: true });

@@ -42,11 +42,11 @@
     {
       "name": "api-auth",
       "urls": [
-        "https://hiyrnow-v1-721026586154.europe-west1.run.app/api/login",
-        "https://hiyrnow-v1-721026586154.europe-west1.run.app/api/logout",
-        "https://hiyrnow-v1-721026586154.europe-west1.run.app/api/register",
-        "https://hiyrnow-v1-721026586154.europe-west1.run.app/api/session",
-        "https://hiyrnow-v1-721026586154.europe-west1.run.app/api/auth/**",
+        "https://hiyrnow-backend-786443796056.europe-west1.run.app/api/login",
+        "https://hiyrnow-backend-786443796056.europe-west1.run.app/api/logout",
+        "https://hiyrnow-backend-786443796056.europe-west1.run.app/api/register",
+        "https://hiyrnow-backend-786443796056.europe-west1.run.app/api/session",
+        "https://hiyrnow-backend-786443796056.europe-west1.run.app/api/auth/**",
         "/api/login",
         "/api/logout",
         "/api/register",
@@ -63,7 +63,7 @@
     {
       "name": "api-dynamic",
       "urls": [
-        "https://hiyrnow-v1-721026586154.europe-west1.run.app/api/**",
+        "https://hiyrnow-backend-786443796056.europe-west1.run.app/api/**",
         "/api/**"
       ],
       "cacheConfig": {
@@ -76,7 +76,7 @@
     {
       "name": "api-jobs",
       "urls": [
-        "https://hiyrnow-v1-721026586154.europe-west1.run.app/api/jobs/**",
+        "https://hiyrnow-backend-786443796056.europe-west1.run.app/api/jobs/**",
         "/api/jobs/**"
       ],
       "cacheConfig": {
@@ -89,8 +89,8 @@
     {
       "name": "api-profile",
       "urls": [
-        "https://hiyrnow-v1-721026586154.europe-west1.run.app/api/users/**",
-        "https://hiyrnow-v1-721026586154.europe-west1.run.app/api/profile/**",
+        "https://hiyrnow-backend-786443796056.europe-west1.run.app/api/users/**",
+        "https://hiyrnow-backend-786443796056.europe-west1.run.app/api/profile/**",
         "/api/users/**",
         "/api/profile/**"
       ],
@@ -104,8 +104,8 @@
     {
       "name": "api-static",
       "urls": [
-        "https://hiyrnow-v1-721026586154.europe-west1.run.app/api/categories/**",
-        "https://hiyrnow-v1-721026586154.europe-west1.run.app/api/locations/**",
+        "https://hiyrnow-backend-786443796056.europe-west1.run.app/api/categories/**",
+        "https://hiyrnow-backend-786443796056.europe-west1.run.app/api/locations/**",
         "/api/categories/**",
         "/api/locations/**"
       ],

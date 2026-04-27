@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 export class PushNotificationService {
   private readonly FCM_ENABLED = environment.fcm?.enabled || false;
   private readonly VAPID_PUBLIC_KEY = environment.fcm?.vapidPublicKey || '';
-  private readonly API_URL = environment.apiUrl || 'https://hiyrnow-v1-721026586154.europe-west1.run.app/api';
+  private readonly API_URL = environment.apiUrl || 'https://hiyrnow-backend-786443796056.europe-west1.run.app/api';
 
   constructor(
     private swPush: SwPush,
@@ -74,10 +74,10 @@ export class PushNotificationService {
       });
 
       console.log('FCM: Push subscription successful', subscription);
-      
+
       // Send subscription to backend
       await this.sendSubscriptionToBackend(subscription);
-      
+
       this.toastr.success('Push notifications enabled!', 'Success');
       return true;
     } catch (error) {
@@ -97,18 +97,18 @@ export class PushNotificationService {
 
     try {
       const subscription = await this.swPush.subscription.toPromise();
-      
+
       if (subscription) {
         await this.swPush.unsubscribe();
-        
+
         // Notify backend about unsubscription
         await this.removeSubscriptionFromBackend(subscription);
-        
+
         console.log('FCM: Unsubscribed from push notifications');
         this.toastr.success('Push notifications disabled', 'Success');
         return true;
       }
-      
+
       return false;
     } catch (error) {
       console.error('FCM: Failed to unsubscribe from push notifications', error);
@@ -197,10 +197,10 @@ export class PushNotificationService {
   private handlePushMessage(message: any): void {
     // Custom handling for push messages
     console.log('FCM: Processing push message', message);
-    
+
     // You can add custom logic here based on message type
     const notification = message.notification || message.data;
-    
+
     if (notification) {
       this.toastr.info(
         notification.body || 'You have a new notification',
@@ -214,7 +214,7 @@ export class PushNotificationService {
    */
   private handleNotificationClick(event: any): void {
     console.log('FCM: Notification clicked', event);
-    
+
     // Handle navigation based on notification data
     if (event.notification?.data?.url) {
       window.open(event.notification.data.url, '_self');

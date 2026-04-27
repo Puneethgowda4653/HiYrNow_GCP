@@ -195,7 +195,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
             // Load cover photo if saved
             if (this.user.coverPhotoUrl) {
-              const base = location.hostname === 'localhost' ? 'https://hiyrnow-v1-721026586154.europe-west1.run.app' : '';
+              const base = location.hostname === 'localhost' ? 'https://hiyrnow-backend-786443796056.europe-west1.run.app' : '';
               this.coverPhotoUrl = this.user.coverPhotoUrl.startsWith('http')
                 ? this.user.coverPhotoUrl
                 : base + this.user.coverPhotoUrl;
@@ -467,7 +467,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     const uploadSub = this.userService.uploadCoverPhoto(formData).subscribe({
       next: (response: any) => {
         if (response.file_uploaded || response.success) {
-          const base = location.hostname === 'localhost' ? 'https://hiyrnow-v1-721026586154.europe-west1.run.app' : '';
+          const base = location.hostname === 'localhost' ? 'https://hiyrnow-backend-786443796056.europe-west1.run.app' : '';
           const rawUrl = response.coverPhotoUrl || response.url || '';
           this.coverPhotoUrl = rawUrl.startsWith('http') ? rawUrl : base + rawUrl;
           if (this.user) this.user.coverPhotoUrl = this.coverPhotoUrl; // persist in memory

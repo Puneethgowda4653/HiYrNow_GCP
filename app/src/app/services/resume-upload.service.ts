@@ -12,7 +12,7 @@ export class ResumeUploadService {
 
   constructor(private http: HttpClient) {
     if (!location.toString().includes('localhost')) {
-      this.url = 'https://hiyrnow-v1-721026586154.europe-west1.run.app/api';
+      this.url = 'https://hiyrnow-backend-786443796056.europe-west1.run.app/api';
     } else {
       this.url = '/api';  // proxy handles forwarding to localhost:5500
     }

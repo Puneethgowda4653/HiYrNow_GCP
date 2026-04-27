@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class ExperienceService {
   constructor() {
     let base;
     if (!location.toString().includes('localhost')) {
-      base = 'https://hiyrnow-v1-721026586154.europe-west1.run.app';
+      base = 'https://hiyrnow-backend-786443796056.europe-west1.run.app';
     } else {
       base = environment.apiUrl;
     }
@@ -30,7 +30,7 @@ export class ExperienceService {
     });
   }
 
-  updateExperience(experienceId: string, experience: { title: any; company: any; location: any; startDate: { month: string; year: string; }; endDate: { month: string; year: string; }; ongoingStatus: boolean; description: any; project: any,stacks: any}) {
+  updateExperience(experienceId: string, experience: { title: any; company: any; location: any; startDate: { month: string; year: string; }; endDate: { month: string; year: string; }; ongoingStatus: boolean; description: any; project: any, stacks: any }) {
     // console.log(JSON.stringify(user));
     return fetch(this.url + '/' + experienceId, {
       method: 'PUT',
@@ -44,7 +44,7 @@ export class ExperienceService {
     });
   }
 
-  createExperience(experience: { title: any; company: any; location: any; startDate: { month: string; year: string; }; endDate: { month: string; year: string; }; ongoingStatus: boolean; description: any;  project: any,stacks: any}) {
+  createExperience(experience: { title: any; company: any; location: any; startDate: { month: string; year: string; }; endDate: { month: string; year: string; }; ongoingStatus: boolean; description: any; project: any, stacks: any }) {
     // console.log(JSON.stringify(user));
     return fetch(this.url, {
       method: 'POST',
