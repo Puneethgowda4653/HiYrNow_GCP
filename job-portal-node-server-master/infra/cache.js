@@ -1,327 +1,244 @@
 /**
  * Redis Cache Module
  * Centralized caching layer for hot reads and sessions
+ * Gracefully degrades to no-ops when Redis is not configured
  */
 
-const IORedis = require('ioredis');
-const { createClient } = require('redis');
 const { getConfig } = require('../config');
-
 const config = getConfig();
 
-// Create IORedis client for BullMQ and general caching
-let redisErrorLogged = false;
-const ioRedisOptions = {
-  host: config.redisHost,
-  port: config.redisPort,
-  password: config.redisPassword,
-  lazyConnect: true,
-  retryStrategy: (times) => {
-    if (times > 5) {
-      console.warn('Redis: max retries reached, giving up.');
-      return null; // stop retrying
-    }
-    const delay = Math.min(times * 500, 3000);
-    return delay;
-  },
-  maxRetriesPerRequest: 3,
-  connectTimeout: 10000,
-};
+const REDIS_ENABLED = !!(config.redisHost && config.redisHost.trim());
 
-if (config.redisHost && config.redisHost.includes('upstash')) {
-  ioRedisOptions.tls = {};
-}
+let redis = null;
+let redisClient = null;
 
-const redis = new IORedis(ioRedisOptions);
+if (REDIS_ENABLED) {
+  console.log(`Redis enabled: connecting to ${config.redisHost}:${config.redisPort}`);
 
-redis.on('connect', () => {
-  console.log('Redis cache connected');
-  redisErrorLogged = false;
-});
+  const IORedis = require('ioredis');
+  const { createClient } = require('redis');
 
-redis.on('error', (err) => {
-  if (!redisErrorLogged) {
-    console.error('Redis cache error:', err.message || err);
-    redisErrorLogged = true;
-  }
-});
-
-// Create redis client for connect-redis (v9 requires redis package client)
-let sessionRedisErrorLogged = false;
-const redisClientOptions = {
-  socket: {
+  let redisErrorLogged = false;
+  const ioRedisOptions = {
     host: config.redisHost,
     port: config.redisPort,
-    connectTimeout: 10000,
-    reconnectStrategy: (retries) => {
-      if (retries > 5) {
-        console.warn('Redis session client: max retries reached, giving up.');
-        return false; // stop retrying
+    password: config.redisPassword,
+    lazyConnect: true,
+    retryStrategy: (times) => {
+      if (times > 3) {
+        console.warn('Redis IORedis: max retries reached, giving up.');
+        return null;
       }
-      return Math.min(retries * 500, 3000);
+      return Math.min(times * 1000, 3000);
     },
-  },
-  password: config.redisPassword,
-};
+    maxRetriesPerRequest: 3,
+    connectTimeout: 10000,
+  };
 
-if (config.redisHost && config.redisHost.includes('upstash')) {
-  redisClientOptions.socket.tls = true;
-}
-
-const redisClient = createClient(redisClientOptions);
-
-redisClient.on('error', (err) => {
-  if (!sessionRedisErrorLogged) {
-    console.error('Redis session client error:', err.message || err);
-    sessionRedisErrorLogged = true;
+  if (config.redisHost.includes('upstash')) {
+    ioRedisOptions.tls = {};
   }
-});
 
-redisClient.on('connect', () => {
-  console.log('Redis client for sessions connected');
-  sessionRedisErrorLogged = false;
-});
+  redis = new IORedis(ioRedisOptions);
 
-// Connect the redis client (non-blocking)
-redisClient.connect().catch((err) => {
-  console.warn('Redis session client initial connect failed:', err.message);
-});
+  redis.on('connect', () => {
+    console.log('Redis cache connected');
+    redisErrorLogged = false;
+  });
+
+  redis.on('error', (err) => {
+    if (!redisErrorLogged) {
+      console.error('Redis cache error:', err.message || err);
+      redisErrorLogged = true;
+    }
+  });
+
+  let sessionRedisErrorLogged = false;
+  const redisClientOptions = {
+    socket: {
+      host: config.redisHost,
+      port: config.redisPort,
+      connectTimeout: 10000,
+      reconnectStrategy: (retries) => {
+        if (retries > 3) {
+          console.warn('Redis session client: max retries reached, giving up.');
+          return false;
+        }
+        return Math.min(retries * 1000, 3000);
+      },
+    },
+    password: config.redisPassword,
+  };
+
+  if (config.redisHost.includes('upstash')) {
+    redisClientOptions.socket.tls = true;
+  }
+
+  redisClient = createClient(redisClientOptions);
+
+  redisClient.on('error', (err) => {
+    if (!sessionRedisErrorLogged) {
+      console.error('Redis session client error:', err.message || err);
+      sessionRedisErrorLogged = true;
+    }
+  });
+
+  redisClient.on('connect', () => {
+    console.log('Redis client for sessions connected');
+    sessionRedisErrorLogged = false;
+  });
+
+  redisClient.connect().catch((err) => {
+    console.warn('Redis session client initial connect failed:', err.message);
+  });
+} else {
+  console.log('Redis NOT configured — using in-memory fallback for sessions/cache');
+}
 
 // Default TTL values (in seconds)
 const TTL = {
-  SHORT: 60,           // 1 minute
-  MEDIUM: 300,         // 5 minutes
-  LONG: 1800,          // 30 minutes
-  HOUR: 3600,          // 1 hour
-  DAY: 86400,          // 24 hours
-  WEEK: 604800,        // 7 days
+  SHORT: 60,
+  MEDIUM: 300,
+  LONG: 1800,
+  HOUR: 3600,
+  DAY: 86400,
+  WEEK: 604800,
 };
 
-/**
- * Generate cache key
- * @param {string} prefix - Key prefix (e.g., 'user', 'job', 'filter')
- * @param {string|number} id - Entity ID
- * @param {string} suffix - Optional suffix
- * @returns {string}
- */
 function cacheKey(prefix, id, suffix = '') {
   return suffix ? `${prefix}:${id}:${suffix}` : `${prefix}:${id}`;
 }
 
-/**
- * Get value from cache
- * @param {string} key - Cache key
- * @returns {Promise<any|null>}
- */
 async function get(key) {
+  if (!redis) return null;
   try {
     const value = await redis.get(key);
     return value ? JSON.parse(value) : null;
   } catch (error) {
-    console.error(`Cache get error for key ${key}:`, error);
     return null;
   }
 }
 
-/**
- * Set value in cache
- * @param {string} key - Cache key
- * @param {any} value - Value to cache
- * @param {number} ttl - TTL in seconds (default: MEDIUM)
- * @returns {Promise<boolean>}
- */
 async function set(key, value, ttl = TTL.MEDIUM) {
+  if (!redis) return false;
   try {
     await redis.setex(key, ttl, JSON.stringify(value));
     return true;
   } catch (error) {
-    console.error(`Cache set error for key ${key}:`, error);
     return false;
   }
 }
 
-/**
- * Delete value from cache
- * @param {string} key - Cache key
- * @returns {Promise<boolean>}
- */
 async function del(key) {
+  if (!redis) return false;
   try {
     await redis.del(key);
     return true;
   } catch (error) {
-    console.error(`Cache delete error for key ${key}:`, error);
     return false;
   }
 }
 
-/**
- * Delete multiple keys matching a pattern
- * @param {string} pattern - Key pattern (e.g., 'user:123:*')
- * @returns {Promise<number>} Number of keys deleted
- */
 async function delPattern(pattern) {
+  if (!redis) return 0;
   try {
     const keys = await redis.keys(pattern);
     if (keys.length === 0) return 0;
     await redis.del(...keys);
     return keys.length;
   } catch (error) {
-    console.error(`Cache delete pattern error for ${pattern}:`, error);
     return 0;
   }
 }
 
-/**
- * Cache wrapper for data fetching
- * @param {string} key - Cache key
- * @param {Function} fetchFn - Function to fetch data if not in cache
- * @param {number} ttl - TTL in seconds
- * @returns {Promise<any>}
- */
 async function wrap(key, fetchFn, ttl = TTL.MEDIUM) {
-  // Try to get from cache
   let value = await get(key);
-  
-  if (value !== null) {
-    return value;
-  }
-
-  // Fetch from source
+  if (value !== null) return value;
   value = await fetchFn();
-  
   if (value !== null && value !== undefined) {
     await set(key, value, ttl);
   }
-  
   return value;
 }
 
-/**
- * Increment counter
- * @param {string} key - Cache key
- * @param {number} ttl - TTL for the key (only applies on first set)
- * @returns {Promise<number>} New value
- */
 async function incr(key, ttl = null) {
+  if (!redis) return 0;
   try {
     const value = await redis.incr(key);
-    if (ttl && value === 1) {
-      await redis.expire(key, ttl);
-    }
+    if (ttl && value === 1) await redis.expire(key, ttl);
     return value;
   } catch (error) {
-    console.error(`Cache incr error for key ${key}:`, error);
     return 0;
   }
 }
 
-/**
- * Check if key exists
- * @param {string} key - Cache key
- * @returns {Promise<boolean>}
- */
 async function exists(key) {
+  if (!redis) return false;
   try {
-    const result = await redis.exists(key);
-    return result === 1;
+    return (await redis.exists(key)) === 1;
   } catch (error) {
-    console.error(`Cache exists error for key ${key}:`, error);
     return false;
   }
 }
 
-/**
- * Set expiration on existing key
- * @param {string} key - Cache key
- * @param {number} ttl - TTL in seconds
- * @returns {Promise<boolean>}
- */
 async function expire(key, ttl) {
+  if (!redis) return false;
   try {
     await redis.expire(key, ttl);
     return true;
   } catch (error) {
-    console.error(`Cache expire error for key ${key}:`, error);
     return false;
   }
 }
 
-/**
- * Get multiple keys at once
- * @param {string[]} keys - Array of cache keys
- * @returns {Promise<any[]>}
- */
 async function mget(keys) {
+  if (!redis) return keys.map(() => null);
   try {
     const values = await redis.mget(...keys);
     return values.map(v => v ? JSON.parse(v) : null);
   } catch (error) {
-    console.error('Cache mget error:', error);
     return keys.map(() => null);
   }
 }
 
-/**
- * Set multiple keys at once
- * @param {Object} keyValuePairs - Object with key-value pairs
- * @param {number} ttl - TTL in seconds
- * @returns {Promise<boolean>}
- */
 async function mset(keyValuePairs, ttl = TTL.MEDIUM) {
+  if (!redis) return false;
   try {
     const pipeline = redis.pipeline();
-    
     for (const [key, value] of Object.entries(keyValuePairs)) {
       pipeline.setex(key, ttl, JSON.stringify(value));
     }
-    
     await pipeline.exec();
     return true;
   } catch (error) {
-    console.error('Cache mset error:', error);
     return false;
   }
 }
 
-/**
- * Flush all cache (use with caution!)
- * @returns {Promise<boolean>}
- */
 async function flushAll() {
+  if (!redis) return false;
   try {
     await redis.flushall();
     return true;
   } catch (error) {
-    console.error('Cache flush error:', error);
     return false;
   }
 }
 
-/**
- * Get cache stats
- * @returns {Promise<Object>}
- */
 async function getStats() {
+  if (!redis) return { connected: false, mode: 'disabled' };
   try {
     const info = await redis.info('stats');
     const keyspace = await redis.info('keyspace');
-    
-    return {
-      info,
-      keyspace,
-      connected: redis.status === 'ready',
-    };
+    return { info, keyspace, connected: redis.status === 'ready' };
   } catch (error) {
-    console.error('Cache stats error:', error);
     return { connected: false };
   }
 }
 
-// Graceful shutdown
 async function close() {
-  await redis.quit();
-  await redisClient.quit();
+  if (redis) await redis.quit().catch(() => {});
+  if (redisClient) await redisClient.quit().catch(() => {});
 }
 
 process.on('SIGTERM', close);
@@ -346,4 +263,3 @@ module.exports = {
   getStats,
   close,
 };
-
