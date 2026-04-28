@@ -237,8 +237,12 @@ async function getStats() {
 }
 
 async function close() {
-  if (redis) await redis.quit().catch(() => {});
-  if (redisClient) await redisClient.quit().catch(() => {});
+  if (redis && redis.status !== 'end') {
+    await redis.quit().catch(() => {});
+  }
+  if (redisClient && redisClient.isOpen) {
+    await redisClient.quit().catch(() => {});
+  }
 }
 
 process.on('SIGTERM', close);
