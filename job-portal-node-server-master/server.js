@@ -38,7 +38,10 @@ mongoose.connect(mongoUri, {
   serverSelectionTimeoutMS: 5000,
   socketTimeoutMS: 45000,
 })
-.then(() => console.log('✅ Connected to MongoDB successfully'))
+.then(() => {
+  const db = mongoose.connection;
+  console.log(`✅ Connected to MongoDB: ${db.host}/${db.name}`);
+})
 .catch(err => {
   console.error('❌ Error connecting to MongoDB:', err.message);
 });
@@ -64,12 +67,14 @@ if (process.env.TELEMETRY_ENABLED !== 'false') {
 // CORS middleware
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  const allowedOrigins = config.allowedOrigins && config.allowedOrigins.length > 0
-    ? config.allowedOrigins
-    : ['http://localhost:4200', 'http://localhost:3000', 'https://hiyrnow.in', 'https://hiyrnow-d5f7b.web.app', 'https://hiyrnow-d5f7b.firebaseapp.com'];
+  const isAllowed = !origin || 
+                   origin.includes('localhost') || 
+                   origin.includes('hiyrnow.in') || 
+                   origin.includes('web.app') || 
+                   origin.includes('firebaseapp.com');
 
-  if (origin && allowedOrigins.includes(origin)) {
-    res.header("Access-Control-Allow-Origin", origin);
+  if (isAllowed) {
+    res.header("Access-Control-Allow-Origin", origin || "*");
   } else if (origin && origin.includes('localhost')) {
     res.header("Access-Control-Allow-Origin", origin);
   } else if (!origin) {
