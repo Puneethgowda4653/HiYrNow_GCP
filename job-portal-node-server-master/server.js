@@ -27,9 +27,13 @@ const config = getConfig();
 const app = express();
 
 // --- MongoDB Connection Priority ---
-const mongoUri = config.mongodbUri || process.env.MONGODB_URI;
+let mongoUri = (config.mongodbUri || process.env.MONGODB_URI || '').trim();
 console.log('--- DEBUG STARTUP ---');
 console.log('MONGODB_URI exists:', !!mongoUri);
+if (mongoUri) {
+  console.log('URI Format Check:', mongoUri.startsWith('mongodb+srv') ? '✅ Modern (srv)' : '⚠️ Legacy (shard-list)');
+  console.log('URI Length:', mongoUri.length);
+}
 console.log('Connecting to MongoDB...');
 
 mongoose.connect(mongoUri, {
