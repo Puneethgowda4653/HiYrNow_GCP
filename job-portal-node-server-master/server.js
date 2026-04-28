@@ -209,16 +209,24 @@ async function init() {
       return false;
     };
 
+    // Default to MemoryStore (resilient fallback)
+    sessionStore = new session.MemoryStore();
+    console.log('ℹ️ Initialized MemoryStore (default fallback).');
+
     const isRedisActuallyReady = await checkRedisReadiness();
 
     if (isRedisActuallyReady) {
-      sessionStore = new RedisStore({
-        client: redisClient,
-        prefix: 'sess:',
-      });
-      console.log('✅ Using RedisStore for sessions.');
+      try {
+        sessionStore = new RedisStore({
+          client: redisClient,
+          prefix: 'sess:',
+        });
+        console.log('✅ Switched to RedisStore for sessions.');
+      } catch (redisErr) {
+        console.warn('⚠️ Failed to initialize RedisStore, staying with MemoryStore:', redisErr.message);
+      }
     } else {
-      console.warn('⚠️ Redis client not ready or auth failed; falling back to in-memory session store.');
+      console.warn('⚠️ Redis not available; staying with MemoryStore for sessions.');
     }
 
     const isProdEnv = process.env.NODE_ENV === 'production';
@@ -242,8 +250,9 @@ async function init() {
       cookie: {
         maxAge: 30 * 60 * 1000,
         httpOnly: true,
-        secure: cookieSecure,
-        sameSite: cookieSameSite,
+        secure: true, // Always true on Cloud Run
+        sameSite: 'none', // Required for cross-domain (Firebase -> Cloud Run)
+        partitioned: true, // Required for modern browser third-party cookie restrictions
       },
     }));
     console.log('Session middleware mounted.');
