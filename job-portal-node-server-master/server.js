@@ -38,9 +38,18 @@ mongoose.connect(mongoUri, {
   serverSelectionTimeoutMS: 5000,
   socketTimeoutMS: 45000,
 })
-.then(() => {
+.then(async () => {
   const db = mongoose.connection;
   console.log(`✅ Connected to MongoDB: ${db.host}/${db.name}`);
+  
+  // Diagnostic: List all databases to find missing Admin account
+  try {
+    const adminDb = mongoose.connection.db.admin();
+    const { databases } = await adminDb.listDatabases();
+    console.log('📂 Available Databases:', databases.map(d => d.name).join(', '));
+  } catch (diagErr) {
+    console.log('ℹ️ Note: Could not list all databases (limited permissions), but connected to:', db.name);
+  }
 })
 .catch(err => {
   console.error('❌ Error connecting to MongoDB:', err.message);
@@ -250,14 +259,16 @@ async function init() {
       store: sessionStore,
       resave: false,
       saveUninitialized: false,
-      secret: config.sessionSecret || process.env.SESSION_SECRET || 'change-this-secret',
+      rolling: true, // Forces cookie to be set on every response, helps keep session alive
+      proxy: true, // Required for Cloud Run/HTTPS
+      secret: config.sessionSecret || process.env.SESSION_SECRET || 'hiyrnow-prod-secret-2026',
       name: 'sessionId',
       cookie: {
-        maxAge: 30 * 60 * 1000,
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
         httpOnly: true,
-        secure: true, // Always true on Cloud Run
-        sameSite: 'none', // Required for cross-domain (Firebase -> Cloud Run)
-        partitioned: true, // Required for modern browser third-party cookie restrictions
+        secure: true,
+        sameSite: 'none',
+        partitioned: true,
       },
     }));
     console.log('Session middleware mounted.');
