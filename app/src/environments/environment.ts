@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: "http://13.232.208.135",
+  apiUrl: "https://hiyrnow-backend-786443796056.europe-west1.run.app",
   zoomClientId: 'your_zoom_client_id_here',
   zoomRedirectUri: 'http://localhost:4200/zoom-callback',
   googleClientId: 'your_google_client_id_here',
